@@ -3,25 +3,57 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="从纯滚动和瞬时旋转中心推导阿克曼转向几何与运动学自行车模型。">
-  <title>阿克曼转向与自行车模型推导｜导师补充知识</title>
+  <meta name="description" content="从向量、叉积、刚体点速度和纯滚动约束逐步推导阿克曼转向与运动学自行车模型。">
+  <title>阿克曼转向与自行车模型完整推导｜导师补充知识</title>
   <link rel="stylesheet" href="../assets/knowledge.css">
 </head>
 <body>
   <nav class="topbar"><div class="wrap"><a class="back" href="mentor-index.html">← 返回导师补充目录</a></div></nav>
   <article class="page wrap">
-    <div class="meta">导师补充 M07 · 车辆运动学 · 复核于 2026-07-15</div>
-    <h1>阿克曼转向与运动学自行车模型推导</h1>
-    <p class="lead">阿克曼几何回答“左右前轮分别应该转多少”，自行车模型回答“整车在这个转角下怎样运动”。它们通过同一个瞬时旋转中心、转弯半径和曲率连接起来。</p>
+    <div class="meta">导师补充 M07 · 车辆运动学 · 复核于 2026-07-16</div>
+    <h1>阿克曼转向与运动学自行车模型完整推导</h1>
+    <p class="lead">阿克曼几何回答“左右前轮分别应该转多少”，自行车模型回答“整车在虚拟转角下怎样运动”。本课不从最终公式开始，而是从叉积、刚体点速度和车轮无侧滑约束一步步推出它们。</p>
 
     <div class="panel provenance">
       <p><strong>贡献角色：</strong>导师原创推导　<strong>对象：</strong>规划与控制入门学习者　<strong>证据状态：</strong>平面低速运动学模型</p>
-      <p><strong>统一约定：</strong>后轴中心为参考点；x 向前、y 向左、yaw 逆时针为正；<code>δ&gt;0</code> 表示左转，<code>v</code> 为后轴中心有符号速度。</p>
+      <p><strong>统一约定：</strong>后轴中心为参考点；x 向前、y 向左、yaw 逆时针为正；<code>δ&gt;0</code> 表示左转，<code>v</code> 为后轴中心沿车身 x 轴的有符号速度。</p>
     </div>
 
     <div class="toc">
-      <a href="#assumptions">假设与变量</a><a href="#icr">瞬时旋转中心</a><a href="#ackermann">阿克曼几何</a><a href="#bicycle">自行车模型</a><a href="#integration">离散积分</a><a href="#cg">质心模型</a><a href="#example">数值例子</a><a href="#limits">边界与误区</a><a href="#sources">资料</a>
+      <a href="#goals">学习目标</a><a href="#math">数学先修</a><a href="#assumptions">假设与变量</a><a href="#rigid-velocity">刚体点速度</a><a href="#icr">无侧滑与 ICR</a><a href="#ackermann">阿克曼几何</a><a href="#bicycle">自行车模型</a><a href="#signed-distance">曲率与倒车</a><a href="#integration">离散积分</a><a href="#cg">质心模型</a><a href="#example">数值例子</a><a href="#practice">练习与验收</a><a href="#sources">资料</a>
     </div>
+
+    <section id="goals">
+      <h2>学完以后，要能重建整条推理链</h2>
+      <div class="flow" role="img" aria-label="从向量叉积到阿克曼和自行车模型的推理链">
+        <div class="flow-row">
+          <div class="node">叉积与角速度</div><div class="arrow">→</div>
+          <div class="node accent">刚体点速度</div><div class="arrow">→</div>
+          <div class="node">轮胎无侧滑</div><div class="arrow">→</div>
+          <div class="node accent">共同 ICR</div><div class="arrow">→</div>
+          <div class="node">Ackermann / Bicycle</div>
+        </div>
+      </div>
+      <p>通过标准不是背出 <code>κ=tanδ/L</code>，而是能解释每一步用了哪个假设、哪个参考点、哪个速度定义，以及假设失效时哪里先出错。</p>
+    </section>
+
+    <section id="math">
+      <h2>数学先修：三角函数、向量和微分</h2>
+      <div class="table-wrap" role="region" aria-label="车辆运动学模型数学先修" tabindex="0">
+        <table>
+          <caption>进入推导前应能解释这些工具的物理意义</caption>
+          <thead><tr><th scope="col">工具</th><th scope="col">最低要求</th><th scope="col">在本课中的用途</th></tr></thead>
+          <tbody>
+            <tr><td>弧度与三角函数</td><td><code>tanδ=对边/邻边</code>、<code>cotδ=1/tanδ</code></td><td>从 ICR 直角三角形得到轮角</td></tr>
+            <tr><td>向量与内积</td><td>方向向量、单位法向、正交时点积为零</td><td>写出车轮横向无速度约束</td></tr>
+            <tr><td>叉积</td><td>右手系中 <code>ω×r</code> 的方向和分量</td><td>计算刚体转动给不同点带来的速度</td></tr>
+            <tr><td>导数</td><td>位置导数是速度，角度导数是角速度</td><td>从连续状态得到运动方程</td></tr>
+            <tr><td>积分与差分</td><td>导数在短时间内累积成状态变化</td><td>把连续模型变成离散轨迹</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="key"><p><strong>先修连接：</strong>M06 中的叉积矩阵、二维旋转和坐标约定会在这里直接使用；不清楚 <code>ω×r</code> 时应先返回上一课。</p></div>
+    </section>
 
     <section id="assumptions">
       <h2>第一步：写出模型成立的前提</h2>
@@ -32,126 +64,176 @@
         <li><code>L</code> 为轴距，<code>W</code> 为左右轮距，<code>R</code> 为后轴中心到 ICR 的有符号半径。</li>
         <li><code>δ</code> 是前轴中心虚拟轮的转角，不是方向盘角，也不是内外轮角的算术平均。</li>
       </ul>
-      <div class="warning"><p><strong>模型边界：</strong>这些假设适合低速、正常附着和几何推导。高速、低附着或激烈操纵时，必须考虑轮胎侧偏和车辆动力学。</p></div>
+      <div class="warning"><p><strong>模型边界：</strong>这些假设适合低速、正常附着和几何推导。高速、低附着或激烈操纵时，需要轮胎侧偏、横向力、质量和转动惯量等动力学量。</p></div>
+    </section>
+
+    <section id="rigid-velocity">
+      <h2>第二步：从小角度位移得到刚体点速度</h2>
+      <p>设车体在短时间 <code>Δt</code> 内逆时针转过 <code>Δψ</code>。相对参考点 O 的位置向量为 <code>r</code>，由小角度几何：</p>
+      <pre class="equation" role="math" aria-label="从小角度位移推导旋转速度"><code>Δr ≈ Δψ · ẑ × r
+
+两边除以 Δt，并令 Δt→0：
+
+ṙ = ψ̇ ẑ × r = ω × r</code></pre>
+      <p>对平面位置 <code>r=[r_x,r_y,0]ᵀ</code>、角速度 <code>ω=[0,0,ψ̇]ᵀ</code>：</p>
+      <pre class="equation" role="math" aria-label="平面角速度叉积展开"><code>       [ -ψ̇ r_y ]
+ω×r = [  ψ̇ r_x ]
+       [    0     ]</code></pre>
+      <p>左转时 <code>ψ̇&gt;0</code>，位于车体前方的点 <code>r_x&gt;0</code> 会获得向左的附加速度，符合直觉。</p>
+      <p>若 O 本身还有平移速度，刚体上任意点 P 的总速度为：</p>
+      <pre class="equation" role="math" aria-label="平面刚体上两点之间的速度关系"><code>v_P = v_O + ω × r_OP</code></pre>
     </section>
 
     <section id="icr">
-      <h2>第二步：纯滚动迫使车轮指向同一个 ICR</h2>
-      <p>车轮不能侧滑，所以每个接地点的速度方向必须沿轮平面。平面刚体在某一瞬间等价于绕一个瞬时旋转中心 ICR 转动；每个车轮的速度都与“ICR 到车轮”的半径垂直。</p>
-      <div class="flow" role="img" aria-label="纯滚动约束使后轴、内前轮和外前轮的法线相交于同一瞬时旋转中心">
-        <div class="flow-row">
-          <div class="node">车轮无横向速度</div><div class="arrow">→</div>
-          <div class="node accent">车轮平面确定速度方向</div><div class="arrow">→</div>
-          <div class="node">各轮法线相交</div><div class="arrow">→</div>
-          <div class="node accent">共同 ICR</div>
-        </div>
-      </div>
-      <p>后轮不转向，因此两后轮法线就是后轴方向，ICR 必须位于后轴延长线上。左转时，ICR 位于车辆左侧。</p>
+      <h2>第三步：轮胎无侧滑约束与瞬时旋转中心</h2>
+      <p>转角为 <code>α</code> 的车轮，其滚动方向和横向法向分别是：</p>
+      <pre class="equation" role="math" aria-label="车轮滚动方向和无侧滑法向"><code>e(α) = [ cosα,  sinα ]ᵀ
+n(α) = [-sinα,  cosα ]ᵀ
+
+纯滚动横向约束：n(α)ᵀ v_wheel = 0</code></pre>
+      <p>即车轮速度只能沿轮平面。平面刚体在某一瞬间可看作绕 ICR 转动；ICR 的瞬时速度为零。若参考点速度为 <code>[v_x,v_y]</code>：</p>
+      <pre class="equation" role="math" aria-label="从刚体速度关系求瞬时旋转中心"><code>0 = [v_x, v_y]ᵀ + [-ψ̇ r_y, ψ̇ r_x]ᵀ
+
+r_x = -v_y/ψ̇        r_y = v_x/ψ̇</code></pre>
+      <p>以后轴中心为参考点，<code>v_r=[v,0]ᵀ</code>，所以 ICR 位于 <code>[0,v/ψ̇]ᵀ</code>，后轴中心半径：</p>
+      <pre class="equation" role="math" aria-label="后轴中心到 ICR 的半径"><code>R = v/ψ̇
+
+ψ̇ = 0 时，ICR 在无穷远，车辆直行。</code></pre>
     </section>
 
     <section id="ackermann">
-      <h2>第三步：推导左右前轮的阿克曼关系</h2>
-      <p>左转时，左前轮是内轮、右前轮是外轮。由两个直角三角形：</p>
-      <pre class="equation" role="math" aria-label="阿克曼内外前轮转角公式"><code>tan(δ_in)  = L / (R - W/2)
+      <h2>第四步：由刚体速度直接推导阿克曼关系</h2>
+      <p>左、右前轮相对后轴中心的位置分别是 <code>r_L=[L,W/2]ᵀ</code>、<code>r_R=[L,-W/2]ᵀ</code>。代入刚体点速度：</p>
+      <pre class="equation" role="math" aria-label="左右前轮的刚体速度"><code>      [ v - ψ̇W/2 ]            [ v + ψ̇W/2 ]
+v_L = [    Lψ̇    ]      v_R = [    Lψ̇    ]</code></pre>
+      <p>前轮无侧滑，因此各自轮平面必须和速度方向平行：</p>
+      <pre class="equation" role="math" aria-label="由前轮速度推导左右转角"><code>tan(δ_L) = Lψ̇ / (v - ψ̇W/2)
+tan(δ_R) = Lψ̇ / (v + ψ̇W/2)</code></pre>
+      <p>车辆运动且 <code>v≠0</code> 时，令转向曲率 <code>κ_steer=ψ̇/v</code>，得到左右转都适用的形式：</p>
+      <pre class="equation" role="math" aria-label="由转向曲率计算左右前轮转角"><code>tan(δ_L) = Lκ_steer / (1 - Wκ_steer/2)
+tan(δ_R) = Lκ_steer / (1 + Wκ_steer/2)</code></pre>
+      <p>左转时 <code>κ_steer&gt;0</code>，左前轮是内轮，角度更大。车辆静止时虽然不能用 <code>ψ̇/v</code> 做比值，仍可由转向几何定义 <code>κ_steer=tanδ/L</code>。用 <code>R=1/κ_steer</code> 也可写成传统直角三角形形式：</p>
+      <pre class="equation" role="math" aria-label="阿克曼内外轮转角和余切关系"><code>tan(δ_in)  = L / (R - W/2)
 tan(δ_out) = L / (R + W/2)
 
-因此：cot(δ_out) - cot(δ_in) = W / L</code></pre>
-      <p>内轮离 ICR 更近，所以 <code>|δ_in| &gt; |δ_out|</code>。若前轴中心的虚拟单轨转角为 <code>δ</code>：</p>
-      <pre class="equation" role="math" aria-label="虚拟前轮转角与转弯半径"><code>tan(δ) = L / R
-
-cot(δ) = [cot(δ_in) + cot(δ_out)] / 2</code></pre>
-      <p>注意第二式平均的是 <code>cot</code>，不是直接平均两个转角。用有符号曲率 <code>κ=1/R</code> 可以同时覆盖左右转：</p>
-      <pre class="equation" role="math" aria-label="由曲率计算左右前轮转角"><code>tan(δ_L) = Lκ / (1 - Wκ/2)
-tan(δ_R) = Lκ / (1 + Wκ/2)</code></pre>
-      <p>上式要求参考点、轮距和符号约定一致，并且目标曲率没有让分母接近零。真实转向连杆还会有标定误差和非理想 Ackermann 比例。</p>
+cot(δ_out) - cot(δ_in) = W/L</code></pre>
     </section>
 
     <section id="bicycle">
-      <h2>第四步：把左右轮合并为虚拟单轨</h2>
-      <p>自行车模型把每一轴的左右车轮合并到轴中心，同时保留相同 ICR。后轴中心速度在车体系中为 <code>[v,0]</code>；前轴中心距后轴中心 <code>[L,0]</code>。</p>
-      <p>由平面刚体速度关系，前轴中心速度为：</p>
-      <pre class="equation" role="math" aria-label="前轴中心速度由后轴速度和横摆角速度组成"><code>v_front = v_rear + ψ̇ ẑ × [L,0]
+      <h2>第五步：把左右轮合并为虚拟单轨</h2>
+      <p>自行车模型把每一轴的左右车轮合并到轴中心，并保留相同 ICR。前轴中心相对后轴中心是 <code>r_f=[L,0]ᵀ</code>：</p>
+      <pre class="equation" role="math" aria-label="前轴中心速度与无侧滑约束"><code>v_front = [v,0]ᵀ + ψ̇ ẑ × [L,0]ᵀ
+        = [v, Lψ̇]ᵀ
 
-        [ v  ]
-      = [ Lψ̇ ]</code></pre>
-      <p>前轮无侧滑，前轴速度必须与转角 <code>δ</code> 的轮平面平行。它与轮平面法向 <code>[-sinδ, cosδ]</code> 的点积为零：</p>
-      <pre class="equation" role="math" aria-label="自行车模型横摆角速度推导"><code>[v, Lψ̇] · [-sinδ, cosδ] = 0
+[-sinδ, cosδ] · [v, Lψ̇] = 0
 
 -v sinδ + Lψ̇ cosδ = 0
 
 ψ̇ = (v/L) tanδ</code></pre>
-      <p>转换到地图坐标，就得到以后轴中心为状态的运动学自行车模型：</p>
+      <p>转换到地图坐标，得到以后轴中心为状态的运动学自行车模型：</p>
       <pre class="equation" role="math" aria-label="以后轴中心为参考点的运动学自行车模型"><code>ẋ = v cosψ
 ẏ = v sinψ
-ψ̇ = (v/L) tanδ
+ψ̇ = (v/L) tanδ</code></pre>
+      <p>虚拟前轮转角满足 <code>tanδ=L/R</code>，并与两个真实轮角满足：</p>
+      <pre class="equation" role="math" aria-label="虚拟前轮转角与内外轮角关系"><code>cotδ = [cot(δ_in) + cot(δ_out)] / 2</code></pre>
+      <p>平均的是 <code>cot</code>，不是两个真实轮角的算术平均。自行车模型抽象掉轮距 W；底层转向机构再用 Ackermann 几何和真实连杆标定恢复左右轮角。</p>
+    </section>
 
-κ = dψ/ds = ψ̇/v = tanδ/L = 1/R</code></pre>
-      <div class="key"><p><strong>小角度近似：</strong><code>κ≈δ/L</code> 只在 <code>|δ|</code> 很小时成立；一般情况必须使用 <code>tanδ</code>。</p></div>
+    <section id="signed-distance">
+      <h2>曲率与倒车：区分弧长 s 和有符号行程 σ</h2>
+      <p>这里必须区分两个看起来相似的量：</p>
+      <pre class="equation" role="math" aria-label="几何弧长与有符号行程的区别"><code>几何弧长：      ds/dt = |v|      s 始终不减
+有符号行程：    dσ/dt = v        前进增加，倒车减少
+
+转向曲率：κ_steer = dψ/dσ = ψ̇/v = tanδ/L</code></pre>
+      <p>当前进且路径点序与车辆运动方向一致时，<code>s=σ</code>，转向曲率与路径有符号曲率相同。倒车时：</p>
+      <pre class="equation" role="math" aria-label="倒车时路径曲率和转向曲率的符号关系"><code>κ_path = dχ/ds = ψ̇/|v|
+
+v&lt;0 时，同一 δ 会使 ψ̇ 反号，
+因此按时间前进观察的轨迹曲率与 κ_steer 符号相反。</code></pre>
+      <div class="warning"><p><strong>不要混写：</strong><code>ψ̇/v</code> 对应有符号行程，不是非负累计弧长。规划路径的点序、车辆朝向和前进/倒车挡位必须共同决定曲率符号。</p></div>
     </section>
 
     <section id="integration">
-      <h2>第五步：从微分方程得到离散轨迹</h2>
-      <p>最简单的前向欧拉更新为：</p>
+      <h2>第六步：从微分方程积分出离散轨迹</h2>
+      <p>导数描述瞬时变化率。把一个短时间步内的变化率乘以 <code>Δt</code>，得到最简单的前向欧拉更新：</p>
       <pre class="equation" role="math" aria-label="自行车模型前向欧拉离散"><code>x_(k+1) = x_k + v cosψ_k · Δt
 y_(k+1) = y_k + v sinψ_k · Δt
 ψ_(k+1) = ψ_k + (v/L)tanδ · Δt</code></pre>
-      <p>当一个时间步内 <code>v</code> 与 <code>δ</code> 恒定，车辆实际走圆弧。令 <code>ω=(v/L)tanδ</code>、<code>R=v/ω</code>，可精确积分：</p>
+      <p>若一个时间步内 <code>v</code> 与 <code>δ</code> 恒定，车辆实际走圆弧。令 <code>ω=(v/L)tanδ</code>、<code>R=v/ω=L/tanδ</code>：</p>
       <pre class="equation" role="math" aria-label="恒定速度和转角下自行车模型的精确圆弧积分"><code>x_(k+1) = x_k + R[sin(ψ_k + ωΔt) - sinψ_k]
 y_(k+1) = y_k - R[cos(ψ_k + ωΔt) - cosψ_k]
 ψ_(k+1) = ψ_k + ωΔt</code></pre>
-      <p>当 <code>|δ|</code> 接近零时，应切换到直线形式，避免计算无限大的 <code>R</code>。</p>
+      <p>当 <code>|δ|</code> 接近零时，应使用直线极限或稳定的 <code>sinc</code> 形式，避免显式计算无限大的 R。</p>
     </section>
 
     <section id="cg">
       <h2>参考点换到质心，方程也必须一起换</h2>
-      <p>若状态点位于质心，质心到前后轴距离分别为 <code>l_f</code>、<code>l_r</code>，且 <code>L=l_f+l_r</code>。质心速度方向与车身朝向存在几何侧偏角：</p>
+      <p>若状态点位于质心，质心到前后轴距离分别为 <code>l_f</code>、<code>l_r</code>，且 <code>L=l_f+l_r</code>。运动学几何使质心速度方向与车身朝向存在角度：</p>
       <pre class="equation" role="math" aria-label="以质心为参考点的运动学自行车模型"><code>β = atan[(l_r/L) tanδ]
 
 ẋ = v cos(ψ + β)
 ẏ = v sin(ψ + β)
 ψ̇ = (v/l_r) sinβ = (v cosβ/L) tanδ</code></pre>
-      <p>这里的 <code>v</code> 是质心速度大小。后轴模型、质心模型和动态自行车模型不能只挑几条公式混在一起；首先要固定参考点和速度定义。</p>
+      <p>这里的 <code>v</code> 是质心速度大小，<code>β</code> 是运动学模型中的几何速度方向差，不等同于由轮胎力产生的完整动力学侧偏状态。后轴模型、质心模型和动态自行车模型不能拼接使用。</p>
     </section>
 
     <section id="example">
       <h2>数值例子：从虚拟转角得到真实轮角和轨迹</h2>
       <p>取 <code>L=2.8 m</code>、<code>W=1.6 m</code>、<code>δ=10°</code>、<code>v=5 m/s</code>：</p>
       <pre class="equation" role="math" aria-label="阿克曼和自行车模型数值例子"><code>R = L/tanδ = 15.8796 m
-κ = 1/R = 0.062974 m⁻¹
+κ_steer = 1/R = 0.062974 m⁻¹
 
 δ_in  = 10.519°
 δ_out =  9.529°
 
-ψ̇ = vκ = 0.31487 rad/s ≈ 18.041°/s</code></pre>
+ψ̇ = vκ_steer = 0.31487 rad/s ≈ 18.041°/s</code></pre>
       <p>若从 <code>(x,y,ψ)=(0,0,0)</code> 开始保持控制 <code>0.1 s</code>，精确圆弧积分得到约：</p>
       <pre class="equation" role="math" aria-label="自行车模型零点一秒轨迹积分结果"><code>Δψ = 1.804°
 x = 0.4999 m
 y = 0.00787 m</code></pre>
-      <p>这个例子同时说明：虚拟前轮转角位于内外轮角之间，但不是它们的精确算术平均。</p>
+      <p>若只用小角度近似 <code>κ≈δ/L</code>，<code>δ=30°</code> 时会比精确 <code>tanδ/L</code> 低估约 9.3%，所以它只能用于足够小的转角。</p>
     </section>
 
-    <section id="limits">
-      <h2>模型边界与常见误区</h2>
-      <div class="grid">
-        <div class="panel"><h3>方向盘角当车轮角</h3><p>真实车辆还有转向传动比、零偏、执行器延迟和连杆非线性。</p></div>
-        <div class="panel"><h3>混淆 L 与 W</h3><p>轴距决定基本曲率关系，轮距决定内外轮转角差。</p></div>
-        <div class="panel"><h3>最小半径没有参考点</h3><p>后轴中心、质心、外轮和车身外角的轨迹半径不同。</p></div>
-        <div class="panel"><h3>倒车符号错误</h3><p>同一 <code>δ</code> 下，<code>v&lt;0</code> 会使 <code>ψ̇</code> 反号；必须统一路径方向和速度符号。</p></div>
-        <div class="panel"><h3>欧拉步长过大</h3><p>高曲率或长步长会让直线近似偏离圆弧，应减小步长或使用精确积分。</p></div>
-        <div class="panel"><h3>高速仍假设无侧滑</h3><p>动力学模型还要包含横向速度、yaw rate、轮胎侧偏角、轮胎力、质量和转动惯量。</p></div>
+    <section id="practice">
+      <h2>练习、边界测试与验收</h2>
+      <ol>
+        <li><code>ψ̇=0.2 rad/s</code>、<code>r=(3,1) m</code>，计算旋转附加速度 <code>(-0.2,0.6) m/s</code>，并解释符号。</li>
+        <li>若参考点速度为 <code>(5,0) m/s</code>，求该点总速度 <code>(4.8,0.6) m/s</code>。</li>
+        <li><code>v=5 m/s</code>、<code>ψ̇=0.25 rad/s</code>，求 ICR 并说明它在车体左侧 20 m。</li>
+        <li>从轮胎法向量与点积为零，独立推出 <code>ψ̇=(v/L)tanδ</code>。</li>
+        <li>重新计算本页 L/W/δ 例题，并验证左转时内轮角大于外轮角。</li>
+        <li>令 <code>v=-5 m/s</code>，分别说明 yaw rate、转向曲率与按时间前进的轨迹曲率怎样变号。</li>
+        <li>为离散模型设计 <code>δ=0</code>、<code>v=0</code>、<code>κ→-κ</code> 三组边界测试。</li>
+        <li>给出一个运动学模型失效场景，并列出动力学模型至少需要增加的状态或参数。</li>
+      </ol>
+      <div class="table-wrap" role="region" aria-label="阿克曼和自行车模型验收红线" tabindex="0">
+        <table>
+          <caption>任一红线错误都说明推理链尚未掌握</caption>
+          <thead><tr><th scope="col">能力</th><th scope="col">通过标准</th><th scope="col">红线错误</th></tr></thead>
+          <tbody>
+            <tr><td>叉积</td><td>展开 <code>ω×r</code> 并解释方向</td><td>叉积符号错误</td></tr>
+            <tr><td>无侧滑</td><td>写出车轮方向与横向法向约束</td><td>把横向速度当作允许量</td></tr>
+            <tr><td>Ackermann</td><td>从刚体速度恢复左右前轮角</td><td>左转时外轮角大于内轮角</td></tr>
+            <tr><td>Bicycle</td><td>从约束推出三条状态方程</td><td>把 <code>κ=δ/L</code> 当精确公式</td></tr>
+            <tr><td>语义</td><td>说清参考点、速度、行程和倒车符号</td><td>混用后轴与质心模型或 s 与 σ</td></tr>
+            <tr><td>边界</td><td>说明执行器、侧滑和动力学缺失项</td><td>把低速几何模型当高速车辆真值</td></tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
     <section id="sources">
       <h2>参考资料</h2>
       <ul>
+        <li><a href="coordinate-transformations.html">本课程 M06：向量叉积、旋转与坐标约定</a></li>
         <li><a href="https://www.cs.cmu.edu/~alonzo/pubs/reports/kinematics_V2.pdf">CMU：Essential Kinematics for Autonomous Vehicles</a></li>
         <li><a href="https://control.ros.org/kilted/doc/ros2_controllers/ackermann_steering_controller/doc/userdoc.html">ros2_control Kilted：Ackermann steering controller</a></li>
         <li><a href="https://control.ros.org/kilted/doc/ros2_controllers/bicycle_steering_controller/doc/userdoc.html">ros2_control Kilted：Bicycle steering controller</a></li>
       </ul>
     </section>
 
-    <div class="related"><a href="curvature-calculation.html">下一篇：曲率的定义与工程计算 →</a></div>
+    <div class="related"><a href="curvature-calculation.html">下一篇：从微积分和线性代数推导曲率 →</a></div>
   </article>
 </body>
 </html>

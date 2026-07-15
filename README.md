@@ -20,10 +20,10 @@
   - `ros2-autoware-debugging.html`：沿 ROS 2 图谱排查数据链
   - `perception-deployment-contracts.html`：感知模型从训练到部署的契约
   - `validation-closure.html`：从候选结果到正式验证与交接闭环
-  - `nuscenes-dataset.html`：nuScenes 数据结构、时间、标定与评测
-  - `coordinate-transformations.html`：二维与三维坐标系转换
-  - `ackermann-bicycle-model.html`：阿克曼转向与运动学自行车模型推导
-  - `curvature-calculation.html`：连续与离散路径的曲率计算
+  - `nuscenes-dataset.html`：面向数据任务的 nuScenes 盘点、索引、QC、切分与交付课程
+  - `coordinate-transformations.html`：参考《视觉 SLAM 十四讲》的线性代数与刚体坐标变换课程
+  - `ackermann-bicycle-model.html`：从叉积和无侧滑约束推导阿克曼与运动学自行车模型
+  - `curvature-calculation.html`：从微积分和线性代数推导连续与离散路径曲率
 
 ## 公开内容边界
 

@@ -3,102 +3,225 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="推导连续曲线、离散三点与航向角差分的曲率计算，并连接车辆转角和横摆角速度。">
-  <title>曲率的定义与工程计算｜导师补充知识</title>
+  <meta name="description" content="从向量、行列式、导数、链式法则和弧长出发，推导连续与离散路径曲率并分析数值稳定性。">
+  <title>从微积分和线性代数推导曲率｜导师补充知识</title>
   <link rel="stylesheet" href="../assets/knowledge.css">
 </head>
 <body>
   <nav class="topbar"><div class="wrap"><a class="back" href="mentor-index.html">← 返回导师补充目录</a></div></nav>
   <article class="page wrap">
-    <div class="meta">导师补充 M08 · 路径几何 · 复核于 2026-07-15</div>
-    <h1>曲率的定义与工程计算</h1>
-    <p class="lead">曲率描述“路径方向随前进距离改变得多快”。它是连接路径几何、车辆转角、横摆角速度和横向加速度的核心量。</p>
+    <div class="meta">导师补充 M08 · 微积分与路径几何 · 复核于 2026-07-16</div>
+    <h1>从微积分和线性代数推导曲率</h1>
+    <p class="lead">曲率描述“路径方向随前进距离改变得多快”。本课先补向量、行列式、导数、参数曲线、链式法则和弧长，再推导连续公式、离散三点公式与工程计算方法。</p>
 
     <div class="panel provenance">
-      <p><strong>贡献角色：</strong>导师原创推导　<strong>对象：</strong>规划、控制与轨迹处理入门学习者　<strong>证据状态：</strong>二维路径几何</p>
-      <p><strong>统一约定：</strong>右手 x-y 平面，路径按点序前进，逆时针/左转为正；曲率单位为 <code>m⁻¹</code>。</p>
+      <p><strong>贡献角色：</strong>导师原创推导　<strong>对象：</strong>规划、控制与轨迹数据处理入门学习者　<strong>证据状态：</strong>二维有向路径几何</p>
+      <p><strong>统一约定：</strong>右手 x-y 平面，路径按点序前进，逆时针/左转为正；<code>s</code> 是非负累计弧长，曲率单位为 <code>m⁻¹</code>。</p>
     </div>
 
     <div class="toc">
-      <a href="#definition">定义</a><a href="#continuous">连续曲线</a><a href="#three-points">离散三点</a><a href="#heading">航向差分</a><a href="#compare">方法对比</a><a href="#vehicle">车辆关联</a><a href="#stability">数值稳定</a><a href="#practice">练习</a><a href="#sources">资料</a>
+      <a href="#goals">学习目标</a><a href="#prerequisites">数学先修</a><a href="#definition">第一性定义</a><a href="#derivation">连续公式推导</a><a href="#continuous">公式验证</a><a href="#three-points">离散三点</a><a href="#heading">航向差分</a><a href="#experiments">数值实验</a><a href="#compare">方法对比</a><a href="#vehicle">车辆关联</a><a href="#stability">工程稳定性</a><a href="#practice">练习与验收</a><a href="#sources">资料</a>
     </div>
+
+    <section id="goals">
+      <h2>学习目标：从“会代公式”升级到“知道公式为什么成立”</h2>
+      <div class="flow" role="img" aria-label="曲率课程从数学先修到工程验证的学习路线">
+        <div class="flow-row">
+          <div class="node">向量 / 行列式</div><div class="arrow">→</div>
+          <div class="node accent">导数 / 链式法则</div><div class="arrow">→</div>
+          <div class="node">弧长 / 单位切向</div><div class="arrow">→</div>
+          <div class="node accent">连续 / 离散曲率</div><div class="arrow">→</div>
+          <div class="node">噪声与车辆约束</div>
+        </div>
+      </div>
+      <p>学完后应能从 <code>κ=dψ/ds</code> 推出一般参数公式和三点公式，能解释符号、单位与失效条件，并用测试数据证明实现正确。</p>
+    </section>
+
+    <section id="prerequisites">
+      <h2>数学先修：两条依赖链</h2>
+      <div class="grid">
+        <div class="panel">
+          <h3>线性代数链</h3>
+          <p>点差得到位移向量 → 范数给长度 → 内积给夹角 → 二维行列式给有向面积与左右转 → 归一化得到单位切向量。</p>
+        </div>
+        <div class="panel">
+          <h3>微积分链</h3>
+          <p>极限 → 导数是瞬时变化率 → 向量函数逐分量求导 → 链式法则 → 弧长参数 → 对单位距离求方向变化。</p>
+        </div>
+      </div>
+      <div class="table-wrap" role="region" aria-label="曲率推导所需基础概念" tabindex="0">
+        <table>
+          <caption>先把每个符号翻译成几何意义</caption>
+          <thead><tr><th scope="col">概念</th><th scope="col">公式</th><th scope="col">本课作用</th></tr></thead>
+          <tbody>
+            <tr><td>位移向量</td><td><code>Δp=p₁-p₀</code></td><td>相邻路径点的方向与距离</td></tr>
+            <tr><td>范数</td><td><code>||v||=√(v·v)</code></td><td>线段长度和参数曲线的“走得多快”</td></tr>
+            <tr><td>内积</td><td><code>a·b=||a||||b||cosθ</code></td><td>夹角、投影与正交</td></tr>
+            <tr><td>二维行列式</td><td><code>det(a,b)=a_xb_y-a_yb_x</code></td><td>有向面积和从 a 到 b 的左右转</td></tr>
+            <tr><td>向量导数</td><td><code>r′(t)=(x′(t),y′(t))</code></td><td>曲线的参数切向导数</td></tr>
+            <tr><td>链式法则</td><td><code>dψ/ds=(dψ/dt)/(ds/dt)</code></td><td>消除参数走得快慢的影响</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <pre class="equation" role="math" aria-label="曲率先修向量练习"><code>u=(3,4)      v=(-4,3)
+
+||u||=||v||=5
+u·v=0                 两向量正交
+det(u,v)=25 &gt; 0       从 u 到 v 逆时针转</code></pre>
+      <p><code>r′(t)</code> 一般称为参数切向导数；只有参数 <code>t</code> 确实是物理时间时，它才是物理速度。</p>
+    </section>
 
     <section id="definition">
       <h2>第一性定义：单位弧长带来多少方向变化</h2>
-      <p>令 <code>s</code> 为沿路径累计的弧长，<code>ψ(s)</code> 为路径切线航向角，则有符号曲率定义为：</p>
-      <pre class="equation" role="math" aria-label="曲率的弧长定义"><code>κ = dψ/ds
+      <p>设正则参数曲线 <code>r(t)=(x(t),y(t))</code> 且 <code>r′(t)≠0</code>。从起点到参数 t 的弧长：</p>
+      <pre class="equation" role="math" aria-label="参数曲线弧长和弧长导数"><code>          t
+s(t) = ∫ ||r′(u)|| du
+          t₀
 
-转弯半径：R = 1/|κ|
-直线：κ = 0，R → ∞</code></pre>
-      <p>左转时航向随弧长增加，<code>κ&gt;0</code>；右转时 <code>κ&lt;0</code>。同一条几何路径如果把点序反过来，有符号曲率会反号。</p>
-      <div class="key"><p><strong>量纲检查：</strong>航向角用弧度、弧长用米，因此曲率单位是 <code>rad/m</code>，弧度无量纲，通常写成 <code>m⁻¹</code>。</p></div>
+ds/dt = ||r′(t)||</code></pre>
+      <p>把切向导数归一化得到单位切向量 <code>T</code>，并用 <code>ψ</code> 表示其航向：</p>
+      <pre class="equation" role="math" aria-label="单位切向量与有符号曲率定义"><code>T = r′/||r′|| = (cosψ, sinψ)
+
+κ = dψ/ds
+
+转弯半径：R = 1/|κ|      直线：κ=0，R→∞</code></pre>
+      <p>左转时航向随点序增加，<code>κ&gt;0</code>；右转时 <code>κ&lt;0</code>。弧度无量纲，弧长用米，所以曲率通常写成 <code>m⁻¹</code>。</p>
+    </section>
+
+    <section id="derivation">
+      <h2>从单位切向量逐步推导一般参数公式</h2>
+      <p>为减少符号，令 <code>v=r′(t)</code>、<code>q=||v||=ds/dt</code>。这里的 v 是参数切向导数，不一定是物理速度。</p>
+      <pre class="equation" role="math" aria-label="单位切向量对参数求导"><code>T = v/q = (cosψ, sinψ)
+
+dT/dt = (dψ/dt)(-sinψ, cosψ)
+
+det(T, dT/dt) = dψ/dt</code></pre>
+      <p>另一方面，对 <code>T=v/q</code> 使用商法则：</p>
+      <pre class="equation" role="math" aria-label="用行列式化简单位切向量导数"><code>dT/dt = v′/q - vq′/q²
+
+det(T, dT/dt)
+= det(v/q, v′/q - vq′/q²)
+= det(v,v′)/q²
+
+因为 det(v,v)=0，所以包含 q′ 的项消失。</code></pre>
+      <p>两种表达相等，再用链式法则除以 <code>ds/dt=q</code>：</p>
+      <pre class="equation" role="math" aria-label="二维连续参数曲线的有符号曲率推导结果"><code>dψ/dt = det(r′,r″) / ||r′||²
+
+κ = dψ/ds
+  = (dψ/dt)/(ds/dt)
+  = det(r′,r″) / ||r′||³
+
+            x′(t)y″(t) - y′(t)x″(t)
+κ(t) = --------------------------------
+        [x′(t)² + y′(t)²]^(3/2)</code></pre>
+      <p>分子决定转向方向，分母消除正向参数化的快慢。若重参数 <code>t=g(u)</code>，分子乘 <code>g′³</code>、分母乘 <code>|g′|³</code>：<code>g′&gt;0</code> 时有符号曲率不变，<code>g′&lt;0</code> 反向遍历时符号翻转。</p>
     </section>
 
     <section id="continuous">
-      <h2>连续参数曲线的曲率</h2>
-      <p>对二维正则曲线 <code>r(t)=(x(t),y(t))</code>，速度向量不能为零。由切线方向对弧长求导可得：</p>
-      <pre class="equation" role="math" aria-label="二维连续参数曲线的有符号曲率"><code>            x′(t)y″(t) - y′(t)x″(t)
-κ(t) = --------------------------------
-        [x′(t)² + y′(t)²]^(3/2)</code></pre>
-      <p>分子是速度与加速度的二维叉积，决定转向方向；分母消除参数走得快慢的影响，所以同一条曲线换一种参数化，曲率不变。</p>
-      <p>若路径直接写成 <code>y=f(x)</code>：</p>
-      <pre class="equation" role="math" aria-label="函数曲线 y 等于 f x 的曲率"><code>              f″(x)
+      <h2>用函数曲线和圆验证公式</h2>
+      <h3>函数曲线 y=f(x)</h3>
+      <p>令参数 <code>t=x</code>，则 <code>r′=(1,f′)</code>、<code>r″=(0,f″)</code>：</p>
+      <pre class="equation" role="math" aria-label="函数曲线 y 等于 f x 的有符号曲率"><code>              f″(x)
 κ(x) = -------------------
         [1 + f′(x)²]^(3/2)</code></pre>
-      <p>圆 <code>r(θ)=(R cosθ,R sinθ)</code> 代入后得到 <code>κ=1/R</code>，与定义一致。</p>
+      <h3>半径为 R 的逆时针圆</h3>
+      <p>令 <code>r(t)=(R cos t,R sin t)</code>，代入一般公式：</p>
+      <pre class="equation" role="math" aria-label="圆的曲率验证"><code>det(r′,r″)=R²      ||r′||³=R³
+
+κ = R²/R³ = 1/R</code></pre>
+      <p>把圆按顺时针方向参数化，几何圆不变，但有向点序相反，因此 <code>κ=-1/R</code>。</p>
     </section>
 
     <section id="three-points">
-      <h2>离散路径：用三点外接圆估计曲率</h2>
-      <p>给定按路径顺序排列的三点 <code>p0,p1,p2</code>：</p>
-      <pre class="equation" role="math" aria-label="离散三点有符号曲率公式"><code>a = |p1 - p0|      b = |p2 - p1|      c = |p2 - p0|
-cross = (p1 - p0)_x(p2 - p0)_y - (p1 - p0)_y(p2 - p0)_x
+      <h2>离散三点公式：从外接圆和有向面积推导</h2>
+      <p>给定按路径顺序排列的三个不同点 <code>p₀,p₁,p₂</code>。若不共线，它们确定唯一外接圆。定义：</p>
+      <pre class="equation" role="math" aria-label="离散三点边长和有向面积"><code>a = ||p₁-p₀||      b = ||p₂-p₁||      c = ||p₂-p₀||
 
-κ = 2·cross / (a·b·c)
-  = 4·A_signed / (a·b·c)</code></pre>
-      <p><code>cross=2A_signed</code>。把 cross 当成三角形面积，会产生最常见的两倍误差。三点共线时 cross 为零，曲率为零；有重复点或边长接近零时，结果无定义，应拒绝该样本。</p>
-      <h3>数值例子</h3>
-      <p>取 <code>p0=(0,0)</code>、<code>p1=(1,0)</code>、<code>p2=(1,1)</code>：</p>
-      <pre class="equation" role="math" aria-label="三点曲率数值例子"><code>a=1，b=1，c=√2，cross=1
+D = det(p₁-p₀, p₂-p₀)
+A_signed = D/2</code></pre>
+      <p>令 <code>γ</code> 为向量 <code>p₁-p₀</code> 与 <code>p₂-p₀</code> 的夹角，则：</p>
+      <pre class="equation" role="math" aria-label="由三角形面积和弦长推导外接圆半径"><code>|A| = (1/2)ac sinγ
+b = 2R sinγ
 
-κ = 2/(√2) = √2 ≈ 1.414 m⁻¹
-R = 1/κ ≈ 0.707 m</code></pre>
-      <pre><code>function curvature3Points(p0, p1, p2, eps):
-    a = norm(p1 - p0)
-    b = norm(p2 - p1)
-    c = norm(p2 - p0)
-    if min(a, b, c) &lt; eps:
-        return INVALID
-    cross = cross2d(p1 - p0, p2 - p0)
-    return 2 * cross / (a * b * c)</code></pre>
+消去 sinγ：|A| = abc/(4R)
+
+恢复方向符号：
+κ = 4A_signed/(abc)
+  = 2D/(abc)</code></pre>
+      <p>这是三点的 Menger 曲率。三点在同一圆上时结果精确；对一般光滑曲线，只有采样窗口收缩时才趋近局部曲率。宽窗口、强不等距采样或尖角处，不能把它直接称为 <code>p₁</code> 的真实曲率。</p>
+      <h3>手算例子</h3>
+      <p><code>p₀=(0,0)</code>、<code>p₁=(1,0)</code>、<code>p₂=(1,1)</code>：</p>
+      <pre class="equation" role="math" aria-label="三点曲率数值例子"><code>a=1，b=1，c=√2，D=1
+
+κ = 2/√2 = √2 ≈ 1.414 m⁻¹
+R ≈ 0.707 m</code></pre>
+      <p>重复点使分母为零，应返回 <code>INVALID</code>；三个不同但共线的点有 <code>D=0</code>，可解释为离散曲率零。</p>
     </section>
 
     <section id="heading">
       <h2>已有航向角时：对弧长做差分</h2>
-      <p>如果 <code>ψ_i</code> 与 <code>s_i</code> 是同一批路径点上的航向和累计弧长，可用中心差分：</p>
+      <p>若 <code>ψ_i</code> 与 <code>s_i</code> 是同一批路径点的切向航向和累计弧长：</p>
       <pre class="equation" role="math" aria-label="同位置航向角和弧长的曲率中心差分"><code>κ_i ≈ wrapToPi(ψ_(i+1) - ψ_(i-1))
       ---------------------------------
              s_(i+1) - s_(i-1)</code></pre>
-      <p>如果航向来自点 <code>p_i</code> 前后的两条线段，它们实际位于线段中点，应使用两中点之间的距离：</p>
+      <p>这个差商首先表示区间上的平均曲率；只有窗口足够小且曲率平滑时，才近似赋给中间点。</p>
+      <p>若航向来自点 <code>p_i</code> 前后的两条线段，它们位于线段中点，应使用两个中点之间的距离：</p>
       <pre class="equation" role="math" aria-label="相邻线段航向差估计顶点曲率"><code>ψ_- = atan2((p_i-p_(i-1))_y, (p_i-p_(i-1))_x)
 ψ_+ = atan2((p_(i+1)-p_i)_y, (p_(i+1)-p_i)_x)
 
 κ_i ≈ wrapToPi(ψ_+ - ψ_-)
       ----------------------
           (ℓ_- + ℓ_+)/2</code></pre>
-      <div class="warning"><p><strong>必须处理角度跳变：</strong>从 <code>179°</code> 到 <code>-179°</code> 实际只转了 <code>2°</code>。差分前要 unwrap 航向序列，或对每个角度增量执行 <code>wrapToPi</code>。</p></div>
+      <div class="warning"><p><strong>必须处理角度跳变：</strong><code>179°→-179°</code> 实际只转了 <code>+2°</code>，直接相减却得到 <code>-358°</code>。差分前要 unwrap 航向序列，或对每个角度增量执行 <code>wrapToPi</code>。</p></div>
+    </section>
+
+    <section id="experiments">
+      <h2>三个数值实验：看见收敛、噪声和精度问题</h2>
+      <h3>实验 1：离散公式向连续真值收敛</h3>
+      <p>对 <code>y=x²</code>，原点的连续曲率是 <code>2</code>。取三点 <code>(-h,h²),(0,0),(h,h²)</code>，可推得 <code>κ_h=2/(1+h²)</code>：</p>
+      <div class="table-wrap" role="region" aria-label="抛物线三点曲率随采样窗口收敛" tabindex="0">
+        <table>
+          <caption>窗口缩小时，离散估计趋近原点连续曲率 2</caption>
+          <thead><tr><th scope="col">h</th><th scope="col">κ_h / m⁻¹</th><th scope="col">与真值差</th></tr></thead>
+          <tbody>
+            <tr><td>1.0</td><td>1.0000</td><td>-1.0000</td></tr>
+            <tr><td>0.5</td><td>1.6000</td><td>-0.4000</td></tr>
+            <tr><td>0.2</td><td>1.9231</td><td>-0.0769</td></tr>
+            <tr><td>0.1</td><td>1.9802</td><td>-0.0198</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>实验 2：短基线按约 1/h² 放大噪声</h3>
+      <p>本应为直线的三点 <code>(-h,0),(0,ε),(h,0)</code> 会得到 <code>κ=-2ε/(h²+ε²)</code>。令 <code>ε=1 mm</code>：</p>
+      <div class="table-wrap" role="region" aria-label="短基线放大一毫米位置噪声" tabindex="0">
+        <table>
+          <caption>同样 1 mm 偏差在更短窗口中产生更大伪曲率</caption>
+          <thead><tr><th scope="col">h / m</th><th scope="col">κ / m⁻¹</th></tr></thead>
+          <tbody>
+            <tr><td>1.0</td><td>-0.002</td></tr>
+            <tr><td>0.5</td><td>-0.008</td></tr>
+            <tr><td>0.2</td><td>-0.050</td></tr>
+            <tr><td>0.1</td><td>-0.200</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="grid">
+        <div class="panel"><h3>实验 3A：角度 wrap</h3><p><code>179°→-179°</code>、<code>Δs=1 m</code>：直接差分约 <code>-6.248 m⁻¹</code>，wrap 后约 <code>+0.0349 m⁻¹</code>。</p></div>
+        <div class="panel"><h3>实验 3B：大坐标 float32</h3><p>把 1 m 间距点整体平移到 <code>10⁸</code> 附近再降为 float32，差值可能坍缩。应先在高精度中减局部原点，再降精度。</p></div>
+      </div>
+      <p>实验报告应固定真值、随机种子、噪声强度和窗口，报告 bias、RMSE、P95 与无效点比例，不能只挑一张“看起来平滑”的图。</p>
     </section>
 
     <section id="compare">
-      <h2>三种方法怎样选择</h2>
+      <h2>三种计算方法怎样选择</h2>
       <div class="table-wrap" role="region" aria-label="三种曲率计算方法对比" tabindex="0">
         <table>
-          <caption>输入形式决定公式，数据质量决定稳定性</caption>
+          <caption>输入形式决定公式，采样和噪声决定稳定性</caption>
           <thead><tr><th scope="col">方法</th><th scope="col">输入</th><th scope="col">优点</th><th scope="col">主要风险</th></tr></thead>
           <tbody>
             <tr><td>连续导数</td><td>解析曲线或可微样条</td><td>定义直接，可在任意位置计算</td><td>二阶导数放大拟合与噪声误差</td></tr>
-            <tr><td>三点外接圆</td><td>有序离散点</td><td>不需要显式航向，实现简单</td><td>重复点、短基线和噪声会导致抖动</td></tr>
-            <tr><td>航向/弧长差分</td><td>航向与弧长</td><td>物理意义直观，便于连接 yaw rate</td><td>角度 wrap、采样位置和非等距问题</td></tr>
+            <tr><td>三点外接圆</td><td>有序离散点</td><td>不需要显式航向，实现简单</td><td>窗口、重复点、短基线与噪声</td></tr>
+            <tr><td>航向/弧长差分</td><td>航向与弧长</td><td>物理意义直观，便于连接 yaw rate</td><td>角度 wrap、采样位置和平均窗口</td></tr>
           </tbody>
         </table>
       </div>
@@ -106,48 +229,64 @@ R = 1/κ ≈ 0.707 m</code></pre>
 
     <section id="vehicle">
       <h2>曲率怎样连接车辆转角和动态约束</h2>
-      <p>以后轴中心为参考点的运动学自行车模型：</p>
-      <pre class="equation" role="math" aria-label="曲率与自行车模型转角横摆角速度的关系"><code>κ = tanδ/L        δ = atan(Lκ)
+      <p>M07 中以后轴中心和有符号行程 <code>σ</code> 定义转向曲率：</p>
+      <pre class="equation" role="math" aria-label="转向曲率与路径曲率的车辆关联"><code>κ_steer = dψ/dσ = tanδ/L
+δ = atan(Lκ_steer)
 
-ψ̇ = vκ
+若车辆前进且轨迹切向 χ=ψ：
+κ_path = dχ/ds = ψ̇/|v| = κ_steer
 
-κ_max = tan(δ_max)/L
-R_min = 1/|κ_max|
-
-横向加速度近似：a_y = v²κ</code></pre>
-      <p>曲率是几何量，但相同曲率在更高速度下产生更大的横向加速度。规划不能只检查路径“转不转得过来”，还要结合速度、舒适性和轮胎附着。</p>
-      <div class="warning"><p><strong>侧滑时要换角度：</strong>路径切线角是 <code>χ=ψ+β</code>。高速或明显侧偏时，路径曲率是 <code>χ̇/v</code>，不能无条件把车身 yaw rate <code>ψ̇</code> 除以车速当成真实路径曲率。</p></div>
+κ_steer,max = tan(δ_max)/L
+横向加速度近似：a_y = speed² · κ_path</code></pre>
+      <p>倒车时 <code>dσ/dt=v&lt;0</code>，而 <code>ds/dt=|v|</code>。此时转向曲率与按时间前进观察的路径曲率不能直接混成一个符号。</p>
+      <div class="warning"><p><strong>侧滑时还要换角度：</strong>路径切线角是 <code>χ=ψ+β</code>。高速或明显侧偏时，路径曲率应由 <code>χ</code> 变化计算，不能无条件把车身 yaw rate 除以速度当作真实路径曲率。</p></div>
     </section>
 
     <section id="stability">
-      <h2>工程数据中的数值稳定性</h2>
+      <h2>工程数据中的数值稳定性清单</h2>
       <div class="grid">
-        <div class="panel"><h3>重复点与短基线</h3><p>先去重并设最小弧长阈值；极近点会把毫米级噪声放大为巨大曲率。</p></div>
-        <div class="panel"><h3>非均匀采样</h3><p>不要套等距差分。优先按弧长重采样，并记录实际采样间隔。</p></div>
-        <div class="panel"><h3>噪声的二阶放大</h3><p>可用局部多项式、样条或圆拟合，但必须记录窗口，避免跨过真实尖角。</p></div>
-        <div class="panel"><h3>尖角无有限曲率</h3><p>折线顶点的切线不连续，曲率本身不定义；平滑是在改变路径，不是恢复隐藏真值。</p></div>
-        <div class="panel"><h3>近直线半径爆大</h3><p>优先报告接近零的 κ，不要直接展示数值巨大的 R；为零附近设置语义阈值。</p></div>
-        <div class="panel"><h3>大坐标消减精度</h3><p>先减局部原点再计算差分。旋转平移保持曲率，反射会翻转符号，缩放会改变大小。</p></div>
+        <div class="panel"><h3>重复点与短基线</h3><p>先去重并设最小弧长阈值；极近点会放大毫米级噪声。</p></div>
+        <div class="panel"><h3>非均匀采样</h3><p>不要套等距差分。按弧长重采样，或使用保留真实间距的公式。</p></div>
+        <div class="panel"><h3>二阶导数放大噪声</h3><p>可用局部多项式、样条或圆拟合，但必须记录窗口和边界策略。</p></div>
+        <div class="panel"><h3>尖角没有有限曲率</h3><p>折线顶点切线不连续；平滑是在改变路径，不是恢复隐藏真值。</p></div>
+        <div class="panel"><h3>近直线半径爆大</h3><p>优先报告接近零的 κ，而不是数值巨大的 R；为零附近设置语义阈值。</p></div>
+        <div class="panel"><h3>坐标变换与符号</h3><p>旋转平移保持曲率；反射或逆序翻转有符号曲率；缩放会改变曲率大小。</p></div>
       </div>
-      <p>图像坐标的 y 轴通常向下，相当于对常用车辆平面做了反射；直接在像素坐标算有符号曲率时，正负号可能与车辆坐标相反。</p>
+      <p>图像坐标 y 轴通常向下，相当于对常用车辆平面做反射；直接在像素坐标中计算时，曲率符号可能与车辆坐标相反。</p>
     </section>
 
     <section id="practice">
-      <h2>实习生练习</h2>
+      <h2>练习与验收标准</h2>
       <ol>
-        <li>从 <code>κ=dψ/ds</code> 推导半径为 R 的圆为什么有 <code>|κ|=1/R</code>。</li>
-        <li>手算三点 <code>(0,0),(1,0),(1,1)</code> 的曲率，并解释正号来自哪里。</li>
-        <li>构造一组跨越 <code>±π</code> 的航向角，比较直接相减和 wrap 后的结果。</li>
-        <li>给定 <code>L=2.8 m</code>、<code>δ_max=30°</code>，计算后轴中心的 <code>κ_max</code> 与 <code>R_min</code>。</li>
-        <li>对同一条圆弧分别稀疏采样和密集采样，加入相同位置噪声，观察三点曲率抖动。</li>
+        <li>计算 <code>u=(3,4)</code>、<code>v=(-4,3)</code> 的范数、内积和行列式，并解释几何意义。</li>
+        <li>不看最终公式，从 <code>T=r′/||r′||</code>、行列式与链式法则推出连续曲率公式。</li>
+        <li>从三角形面积和弦长关系推出三点 Menger 曲率。</li>
+        <li>对圆和 <code>y=x²</code> 分别验证解析公式；解释正向重参数不变、反向遍历变号。</li>
+        <li>实现直线、圆、重复点、反射、逆序和 <code>±π</code> wrap 六组测试。</li>
+        <li>取 <code>L=2.8 m</code>、<code>δ_max=30°</code>，算得 <code>κ_steer,max≈0.2062 m⁻¹</code>、<code>R≈4.8497 m</code>，并说明参考点和模型边界。</li>
       </ol>
+      <div class="table-wrap" role="region" aria-label="曲率课程四级验收标准" tabindex="0">
+        <table>
+          <caption>算对一个答案不等于已经掌握</caption>
+          <thead><tr><th scope="col">级别</th><th scope="col">必须做到</th><th scope="col">最低证据</th></tr></thead>
+          <tbody>
+            <tr><td>基础</td><td>解释范数、内积、行列式、导数与弧长</td><td>手算与几何解释一致</td></tr>
+            <tr><td>推导</td><td>独立推出连续公式和三点公式</td><td>每一步写出所用定义或法则</td></tr>
+            <tr><td>实现</td><td>正确处理符号、重复点、wrap 和数值阈值</td><td>自动化边界测试全部通过</td></tr>
+            <tr><td>工程</td><td>解释采样、噪声、平滑窗口和车辆约束的取舍</td><td>带真值、参数、指标与失败样本的实验报告</td></tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <section id="sources">
       <h2>参考资料</h2>
       <ul>
+        <li><a href="https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/">MIT OpenCourseWare 18.06 Linear Algebra</a></li>
+        <li><a href="https://openstax.org/books/calculus-volume-3/pages/3-2-calculus-of-vector-valued-functions">OpenStax Calculus Volume 3：向量值函数的微积分</a></li>
+        <li><a href="https://openstax.org/books/calculus-volume-3/pages/3-3-arc-length-and-curvature">OpenStax Calculus Volume 3：弧长与曲率</a></li>
         <li><a href="https://www.cs.cmu.edu/~alonzo/pubs/reports/kinematics_V2.pdf">CMU：Essential Kinematics for Autonomous Vehicles</a></li>
-        <li><a href="ackermann-bicycle-model.html">上一页：阿克曼转向与运动学自行车模型推导</a></li>
+        <li><a href="ackermann-bicycle-model.html">上一页：阿克曼转向与运动学自行车模型完整推导</a></li>
       </ul>
     </section>
 

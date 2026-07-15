@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="导师补充知识目录：工程证据、ROS 2 排障、nuScenes、坐标变换、车辆模型和曲率计算。">
+  <meta name="description" content="导师补充课程目录：工程证据、nuScenes 数据任务、坐标变换、车辆模型和曲率的可授课基础知识。">
   <title>导师补充知识｜我的个人知识库</title>
   <link rel="stylesheet" href="../assets/knowledge.css">
 </head>
@@ -12,7 +12,7 @@
   <main class="page wrap">
     <div class="meta">导师补充 · 工程方法、数据与几何基础</div>
     <h1>导师补充知识</h1>
-    <p class="lead">这组笔记补充两条能力线：一条把知识变成可复查的工程证据，另一条从数据结构、坐标变换和车辆几何建立可推导的数学基础。</p>
+    <p class="lead">这组内容按课程组织：先给学习目标和先修知识，再做概念推导、数值实验、工程任务与验收。目标不是让实习生记术语，而是能独立完成一次可追溯的数据或几何任务。</p>
 
     <div class="warning">
       <p><strong>公开边界：</strong>所有示例都使用占位符和通用流程，不包含真实账号、密码、IP、车辆标识、内部仓库路径或未公开指标。项目相关结论仍需回到当前主机、版本、配置和运行证据重新确认。</p>
@@ -29,8 +29,8 @@
     </div>
 
     <div class="panel provenance">
-      <p><strong>贡献角色：</strong>导师原创整理　<strong>对象：</strong>自动驾驶工程入门学习者　<strong>最后复核：</strong>2026-07-15</p>
-      <p><strong>内容状态：</strong>通用教学方法与公式推导；项目版本、接口、参数和验收结论必须结合当前官方文档与目标环境证据重新确认。</p>
+      <p><strong>贡献角色：</strong>导师原创整理　<strong>对象：</strong>自动驾驶工程入门学习者　<strong>最后复核：</strong>2026-07-16</p>
+      <p><strong>内容状态：</strong>可授课的通用课程、练习与公式推导；项目版本、接口、参数和验收结论必须结合当前官方文档与目标环境证据重新确认。</p>
     </div>
 
     <h2>工程方法 M01–M04</h2>
@@ -60,38 +60,38 @@
     <h2>数据与几何基础 M05–M08</h2>
     <div class="grid">
       <a class="link-card" href="nuscenes-dataset.html">
-        <span class="tag">M05 nuScenes</span><span class="tag">数据</span>
-        <h3>读懂 nuScenes 数据集</h3>
-        <p>沿 token 理解 scene、sample、sample_data、标定、ego pose、标注、坐标系和评测协议。</p>
+        <span class="tag">M05 nuScenes</span><span class="tag">数据任务</span>
+        <h3>nuScenes 数据集与数据任务入门</h3>
+        <p>从数据关系走到盘点、索引、QC、scene split、标签合同、统计和可追溯交付。</p>
       </a>
       <a class="link-card" href="coordinate-transformations.html">
-        <span class="tag">M06 坐标系</span><span class="tag">SE(3)</span>
-        <h3>从第一性原理理解坐标系转换</h3>
-        <p>统一点、向量、旋转、平移、齐次矩阵、组合、求逆、四元数和时间戳。</p>
+        <span class="tag">M06 坐标系</span><span class="tag">SLAM 十四讲</span>
+        <h3>从线性代数到坐标系转换</h3>
+        <p>沿《视觉 SLAM 十四讲》的学习路线，从基和换基推导 SO(3)、SE(3)、四元数和传感器坐标链。</p>
       </a>
       <a class="link-card" href="ackermann-bicycle-model.html">
         <span class="tag">M07 车辆模型</span><span class="tag">推导</span>
-        <h3>阿克曼转向与自行车模型</h3>
-        <p>从纯滚动和瞬时旋转中心推导内外轮转角、运动方程和模型适用边界。</p>
+        <h3>阿克曼转向与自行车模型完整推导</h3>
+        <p>从叉积、刚体点速度和无侧滑约束推到 ICR、内外轮转角、运动方程与倒车符号。</p>
       </a>
       <a class="link-card" href="curvature-calculation.html">
-        <span class="tag">M08 曲率</span><span class="tag">路径几何</span>
-        <h3>曲率的定义与工程计算</h3>
-        <p>掌握连续导数、离散三点、航向差分，以及曲率与转角、yaw rate 的关系。</p>
+        <span class="tag">M08 曲率</span><span class="tag">微积分</span>
+        <h3>从微积分和线性代数推导曲率</h3>
+        <p>从行列式、导数、链式法则和弧长推出连续与离散曲率，并用实验理解噪声和采样。</p>
       </a>
     </div>
 
     <h2>推荐学习路线</h2>
     <div class="grid">
       <div class="panel"><h3>工程证据线</h3><p>M01 事实层 → M02 ROS 2 图谱 → M03 部署契约 → M04 验证与交接。</p></div>
-      <div class="panel"><h3>数据与几何线</h3><p>M05 nuScenes → M06 坐标变换 → M07 车辆模型 → M08 曲率计算。</p></div>
+      <div class="panel"><h3>数据与几何线</h3><p>M05 数据任务 → M06 线性代数与坐标变换 → M07 刚体速度与车辆模型 → M08 微积分与曲率。</p></div>
     </div>
 
     <h2>带教使用方式</h2>
     <div class="grid three">
-      <div class="panel"><h3>先讲</h3><p>学习者先用两分钟解释，不查笔记；导师只记录缺失的连接和错误假设。</p></div>
-      <div class="panel"><h3>再做</h3><p>选择一条只读命令、一张流程图或一份日志，证明概念在真实系统中的位置。</p></div>
-      <div class="panel"><h3>再复述</h3><p>学习者换一个例子重新解释，并指出一个失败模式和一条验证证据。</p></div>
+      <div class="panel"><h3>课前诊断</h3><p>先做页面中的先修小题；不会的概念先补，不把数学缺口藏在公式后面。</p></div>
+      <div class="panel"><h3>课中推导</h3><p>遮住最终公式，让学习者按定义、假设和中间量自己推出结果，再用数值例子验证。</p></div>
+      <div class="panel"><h3>课后交付</h3><p>完成实验产物和边界测试，口头解释失败模式，并按页面验收表逐项检查。</p></div>
     </div>
 
     <div class="key"><p><strong>掌握标准：</strong>能解释、能独立推导、能算一个新例子、能指出失败模式并给出验证证据；只会认术语、背公式或背命令还不算掌握。</p></div>
