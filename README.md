@@ -15,3 +15,12 @@
   - `engineering-toolkit.html`：远程运维与开发工具
   - `can-bus-interface.html`：CAN 总线接口、RViz/HMI 与 GPU 基础
   - `gpu-workflow.html`：GPU 在自动驾驶中的工作流程图
+  - `mentor-index.html`：导师补充知识目录
+  - `evidence-first-engineering.html`：证据优先的工程排障
+  - `ros2-autoware-debugging.html`：沿 ROS 2 图谱排查数据链
+  - `perception-deployment-contracts.html`：感知模型从训练到部署的契约
+  - `validation-closure.html`：从候选结果到正式验证与交接闭环
+
+## 公开内容边界
+
+导师补充内容使用原创文字、公开官方资料和合成占位符示例，不收录真实账号、IP、主机名、车辆标识、内部仓库路径、现场日志或未公开指标。具体项目结论仍需在目标主机、版本、配置和场景中重新验证。

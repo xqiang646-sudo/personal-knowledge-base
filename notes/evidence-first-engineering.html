@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="证据优先的工程排障方法：区分参考、部署、运行和验收事实。">
+  <title>证据优先的工程排障｜导师补充知识</title>
+  <link rel="stylesheet" href="../assets/knowledge.css">
+</head>
+<body>
+  <nav class="topbar"><div class="wrap"><a class="back" href="mentor-index.html">← 返回导师补充目录</a></div></nav>
+  <article class="page wrap">
+    <div class="meta">导师补充 M01 · 工程方法</div>
+    <h1>证据优先的工程排障</h1>
+    <p class="lead">工程结论不是“听起来合理”，而是能回答：在哪台机器、哪个版本、哪份配置、什么时间、由哪条证据证明。</p>
+
+    <div class="panel provenance">
+      <p><strong>贡献角色：</strong>导师原创整理　<strong>对象：</strong>工程实践入门学习者　<strong>最后复核：</strong>2026-07-15</p>
+      <p><strong>证据状态：</strong>通用方法；示例均为占位符，不代表任何具体项目已经验证。</p>
+    </div>
+
+    <div class="toc">
+      <a href="#layers">四层事实</a><a href="#questions">六个问题</a><a href="#sampling">只读采样</a><a href="#record">证据卡</a><a href="#mistakes">常见误区</a><a href="#practice">练习</a>
+    </div>
+
+    <section id="layers">
+      <h2>先区分四层事实</h2>
+      <div class="table-wrap" role="region" aria-label="工程事实层级对照表" tabindex="0">
+        <table>
+          <caption>四类证据各自能证明和不能证明的范围</caption>
+          <thead><tr><th scope="col">证据层</th><th scope="col">回答什么</th><th scope="col">典型证据</th><th scope="col">不能单独证明什么</th></tr></thead>
+          <tbody>
+            <tr><td>参考事实</td><td>设计上应该怎样</td><td>官方文档、接口定义、源码、测试</td><td>目标机器现在实际运行的是它</td></tr>
+            <tr><td>部署事实</td><td>实际安装和启动了什么</td><td>版本、安装包、启动入口、参数文件、模型文件</td><td>进程健康、数据正在流动</td></tr>
+            <tr><td>运行事实</td><td>此刻系统正在做什么</td><td>进程、节点图、话题、时间戳、TF、日志、资源使用</td><td>已经满足正式验收条件</td></tr>
+            <tr><td>验收事实</td><td>在指定环境和场景下是否达标</td><td>测试条件、原始结果、指标、例外、复现步骤、审核记录</td><td>换环境、换版本后仍然成立</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="key"><p><strong>核心原则：</strong>源码默认值不能替代部署参数，本地运行不能替代目标主机，单次成功不能替代正式验收。</p></div>
+    </section>
+
+    <section id="questions">
+      <h2>开始排障前先回答六个问题</h2>
+      <ol>
+        <li><strong>Host：</strong>命令在哪台机器、容器或计算单元执行？</li>
+        <li><strong>Version：</strong>当前代码、安装包、镜像、模型或配置版本是什么？</li>
+        <li><strong>Entry：</strong>真正使用的启动脚本、服务、launch 文件或入口命令是什么？</li>
+        <li><strong>Config：</strong>运行时加载了哪份参数，是否被命令行或环境覆盖？</li>
+        <li><strong>Window：</strong>问题发生在什么时间，最新日志是否覆盖这个窗口？</li>
+        <li><strong>Graph：</strong>输入从哪里来，输出给谁，哪个消费者真正收到并使用？</li>
+      </ol>
+      <p>这六个问题不是形式主义。它们用于防止分析错机器、错版本、错配置、错日志和错数据链。</p>
+    </section>
+
+    <section id="sampling">
+      <h2>先做只读采样，再提出假设</h2>
+      <p>下面的命令只展示通用思路。执行时应确认不会打印令牌、密码或其他敏感环境变量。</p>
+      <pre><code># 主机、时间与目录
+hostname
+date -Ins
+pwd
+
+# 源码仓库存在时记录提交
+git rev-parse --short HEAD
+git status --short --branch
+
+# 再根据系统选择只读的进程、服务、节点、日志检查
+# 不要在证据不足时直接重启、改参数或删除文件</code></pre>
+      <div class="flow" role="img" aria-label="排障证据链">
+        <div class="flow-row">
+          <div class="node">固定环境</div><div class="arrow">→</div>
+          <div class="node accent">确认输入</div><div class="arrow">→</div>
+          <div class="node">确认处理</div><div class="arrow">→</div>
+          <div class="node accent">确认输出</div><div class="arrow">→</div>
+          <div class="node">确认消费者</div>
+        </div>
+      </div>
+      <p>如果输入不存在，先解决输入；如果输入存在但输出不存在，问题范围才缩到当前处理模块；如果输出存在，还要继续证明下游消费者收到并采用了它。</p>
+    </section>
+
+    <section id="record">
+      <h2>一张可复查的证据卡</h2>
+      <pre><code>问题：
+环境：&lt;HOST / OS / RUNTIME&gt;
+版本：&lt;CODE / PACKAGE / MODEL / CONFIG&gt;
+时间窗口：
+预期：
+实际：
+
+已观察事实：
+-
+
+当前假设：
+-
+
+下一条可证伪检查：
+-
+
+结论状态：未验证 / 候选 / 已验证 / 已失效
+证据路径：
+验证者与日期：</code></pre>
+      <p>“已观察事实”只能写命令输出、消息、日志或可复现现象；“当前假设”必须允许被下一条检查推翻。</p>
+    </section>
+
+    <section id="mistakes">
+      <h2>常见错误结论</h2>
+      <div class="grid">
+        <div class="panel"><h3>“配置文件写了，所以正在生效”</h3><p>可能存在另一份启动配置、命令行覆盖、安装目录副本或旧进程。</p></div>
+        <div class="panel"><h3>“话题存在，所以功能正常”</h3><p>话题可能没有发布者、频率异常、QoS 不兼容、消息为空或下游没有订阅。</p></div>
+        <div class="panel"><h3>“RViz 看起来正常，所以算法正常”</h3><p>可视化还受显示配置、队列、TF、时间窗口和渲染性能影响。</p></div>
+        <div class="panel"><h3>“改完一次通过，所以已经关闭”</h3><p>还需相同条件复现、回归检查、失败场景保留和目标环境验证。</p></div>
+      </div>
+    </section>
+
+    <section id="practice">
+      <h2>实习生练习</h2>
+      <ol>
+        <li>选一个“有输入、没有输出”的虚构故障，填写一张证据卡。</li>
+        <li>把其中每一句标成“观察事实”“假设”或“结论”。</li>
+        <li>指出哪条检查可以最快推翻当前假设。</li>
+        <li>说明为什么在目标主机验证之前不能写“正式通过”。</li>
+      </ol>
+    </section>
+
+    <div class="related"><a href="ros2-autoware-debugging.html">下一篇：沿 ROS 2 图谱排查数据链 →</a></div>
+  </article>
+</body>
+</html>
