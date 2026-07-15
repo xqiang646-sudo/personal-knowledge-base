@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="自动驾驶规划层级、控制与Autoware功能模块。">
+  <title>规划控制与 Autoware｜我的个人知识库</title>
+  <link rel="stylesheet" href="../assets/knowledge.css">
+</head>
+<body>
+  <nav class="topbar"><div class="wrap"><a class="back" href="autonomous-driving-index.html">← 返回自动驾驶目录</a></div></nav>
+  <article class="page wrap">
+    <div class="meta">自动驾驶基础 · 规划与 Autoware 篇</div>
+    <h1>规划控制与 Autoware</h1>
+    <p class="lead">规划不是一个单独算法，而是从全局路线、驾驶场景、行为决策到可执行轨迹的逐层约束过程。</p>
+
+    <div class="toc">
+      <a href="#levels">规划层级</a><a href="#path">Path 与 Trajectory</a><a href="#control">控制</a><a href="#autoware">Autoware 模块</a><a href="#traffic-light">交通灯链路</a><a href="#safety">安全与评估</a>
+    </div>
+
+    <section id="levels">
+      <h2>五层规划控制关系</h2>
+      <div class="flow">
+        <div class="flow-row">
+          <div class="node">Route / Mission<br>走哪些道路</div><div class="arrow">→</div>
+          <div class="node accent">Scenario<br>用哪套模式</div><div class="arrow">→</div>
+          <div class="node">Behavior<br>做什么动作</div><div class="arrow">→</div>
+          <div class="node accent">Motion<br>具体怎么运动</div><div class="arrow">→</div>
+          <div class="node">Control<br>怎么执行</div>
+        </div>
+      </div>
+
+      <h3>Route / Mission Planner</h3>
+      <p>根据起点、终点和 Lanelet2 路由图选择应经过的道路与车道段。输出是全局路线，不是车辆可以直接跟踪的平滑轨迹。</p>
+
+      <h3>Scenario Planner / Selector</h3>
+      <p>选择完全不同的规划模式，例如正常道路行驶与停车场自由空间行驶。它回答“现在应该采用哪套规划流程”。</p>
+
+      <h3>Behavior Planner</h3>
+      <p>决定车辆应该做什么，例如保持车道、换道、绕开静态障碍物、从路肩起步、靠边停车、红灯停车或在人行横道前减速。</p>
+      <div class="grid">
+        <div class="panel"><h3>Behavior Path</h3><p>主要处理横向和道路拓扑：跟车道、换道、侧移、绕障、起步和靠边停车。</p></div>
+        <div class="panel"><h3>Behavior Velocity</h3><p>主要在路径上施加交通规则速度：停止线、交通灯、路口、人行横道、盲区和减速带。</p></div>
+      </div>
+
+      <h3>Motion Planner</h3>
+      <p>把行为决策变成连续、平滑、无碰撞且车辆可实现的轨迹，确定每个轨迹点的位置、朝向、曲率、速度、加速度和 jerk。</p>
+      <ul>
+        <li>满足道路边界、障碍物和车辆几何约束。</li>
+        <li>避免曲率、横向加速度和 jerk 过大。</li>
+        <li>与上一周期轨迹保持连续，避免控制指令剧烈跳变。</li>
+        <li>可采用优化、采样、Frenet、Hybrid A* 或自由空间规划等方法。</li>
+      </ul>
+    </section>
+
+    <section id="path">
+      <h2>Path 与 Trajectory 的区别</h2>
+      <div class="grid">
+        <div class="panel"><h3>Path：从哪里经过</h3><p>主要表达空间几何，如 <code>x、y、yaw</code>，可按沿路径距离 <code>s</code> 参数化。</p></div>
+        <div class="panel"><h3>Trajectory：何时以多快经过</h3><p>在路径上加入时间和运动状态，如 <code>v、a、curvature</code>。</p></div>
+      </div>
+      <div class="key"><p>Autoware 的具体消息中 Path 也可能携带速度字段，但“Path 偏几何、Trajectory 偏时序运动”的概念区分仍然重要。</p></div>
+    </section>
+
+    <section id="control">
+      <h2>Control：把轨迹误差变成执行命令</h2>
+      <p>控制器持续比较目标轨迹和车辆实际状态，计算横向位置误差、航向误差和速度误差。</p>
+      <div class="grid">
+        <div class="panel"><h3>横向控制</h3><p>MPC、Pure Pursuit 等方法输出方向盘角度和角速度。</p></div>
+        <div class="panel"><h3>纵向控制</h3><p>PID 或加速度控制输出目标加速度、驱动和制动请求。</p></div>
+      </div>
+      <p>控制命令经过命令门控和 Vehicle Interface，转换成具体底盘的 CAN 报文。AEB 等安全层会在预测到碰撞风险时触发额外制动。</p>
+    </section>
+
+    <section id="autoware">
+      <h2>Autoware 的主要功能域</h2>
+      <p>Autoware 把闭环拆成许多 ROS 2 包和节点。不同版本的包名与组合可能变化，下面按稳定的功能职责理解。</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>功能域</th><th>主要职责</th><th>典型内容</th></tr></thead>
+          <tbody>
+            <tr><td>common</td><td>公共算法与数据结构</td><td>插值、滤波、车辆几何、坐标工具、优化器、测试库。</td></tr>
+            <tr><td>sensing</td><td>可靠接入传感器测量</td><td>点云拼接、同步、deskew、裁剪、降采样、IMU/Radar 适配。</td></tr>
+            <tr><td>map</td><td>加载静态环境先验</td><td>Lanelet2 地图、PCD 点云地图、投影和地图元数据。</td></tr>
+            <tr><td>localization</td><td>估计自车状态</td><td>GNSS、IMU、轮速、NDT、EKF、初始化和状态监控。</td></tr>
+            <tr><td>perception</td><td>估计周围动态环境</td><td>检测、融合、跟踪、预测、占据栅格、交通灯。</td></tr>
+            <tr><td>planning</td><td>生成安全可执行轨迹</td><td>Mission、Scenario、Behavior、Motion、Parking 和轨迹验证。</td></tr>
+            <tr><td>control</td><td>将轨迹误差变成控制量</td><td>横向/纵向控制、命令仲裁、AEB 和控制验证。</td></tr>
+            <tr><td>vehicle</td><td>适配具体车辆</td><td>加速/制动映射、原始命令转换、方向盘零偏和状态反馈。</td></tr>
+            <tr><td>system</td><td>健康监控与安全降级</td><td>diagnostics、CPU/GPU 监控、MRM、紧急/舒适停车。</td></tr>
+            <tr><td>evaluator</td><td>评估算法质量</td><td>定位、感知、规划、控制和 rosbag 离线指标。</td></tr>
+            <tr><td>simulator</td><td>构造虚拟输入和场景</td><td>车辆仿真、虚拟目标、故障注入和交通灯。</td></tr>
+            <tr><td>visualization</td><td>显示系统内部状态</td><td>RViz 中的点云、目标、地图、轨迹和车辆状态。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="traffic-light">
+      <h2>交通灯感知链路</h2>
+      <div class="flow">
+        <div class="flow-row">
+          <div class="node">Lanelet2<br>交通灯位置</div><div class="arrow">→</div>
+          <div class="node accent">Map Based<br>生成粗 ROI</div><div class="arrow">→</div>
+          <div class="node">Fine Detector<br>精细检测</div><div class="arrow">→</div>
+          <div class="node accent">Classifier<br>红黄绿分类</div><div class="arrow">→</div>
+          <div class="node">融合与仲裁<br>输出规划</div>
+        </div>
+      </div>
+      <p>地图提供交通灯大致位置，相机和标定把地图对象投影到图像，检测器精确定位，分类器判断状态，多相机融合与仲裁生成最终结果，再交给行为规划决定停车或通行。</p>
+      <div class="key"><p><strong>Autoware 的重要思想：</strong>地图提供先验，神经网络处理观测，二者相互约束。</p></div>
+    </section>
+
+    <section id="safety">
+      <h2>系统安全、故障诊断与评估</h2>
+      <p>自动驾驶不仅处理正常情况，还要处理点云超时、定位漂移、GPU 过热、节点退出、网络异常、轨迹非法和控制命令异常。</p>
+      <ul>
+        <li><strong>Diagnostics：</strong>汇总节点和硬件状态，形成故障关系。</li>
+        <li><strong>Minimum Risk Maneuver：</strong>在能力不足时执行减速、靠边或停车等最小风险动作。</li>
+        <li><strong>Trajectory Validator：</strong>检查碰撞、曲率、速度、加速度和轨迹跳变。</li>
+        <li><strong>Evaluator：</strong>计算偏差、曲率、jerk、TTC、稳定性和异常停车等指标。</li>
+      </ul>
+      <p>调试时应沿数据链逐级确认 Publisher、Subscription、话题频率、时间戳、frame_id 和延迟，而不是只看 RViz 画面是否流畅。</p>
+    </section>
+
+    <div class="related"><a href="engineering-toolkit.html">下一篇：远程运维与开发工具 →</a></div>
+  </article>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="自动驾驶基础知识分类目录：系统、硬件、感知、地图、规划、Autoware与工程工具。">
+  <title>自动驾驶知识体系｜我的个人知识库</title>
+  <link rel="stylesheet" href="../assets/knowledge.css">
+</head>
+<body>
+  <nav class="topbar"><div class="wrap"><a class="back" href="../index.html">← 返回知识库</a></div></nav>
+  <main class="page wrap">
+    <div class="meta">专题目录 · 整理于 2026-07-15</div>
+    <h1>自动驾驶知识体系</h1>
+    <p class="lead">将实车硬件、Autoware 软件、感知算法、地图规划和远程工程操作放进同一条数据链路中理解。</p>
+
+    <div class="flow" aria-label="自动驾驶系统主流程">
+      <div class="flow-row">
+        <div class="node">传感器<br>图像/点云</div><div class="arrow">→</div>
+        <div class="node accent">感知与定位<br>理解环境</div><div class="arrow">→</div>
+        <div class="node">地图与规划<br>生成轨迹</div><div class="arrow">→</div>
+        <div class="node accent">控制与 CAN<br>发送指令</div><div class="arrow">→</div>
+        <div class="node">车辆执行<br>形成闭环</div>
+      </div>
+    </div>
+
+    <h2>按主题学习</h2>
+    <div class="grid">
+      <a class="link-card" href="autonomous-driving-overview.html">
+        <span class="tag">01 系统</span>
+        <h3>自动驾驶系统总览</h3>
+        <p>从第一性原理理解传感器、定位、地图、感知、规划、控制与车辆接口。</p>
+      </a>
+      <a class="link-card" href="vehicle-hardware-network.html">
+        <span class="tag">02 硬件</span><span class="tag">网络</span>
+        <h3>车辆硬件与车载网络</h3>
+        <p>摄像头、雷达、组合导航、ADCU、IPC、VCU、交换机、路由器和常见接口。</p>
+      </a>
+      <a class="link-card" href="perception-maps.html">
+        <span class="tag">03 感知</span><span class="tag">地图</span>
+        <h3>感知算法与地图基础</h3>
+        <p>点云、矢量地图、Lanelet2、YOLOX、BEVFusion、训练、推理、跟踪与预测。</p>
+      </a>
+      <a class="link-card" href="planning-autoware.html">
+        <span class="tag">04 规划</span><span class="tag">Autoware</span>
+        <h3>规划控制与 Autoware</h3>
+        <p>Scenario、Behavior、Motion Planner 的分工，以及 Autoware 各功能域。</p>
+      </a>
+      <a class="link-card" href="engineering-toolkit.html">
+        <span class="tag">05 工程实践</span>
+        <h3>远程运维与开发工具</h3>
+        <p>SSH、SCP、NoMachine、VS Code Remote SSH、Git、Linux 和网络排障。</p>
+      </a>
+      <a class="link-card" href="can-bus-interface.html">
+        <span class="tag">专题</span>
+        <h3>CAN 总线接口功能解析</h3>
+        <p>报文、接线、波特率、终端电阻、DBC、RViz 与 HMI。</p>
+      </a>
+      <a class="link-card" href="gpu-workflow.html">
+        <span class="tag">专题</span>
+        <h3>GPU 工作流程图</h3>
+        <p>CPU 与 GPU 如何配合完成感知、模型推理和车辆控制。</p>
+      </a>
+    </div>
+
+    <div class="key">
+      <p><strong>建议学习顺序：</strong>先掌握系统总览和硬件数据流，再学习点云、地图和感知，之后进入规划控制，最后用工程工具在真实平台上验证每一层。</p>
+    </div>
+  </main>
+</body>
+</html>

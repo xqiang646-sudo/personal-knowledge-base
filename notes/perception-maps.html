@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="自动驾驶点云、地图、感知、YOLOX与BEVFusion基础。">
+  <title>感知算法与地图基础｜我的个人知识库</title>
+  <link rel="stylesheet" href="../assets/knowledge.css">
+</head>
+<body>
+  <nav class="topbar"><div class="wrap"><a class="back" href="autonomous-driving-index.html">← 返回自动驾驶目录</a></div></nav>
+  <article class="page wrap">
+    <div class="meta">自动驾驶基础 · 感知与地图篇</div>
+    <h1>感知算法与地图基础</h1>
+    <p class="lead">感知把像素和空间点转换成可供规划使用的目标；地图提供静态环境、道路拓扑和交通规则。</p>
+
+    <div class="toc">
+      <a href="#pointcloud">点云</a><a href="#maps">地图</a><a href="#perception">感知流水线</a><a href="#yolox">YOLOX</a><a href="#bev">BEVFusion</a><a href="#train">训练与推理</a><a href="#debug">调试重点</a>
+    </div>
+
+    <section id="pointcloud">
+      <h2>Point Cloud：点云是什么</h2>
+      <p>激光雷达根据激光往返时间计算距离，再结合光束方向生成三维点。一个点常写成：</p>
+      <pre><code>p = (x, y, z, intensity, ring, timestamp, ...)</code></pre>
+      <p>点本身只说明“这个空间位置有反射”，并不知道它属于车辆、行人、地面还是墙。</p>
+      <div class="grid">
+        <div class="panel"><h3>实时点云</h3><p>车辆当前扫描到的动态环境，用于检测、地面分割、占据栅格和定位匹配。</p></div>
+        <div class="panel"><h3>Point Cloud Map</h3><p>提前采集并拼接的静态三维环境，常保存为 PCD，主要用于 NDT/ICP 等定位。</p></div>
+      </div>
+      <h3>常见预处理</h3>
+      <ul>
+        <li>多雷达时间同步、拼接和统一坐标系。</li>
+        <li>运动畸变校正：补偿雷达扫描期间车辆已经移动造成的形变。</li>
+        <li>裁剪车身反射、感兴趣区域和无意义远距离点。</li>
+        <li>雨雾、飞虫、孤立点过滤和体素降采样。</li>
+        <li>地面分割、聚类、体素化与深度学习特征提取。</li>
+      </ul>
+      <p>大量点执行相同变换、体素化和神经网络计算时适合 GPU；简单裁剪、格式转换和部分传统聚类也可能运行在 CPU。</p>
+      <div class="warning"><p><strong>项目记录边界：</strong>材料中提到彩色点云与白色点云的高斯拟合及一组定位质量数值，但没有给出指标名称、单位和算法定义。它们只能作为特定项目的调试记录，不能当作通用定位阈值。</p></div>
+    </section>
+
+    <section id="maps">
+      <h2>三类地图解决不同问题</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>地图</th><th>主要信息</th><th>主要用途</th></tr></thead>
+          <tbody>
+            <tr><td>Point Cloud Map</td><td>静态环境三维表面</td><td>LiDAR 地图匹配与定位。</td></tr>
+            <tr><td>Vector / Lanelet2 Map</td><td>车道几何、拓扑、限速、停止线、交通灯和规则</td><td>路线、行为规划、交通规则和感知 ROI。</td></tr>
+            <tr><td>Occupancy Grid</td><td>网格被障碍物占据的概率</td><td>自由空间判断、避障和低速规划。</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Vector Map 与 Lanelet2</h3>
+      <p>Vector Map 是“用点、线、多边形和语义描述道路”的地图类型；Lanelet2 是一种具体的数据模型、文件格式和代码库。</p>
+      <p><strong>标量</strong>只有大小，例如速率、质量和温度；<strong>矢量</strong>同时包含大小与方向，例如速度、位移和加速度。“矢量地图”中的矢量更偏计算机图形含义：地图由坐标点、线、曲线和多边形表示，而不是由像素组成。</p>
+      <p>一个 lanelet 通常由左右边界组成，并可以关联中心线、限速、转向方向、停止线、交通灯、优先权、前驱/后继和是否允许变道。</p>
+      <div class="key"><p><strong>不能只用中心线：</strong>规划还需要知道车道宽度、边界能否跨越、路口冲突区域、停止线以及交通灯控制关系。</p></div>
+
+      <h3><code>.osm</code> 与 XML</h3>
+      <p><code>.osm</code> 是基于 XML 的结构化文本文件，不是图片。Lanelet2 借用 OSM 的组织形式保存点、线和关系；普通 OpenStreetMap 数据不能直接等同于自动驾驶高精地图。</p>
+      <pre><code>&lt;node id="1" lat="..." lon="..." /&gt;
+&lt;way id="100"&gt;...&lt;/way&gt;
+&lt;relation id="200"&gt;
+  &lt;member type="way" ref="100" role="left" /&gt;
+  &lt;member type="way" ref="101" role="right" /&gt;
+  &lt;tag k="type" v="lanelet" /&gt;
+&lt;/relation&gt;</code></pre>
+      <p>地图文件负责保存数据，Lanelet2 代码库负责读取和查询，RViz 或地图编辑器负责把数据画出来。</p>
+    </section>
+
+    <section id="perception">
+      <h2>Perception 不只是目标检测</h2>
+      <div class="flow">
+        <div class="flow-row">
+          <div class="node">传感器预处理</div><div class="arrow">→</div>
+          <div class="node accent">Detection<br>检测</div><div class="arrow">→</div>
+          <div class="node">Fusion<br>融合</div><div class="arrow">→</div>
+          <div class="node accent">Tracking<br>跟踪</div><div class="arrow">→</div>
+          <div class="node">Prediction<br>预测</div>
+        </div>
+      </div>
+      <ul>
+        <li><strong>Detection：</strong>当前这一帧看到了什么，输出类别、位置、尺寸和置信度。</li>
+        <li><strong>Fusion：</strong>把图像语义、LiDAR 几何和 Radar 速度等信息结合。</li>
+        <li><strong>Tracking：</strong>判断连续帧是否为同一目标，输出稳定 ID、速度和加速度。</li>
+        <li><strong>Prediction：</strong>结合历史状态和地图，估计未来几秒的多条可能路径与概率。</li>
+        <li><strong>Occupancy：</strong>不强调目标类别，只回答某块空间是否可能被占据。</li>
+      </ul>
+    </section>
+
+    <section id="yolox">
+      <h2>YOLOX：图像二维目标检测</h2>
+      <p>YOLOX 的输入是 RGB 图像，输出二维检测框、类别和置信度。它通过卷积与大量矩阵运算逐级提取边缘、纹理和高级语义特征。</p>
+      <pre><code>图像 → 特征提取 → 分类与框回归 → 2D box + class + confidence</code></pre>
+      <p>YOLOX 采用 anchor-free 思路，并将分类与回归头解耦。GPU 能同时处理大量像素和特征图，使实时检测成为可能。</p>
+      <div class="warning"><p><strong>局限：</strong>普通单目二维检测通常不能单独给出可靠的真实三维距离、尺寸和姿态，需要深度、标定、LiDAR 或 BEV 感知补充。</p></div>
+    </section>
+
+    <section id="bev">
+      <h2>BEVFusion：在鸟瞰空间融合相机与 LiDAR</h2>
+      <p>BEV 是 Bird's-Eye View。相机语义丰富但深度不明确，LiDAR 几何准确但稀疏；BEVFusion 先把两种特征变换到统一的车辆鸟瞰坐标系，再融合并进行三维检测。</p>
+      <pre><code>多相机图像 → 图像骨干网络 → 视角变换 → Camera BEV ┐
+                                                     ├→ BEV Fusion → 3D检测
+激光点云     → 体素化/编码器              → LiDAR BEV ┘</code></pre>
+      <p>它通常需要同时处理多路高分辨率图像、几十万点的点云、坐标变换、特征融合和三维检测头，因此比单路图像检测更依赖 GPU 与显存。</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>对比项</th><th>YOLOX</th><th>BEVFusion</th></tr></thead>
+          <tbody>
+            <tr><td>输入</td><td>主要是相机图像</td><td>多相机 + LiDAR</td></tr>
+            <tr><td>空间</td><td>图像透视视角</td><td>统一鸟瞰坐标系</td></tr>
+            <tr><td>常见输出</td><td>二维框、类别、置信度</td><td>三维位置、尺寸、朝向、类别</td></tr>
+            <tr><td>计算量</td><td>相对较小</td><td>更大，融合和三维计算更多</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="train">
+      <h2>模型训练与模型推理</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>对比项</th><th>模型训练</th><th>模型推理</th></tr></thead>
+          <tbody>
+            <tr><td>目的</td><td>从大量标注数据中学习参数</td><td>使用已训练模型识别当前数据</td></tr>
+            <tr><td>过程</td><td>前向传播、损失、反向传播、更新参数</td><td>预处理、前向计算、后处理、发布结果</td></tr>
+            <tr><td>输出</td><td><code>.pth</code>、<code>.pt</code>、<code>.onnx</code> 等权重</td><td>目标框、类别、三维状态、分割结果等</td></tr>
+            <tr><td>场景</td><td>训练服务器或工作站</td><td>车辆实时运行</td></tr>
+            <tr><td>重点</td><td>吞吐量、收敛和精度</td><td>低延迟、稳定帧率、尾延迟、显存和功耗</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>常见部署链路是 <code>PyTorch → ONNX → TensorRT Engine</code>。FP16 可降低显存并利用 Tensor Core，INT8 进一步提速但通常需要量化校准并验证精度。</p>
+      <p>RViz 也使用 GPU，但主要是渲染点云、地图和车辆模型，不等于感知网络正在高效推理。画面卡顿和算法卡顿必须分别测量。</p>
+      <p><a href="gpu-workflow.html">查看 GPU 工作流程图 →</a></p>
+    </section>
+
+    <section id="debug">
+      <h2>感知问题的排查顺序</h2>
+      <ol>
+        <li>时间同步：图像、点云和定位是否属于正确时刻。</li>
+        <li>内外参标定：相机内参、相机—LiDAR 外参是否正确。</li>
+        <li>TF 与坐标轴：sensor、base_link、odom、map 的方向和变换是否正确。</li>
+        <li>数据预处理：点字段、畸变校正、裁剪、滤波、单位是否正确。</li>
+        <li>模型推理：权重、输入尺寸、精度模式、GPU 和后处理是否匹配。</li>
+        <li>阈值与融合：置信度、NMS、关联门限、时间窗口和地图 ROI 是否合理。</li>
+      </ol>
+      <div class="key"><p><strong>工程经验：</strong>检测框整体偏移或融合错位时，优先检查时间、标定和坐标系，而不是立刻重新训练模型。</p></div>
+    </section>
+
+    <div class="related"><a href="planning-autoware.html">下一篇：规划控制与 Autoware →</a></div>
+  </article>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="自动驾驶开发中的SSH、SCP、NoMachine、VS Code、Git和网络排障。">
+  <title>远程运维与开发工具｜我的个人知识库</title>
+  <link rel="stylesheet" href="../assets/knowledge.css">
+</head>
+<body>
+  <nav class="topbar"><div class="wrap"><a class="back" href="autonomous-driving-index.html">← 返回自动驾驶目录</a></div></nav>
+  <article class="page wrap">
+    <div class="meta">自动驾驶工程实践 · 工具篇</div>
+    <h1>远程运维与开发工具</h1>
+    <p class="lead">车载工控机通常安装在车辆内部。工程师需要通过 SSH、NoMachine、VS Code 和文件传输工具远程查看、调试和管理系统。</p>
+
+    <div class="toc">
+      <a href="#hosts">先分清主机</a><a href="#ssh">SSH</a><a href="#scp">SCP</a><a href="#remote">远程桌面</a><a href="#git">Git</a><a href="#linux">Linux</a><a href="#network">网络排障</a><a href="#logs">日志与版本</a>
+    </div>
+
+    <section id="hosts">
+      <h2>先确认命令在哪台机器执行</h2>
+      <p>最简单的方法是看终端提示符。Windows、IPC 和 Orin 即使目录名相似，文件和网络环境也不同。</p>
+      <pre><code>PS C:\...&gt;                 Windows 本地 PowerShell
+ipc@&lt;ipc-host&gt;:~$          远程 IPC
+nvidia@&lt;orin-host&gt;:~$      远程 Orin / ADCU</code></pre>
+      <div class="warning"><p><strong>知识库安全处理：</strong>本文只使用 <code>&lt;IPC_IP&gt;</code>、<code>&lt;用户名&gt;</code> 等占位符，不保存真实密码、账号或内部地址。</p></div>
+    </section>
+
+    <section id="ssh">
+      <h2>SSH：安全地操作远程终端</h2>
+      <p>SSH 是 Secure Shell。它通过加密连接，让本地计算机远程登录另一台计算机、执行命令、查看日志和管理服务。服务端通常由 <code>sshd</code> 监听 TCP 22 端口。</p>
+      <pre><code>ssh &lt;用户名&gt;@&lt;远程IP&gt;
+
+# 只执行一个远程命令并返回
+ssh &lt;用户名&gt;@&lt;远程IP&gt; "pwd &amp;&amp; ls -la"
+
+# 查看详细连接过程
+ssh -vvv -o ConnectTimeout=5 &lt;用户名&gt;@&lt;远程IP&gt;</code></pre>
+      <p>首次连接会要求确认服务器指纹，确认后记录在 <code>known_hosts</code>。密码登录简单；密钥登录使用本地私钥和远程公钥，更适合频繁开发和自动化。</p>
+      <div class="flow">
+        <div class="flow-row">
+          <div class="node">Windows</div><div class="arrow">→</div>
+          <div class="node accent">SSH</div><div class="arrow">→</div>
+          <div class="node">IPC</div><div class="arrow">→</div>
+          <div class="node accent">SSH</div><div class="arrow">→</div>
+          <div class="node">Orin / ADCU</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="scp">
+      <h2>SCP：通过 SSH 安全复制文件</h2>
+      <p>基本格式是 <code>scp [选项] 源 目标</code>。只输入 <code>scp</code> 时显示 usage，不是报错，而是缺少源路径和目标路径。</p>
+      <h3>本地上传到 IPC</h3>
+      <pre><code>scp file.txt &lt;用户&gt;@&lt;IPC_IP&gt;:/home/&lt;用户&gt;/
+scp -r project_dir &lt;用户&gt;@&lt;IPC_IP&gt;:/home/&lt;用户&gt;/</code></pre>
+      <h3>Windows 主动从 IPC 下载</h3>
+      <pre><code># 单个文件，不需要 -r
+scp &lt;用户&gt;@&lt;IPC_IP&gt;:/remote/path/file.txt "$env:USERPROFILE\Desktop\"
+
+# 文件夹，需要 -r
+scp -r &lt;用户&gt;@&lt;IPC_IP&gt;:/remote/path/folder "D:\workspace\"</code></pre>
+      <h3>其他常用选项</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>选项</th><th>作用</th></tr></thead>
+          <tbody>
+            <tr><td><code>-r</code></td><td>递归复制目录。</td></tr>
+            <tr><td><code>-P 端口</code></td><td>指定 SSH 端口，注意是大写 P。</td></tr>
+            <tr><td><code>-i 私钥</code></td><td>指定身份私钥。</td></tr>
+            <tr><td><code>-C</code></td><td>传输时压缩。</td></tr>
+            <tr><td><code>-v</code></td><td>显示详细过程，适合排查。</td></tr>
+            <tr><td><code>-p</code></td><td>尽量保留时间和权限。</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="key"><p><strong>实践结论：</strong>如果 Windows 已能主动 SSH 到 IPC，而 IPC 无法访问 Windows 的 22 端口，最稳妥的是在 Windows 主动运行 SCP 拉取文件，不必为了反向推送额外开放 Windows SSH Server。</p></div>
+      <p><code>sftp</code> 适合交互式浏览和上传下载；<code>scp</code> 适合明确源与目标的一次性复制。</p>
+    </section>
+
+    <section id="remote">
+      <h2>SSH、NoMachine 与 VS Code Remote SSH</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>工具</th><th>主要用途</th><th>适合场景</th></tr></thead>
+          <tbody>
+            <tr><td>SSH</td><td>远程命令行</td><td>启动服务、查日志、编辑配置、运行脚本。</td></tr>
+            <tr><td>NoMachine</td><td>完整远程桌面</td><td>打开 Ubuntu 桌面、RViz、浏览器和图形程序。</td></tr>
+            <tr><td>VS Code Remote SSH</td><td>本地界面 + 远程文件/终端/编译</td><td>远程编辑代码、查看项目和调试。</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="gallery">
+        <figure><img src="../assets/ops-nomachine.png" alt="NoMachine 连接远程主机的窗口"><figcaption>NoMachine：远程操作完整图形桌面</figcaption></figure>
+        <figure><img src="../assets/ops-remote-ssh.png" alt="VS Code Remote SSH 已连接远程主机"><figcaption>VS Code Remote SSH：远程文件、终端和开发环境</figcaption></figure>
+      </div>
+      <p>NoMachine 只是远程操作工具，不负责自动驾驶；RViz 是自动驾驶可视化软件；HMI 是车辆操作与状态界面，三者功能不要混淆。</p>
+    </section>
+
+    <section id="git">
+      <h2>Git：版本化管理代码和地图</h2>
+      <pre><code># 第一次下载远程仓库
+git clone &lt;仓库地址&gt; &lt;目标目录&gt;
+
+# 当前目录为空时克隆到当前目录
+git clone &lt;仓库地址&gt; .
+
+# 已经是 Git 仓库时检查和更新
+git status
+git remote -v
+git pull</code></pre>
+      <p>Git Clone 用于首次获得一个版本化仓库；Git Pull 用于更新已有仓库；SCP 只是复制文件，不理解提交历史。目录中存在 <code>.git</code> 时，不要再次在同一目录 clone。</p>
+    </section>
+
+    <section id="linux">
+      <h2>Linux 目录与文件基础</h2>
+      <pre><code>pwd                         # 当前目录
+ls / ls -la                # 查看文件，-a 包含隐藏文件
+cd &lt;目录&gt;                  # 进入目录
+cd ..                      # 返回上一级
+cd ~                       # 回到用户主目录
+find &lt;路径&gt; -type d -name "名称"  # 搜索目录
+code .                      # VS Code 打开当前目录</code></pre>
+      <div class="warning"><p><strong>常见错误：</strong><code>map</code> 是目录名，不是命令；要进入目录应使用 <code>cd map</code>。</p></div>
+    </section>
+
+    <section id="network">
+      <h2>网络排障要分层</h2>
+      <ol>
+        <li><strong>确认地址：</strong>用 <code>hostname -I</code>、<code>ip addr</code> 或 Windows <code>ipconfig</code> 找到当前有效网卡。</li>
+        <li><strong>确认路由：</strong>用 <code>ip route</code> 检查目标网段和默认网关。</li>
+        <li><strong>检查连通：</strong><code>ping</code> 可检查 ICMP，但防火墙可能禁 Ping，所以 Ping 不通不等于 SSH 一定不通。</li>
+        <li><strong>检查端口：</strong><code>nc -vz -w 5 &lt;IP&gt; 22</code> 测试 SSH 端口。</li>
+        <li><strong>检查认证：</strong>用 <code>ssh -vvv</code> 区分网络、主机指纹、用户名、密码和密钥问题。</li>
+      </ol>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>现象</th><th>通常表示</th></tr></thead>
+          <tbody>
+            <tr><td><code>Connection timed out</code></td><td>IP、路由、防火墙或网络隔离导致请求没有得到回应。</td></tr>
+            <tr><td><code>Connection refused</code></td><td>目标主机可达，但 SSH 服务未启动或没有监听该端口。</td></tr>
+            <tr><td><code>Permission denied</code></td><td>网络已通，认证用户名、密码、密钥或权限有问题。</td></tr>
+            <tr><td><code>No such file or directory</code></td><td>路径或名称错误，先用 <code>pwd</code>、<code>ls -la</code>、<code>find</code> 核对。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="logs">
+      <h2>日志、服务与版本</h2>
+      <p>发现问题后应先确认当前目标主机、软件版本和服务状态，再进入对应日志目录，避免分析错版本或错机器。</p>
+      <div class="gallery">
+        <figure><img src="../assets/ops-version-selector.png" alt="系统目标主机与软件版本选择"><figcaption>先确认目标主机和软件版本</figcaption></figure>
+        <figure><img src="../assets/ops-service-selector.png" alt="服务控制中心选择IPC的RViz、Zenoh和HMI服务"><figcaption>按主机和职责选择服务</figcaption></figure>
+      </div>
+      <figure><img src="../assets/ops-log-viewer.png" alt="日志查看页面，显示IPC下多个模块的日志目录"><figcaption>日志通常按 IPC、感知、规划控制、车辆接口和通信模块分类</figcaption></figure>
+      <p>常见检查顺序：</p>
+      <ol>
+        <li>确认当前版本和启动配置。</li>
+        <li>确认服务或 ROS 2 节点是否启动。</li>
+        <li>确认输入/输出话题、频率、时间戳和 frame_id。</li>
+        <li>查看最新日志和错误发生时间。</li>
+        <li>记录复现步骤、环境和关键状态，再进行修改。</li>
+      </ol>
+    </section>
+
+    <div class="related"><a href="autonomous-driving-index.html">返回自动驾驶知识目录 →</a></div>
+  </article>
+</body>
+</html>

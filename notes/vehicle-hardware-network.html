@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="自动驾驶车辆硬件、接口和车载网络基础。">
+  <title>车辆硬件与车载网络｜我的个人知识库</title>
+  <link rel="stylesheet" href="../assets/knowledge.css">
+</head>
+<body>
+  <nav class="topbar"><div class="wrap"><a class="back" href="autonomous-driving-index.html">← 返回自动驾驶目录</a></div></nav>
+  <article class="page wrap">
+    <div class="meta">自动驾驶基础 · 硬件与网络篇</div>
+    <h1>车辆硬件与车载网络</h1>
+    <p class="lead">把车辆看成一个机器人：传感器负责“看”，组合导航负责“定位”，IPC 负责“思考”，VCU 负责“执行”，网络设备负责传递数据。</p>
+
+    <div class="toc">
+      <a href="#roles">核心设备</a><a href="#sensors">传感器</a><a href="#compute">ADCU/IPC/VCU</a><a href="#network">网络设备</a><a href="#interfaces">接口</a><a href="#supporting">辅助设备</a><a href="#flows">数据流</a><a href="#panel">控制面板</a>
+    </div>
+
+    <section id="roles">
+      <h2>一眼分清硬件角色</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>设备</th><th>类比</th><th>主要职责</th></tr></thead>
+          <tbody>
+            <tr><td>摄像头</td><td>眼睛</td><td>获取颜色、纹理、车道线、交通灯和目标类别。</td></tr>
+            <tr><td>激光雷达</td><td>三维测距眼睛</td><td>输出点云，测量空间位置、距离和物体轮廓。</td></tr>
+            <tr><td>超声波雷达</td><td>贴身防撞触角</td><td>检测车头、车尾附近的极近距离障碍物。</td></tr>
+            <tr><td>组合导航</td><td>位置感与平衡感</td><td>融合 GNSS 与 IMU，输出位置、姿态、速度和精确时间。</td></tr>
+            <tr><td>ADCU</td><td>传感器汇聚中心</td><td>接入 GMSL 相机、部分雷达、PPS、串口和网络数据。</td></tr>
+            <tr><td>自驾 IPC</td><td>大脑</td><td>运行 ROS 2、Autoware、感知、定位、规划和控制。</td></tr>
+            <tr><td>VCU</td><td>手和脚</td><td>执行驱动、制动、转向、挡位和车辆安全状态机。</td></tr>
+            <tr><td>交换机 / 路由器</td><td>神经网络 / 出口</td><td>交换机连接车内设备；路由器连接 5G、Wi-Fi 和外部平台。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="sensors">
+      <h2>环境感知与定位设备</h2>
+      <h3>摄像头</h3>
+      <p>项目材料中包含 8 个车外相机：6 个约 3 mm 广角周视相机和 2 个约 1.51 mm 鱼眼补盲相机。</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>类型</th><th>数量与位置</th><th>视场与用途</th></tr></thead>
+          <tbody>
+            <tr><td>3 mm 周视相机</td><td>前、后、前左、前右、后左、后右</td><td>约 118°×62°，兼顾范围和细节，用于车辆、行人、车道线和交通灯识别。</td></tr>
+            <tr><td>1.51 mm 鱼眼相机</td><td>车前补盲、车后补盲</td><td>约 196°×112°，视野极宽，但边缘畸变更明显、远处目标更小。</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>森云型号如 <code>SG2-AR0233C-5200-G2A-H120UA</code> 可按“产品系列—图像传感器—ISP—GMSL2 配置—镜头配置”理解。具体字符含义应以厂家型号表为准，不能只靠名称猜测。</p>
+      <ul>
+        <li><strong>AR0233/OX08BC：</strong>图像传感器方案，作用类似“视网膜”。</li>
+        <li><strong>ISP：</strong>完成曝光、白平衡、降噪、HDR、色彩和图像格式处理。</li>
+        <li><strong>GMSL2：</strong>通过车载高速串行链路把多路视频送入 ADCU。</li>
+        <li><strong>PoC：</strong>同轴线同时传输视频与供电；不要与以太网 PoE 混淆。</li>
+      </ul>
+
+      <h3>激光雷达</h3>
+      <div class="grid three">
+        <div class="panel"><h3>M1Plus ×2</h3><p>前顶与后顶，偏中远距离前后感知。项目配置约 180 m、水平 120°、垂直 25°。</p></div>
+        <div class="panel"><h3>Airy ×2</h3><p>前左与前右，补充近距离和转弯盲区。项目配置约 30 m、水平 360°、垂直 90°。</p></div>
+        <div class="panel"><h3>E1R ×1</h3><p>车尾正面，负责倒车和后方近距离补盲。项目配置约 30 m、水平 120°、垂直 90°。</p></div>
+      </div>
+      <p>这些数值是项目材料中的配置，应以实际设备铭牌、固件和说明书为准。雷达通常输出 <code>x/y/z</code>、反射强度、时间戳和状态信息。</p>
+
+      <h3>超声波雷达</h3>
+      <p>一套系统可能包含 1 个控制器和 12 个探头，所以设备清单写“1 套”，不代表只有 1 个探头。它适合泊车、倒车和车身附近防碰撞，不替代激光雷达的中远距离三维感知。</p>
+
+      <h3>组合导航</h3>
+      <p>组合导航由 GNSS、IMU 和融合算法组成。双 GNSS 天线不仅定位，还能在车辆静止时更稳定地估计航向。</p>
+      <div class="grid three">
+        <div class="panel"><h3>Ethernet</h3><p>传输完整导航数据、状态、配置和调试信息。</p></div>
+        <div class="panel"><h3>RS232</h3><p>传输经纬度、姿态、速度、加速度、角速度等实时报文。</p></div>
+        <div class="panel"><h3>PPS</h3><p>提供每秒精确脉冲，是“什么时候”的时间基准，不传输位置内容。</p></div>
+      </div>
+    </section>
+
+    <section id="compute">
+      <h2>ADCU、IPC、VCU 与其他控制器</h2>
+      <h3>ADCU：把数据接进来</h3>
+      <p>ADCU 通常具备多路 GMSL、车载以太网、普通以太网、CAN、PPS 和 RS232。它负责相机解串、传感器同步、部分数据预处理与汇聚，再把数据送给自驾 IPC。</p>
+      <h3>自驾 IPC：拿数据做计算</h3>
+      <p>工业计算机中的 CPU 负责 ROS 2、规划、通信和控制逻辑，GPU 负责神经网络与大规模并行计算，内存缓存图像/点云/地图，SSD 保存系统、模型、地图、rosbag 和日志。</p>
+      <h3>VCU：把命令变成车辆动作</h3>
+      <p>IPC 计算目标速度、转向和制动请求，VCU 负责实时执行、安全检查、故障保护，并反馈实际车速、转角、挡位和制动状态。</p>
+      <h3>BCM 与视频监控主机</h3>
+      <p>BCM 负责车灯、车门、雨刷、喇叭等车身功能；视频监控主机负责显示、录像、CMS 屏幕与音频，避免这些任务影响自动驾驶主计算的实时性。</p>
+      <div class="key"><p><strong>最容易混淆：</strong>ADCU 主要接设备和汇聚数据，IPC 主要跑算法，VCU 主要执行车辆动作。</p></div>
+    </section>
+
+    <section id="network">
+      <h2>交换机、路由器与多网卡</h2>
+      <div class="grid">
+        <div class="panel"><h3>工业交换机</h3><p>连接同一车内局域网的 IPC、ADCU、雷达和导航设备。M12 锁紧接口更耐振动，千兆链路适合图像和点云大数据。</p></div>
+        <div class="panel"><h3>5G 车载路由器</h3><p>连接不同网络，提供 5G、Wi-Fi、网关、远程监控、日志上传或远程驾驶链路。</p></div>
+      </div>
+      <p>一台 IPC 可以拥有多块物理网卡和多个 IP。给高带宽雷达分配独立网卡/子网，能降低拥塞、隔离故障并简化路由。调试时应先确认设备与对应网卡位于同一子网，再检查链路与流量。</p>
+      <pre><code>ip -br addr               # 查看网卡与地址
+ip route                  # 查看路由
+sudo ethtool &lt;网卡名&gt;    # 查看链路、速率、双工
+ping -I &lt;网卡名&gt; &lt;设备IP&gt;
+sudo tcpdump -i &lt;网卡名&gt; # 查看是否有数据包
+ip -s link                # 查看收发与错误计数</code></pre>
+    </section>
+
+    <section id="interfaces">
+      <h2>常见接口和术语</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>名称</th><th>类型</th><th>主要用途</th></tr></thead>
+          <tbody>
+            <tr><td>Ethernet</td><td>网络协议族</td><td>传输点云、图像、导航、状态和文件。</td></tr>
+            <tr><td>GMSL2</td><td>车载高速视频链路</td><td>相机到 ADCU 的视频、控制与同步。</td></tr>
+            <tr><td>CAN</td><td>车辆控制总线</td><td>传输控制命令、状态和故障，数据量小但实时可靠。</td></tr>
+            <tr><td>PoE / PoC</td><td>供电方式</td><td>分别通过以太网双绞线 / 同轴线同时供电和传输数据。</td></tr>
+            <tr><td>RS232 / PPS</td><td>串口 / 时间脉冲</td><td>导航报文 / 精确时间同步。</td></tr>
+            <tr><td>RJ45 / M12</td><td>连接器</td><td>普通网口 / 工业锁紧式网口。连接器外形不等于链路速率。</td></tr>
+            <tr><td>FAKRA / Mini-FAKRA</td><td>车载高速连接器</td><td>摄像头、GMSL、射频或天线信号。</td></tr>
+            <tr><td>H-MTD / FGG</td><td>车载高速 / 圆形连接器</td><td>描述物理连接形式，内部可能承载以太网。</td></tr>
+            <tr><td>HDMI / DP / USB</td><td>视频 / 通用外设</td><td>连接显示器、扩展坞、键鼠、存储和调试设备。</td></tr>
+            <tr><td>DI / AI</td><td>数字 / 模拟输入</td><td>DI 表示开关量；此处 AI 通常是 Analog Input，不是人工智能。</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>设备面板上的 PoE、CAN 和急停</h3>
+      <ul>
+        <li><strong>PoE-1～PoE-4：</strong>可连接网络相机、雷达或其他以太网传感器，一根线可能同时承担供电和数据。</li>
+        <li><strong>CAN0 / CAN1：</strong>两路独立 CAN 通道，可用于底盘、组合导航、调试设备或不同控制域；实际分配必须查看线束针脚表和 DBC。</li>
+        <li><strong>E-STOP：</strong>急停接口连接安全回路，用于禁止驱动、触发制动或进入安全状态，不可随意短接。</li>
+        <li><strong>电源按钮：</strong>可能用于启动、关机或复位；短按/长按行为要以设备说明书为准。</li>
+        <li><strong>保护盖区域：</strong>仅凭外观无法确认内部功能，不应猜测为普通网口。</li>
+      </ul>
+    </section>
+
+    <section id="supporting">
+      <h2>辅助车载设备</h2>
+      <div class="grid">
+        <div class="panel"><h3>CMS 屏幕与显示大屏</h3><p>显示左后、右后、正后摄像头或车辆状态。DP/HDMI 转换器、锁频器和虚拟显示器可稳定分辨率与远程桌面。</p></div>
+        <div class="panel"><h3>Pad 与扩展坞</h3><p>通过 Wi-Fi、Type-C 或千兆网口接入车辆网络，用于任务启停、状态查看、地图与工程调试。</p></div>
+        <div class="panel"><h3>音频系统</h3><p>USB 声卡、共地隔离器、功放、车内/车外扬声器和麦克风承担提示音、广播、远程沟通和监控。</p></div>
+        <div class="panel"><h3>DC-DC 与电源</h3><p>把车辆电源转换为设备所需稳定电压。接线必须确认输入范围、输出电压、电流、功率和极性。</p></div>
+        <div class="panel"><h3>环境与乘员传感器</h3><p>CO₂、烟雾、座椅压力、安全带和温度传感器可支持通风、预警、乘员检测和车身安全逻辑。</p></div>
+        <div class="panel"><h3>AC 与 BCM</h3><p>AC 负责空调、风速和温度；BCM 负责车灯、车门、雨刷、喇叭和其他车身功能。</p></div>
+      </div>
+    </section>
+
+    <section id="flows">
+      <h2>典型数据流</h2>
+      <pre><code>8 路车外相机 → GMSL2 → ADCU → 以太网 → 自驾 IPC → 图像感知
+M1Plus / E1R → 以太网 → ADCU → 自驾 IPC → 点云感知
+前左 / 前右 Airy → 独立网口 → 自驾 IPC → 点云感知
+GNSS + IMU → 组合导航 → Ethernet / RS232 / PPS → 定位与同步
+规划控制 → IPC CAN 接口 → CAN 总线 → VCU → 转向 / 制动 / 驱动
+视频监控主机 → 屏幕 / 功放 / 扬声器 → 显示、录像与提示音</code></pre>
+    </section>
+
+    <section id="panel">
+      <h2>车辆控制面板</h2>
+      <figure>
+        <img src="../assets/vehicle-control-panel.png" alt="车辆控制面板，标出了开门、模式切换、应急灯、刹车、喇叭、速度限制和灯光雨刷控制">
+        <figcaption>实车控制面板示例：包含驾驶模式、制动、喇叭、限速、车门、灯光和雨刷等功能</figcaption>
+      </figure>
+      <div class="warning"><p><strong>安全提醒：</strong>急停、驾驶模式、制动和速度限制属于安全相关控制。实际操作必须遵守车辆操作规程，不可根据图片自行短接、改线或绕过保护逻辑。</p></div>
+    </section>
+
+    <div class="related"><a href="perception-maps.html">下一篇：感知算法与地图基础 →</a></div>
+  </article>
+</body>
+</html>

@@ -51,6 +51,13 @@
       <figcaption>GPU 在自动驾驶感知与控制链路中的位置</figcaption>
     </figure>
 
+    <h2>GPU 内部可以怎样理解</h2>
+    <figure>
+      <img src="../assets/gpu-architecture.png" alt="NVIDIA GPU 简化结构：多个SM中包含CUDA Core、Tensor Core、寄存器、Shared Memory和调度器，外部还有L2缓存、显存控制器与显存">
+      <figcaption>NVIDIA GPU 的简化结构</figcaption>
+    </figure>
+    <p>SM 可以看成并行计算小工厂；CUDA Core 执行通用数值运算，Tensor Core 加速矩阵乘加，寄存器和 Shared Memory 保存高速临时数据，显存 VRAM 存放模型、输入和中间特征。</p>
+
     <h2>七个步骤</h2>
     <ol class="steps">
       <li><strong>传感器输入</strong>相机提供图像，激光雷达提供点云。</li>
