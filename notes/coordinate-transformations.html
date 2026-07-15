@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="从点、基、旋转和平移推导二维与三维坐标变换、组合、求逆和时刻对齐。">
+  <title>从第一性原理理解坐标系转换｜导师补充知识</title>
+  <link rel="stylesheet" href="../assets/knowledge.css">
+</head>
+<body>
+  <nav class="topbar"><div class="wrap"><a class="back" href="mentor-index.html">← 返回导师补充目录</a></div></nav>
+  <article class="page wrap">
+    <div class="meta">导师补充 M06 · 几何基础 · 复核于 2026-07-15</div>
+    <h1>从第一性原理理解坐标系转换</h1>
+    <p class="lead">一个物理点不会因为换坐标系而移动，改变的是描述它的数字。坐标变换的任务，就是明确“同一个几何对象在另一个基和原点下怎样表示”。</p>
+
+    <div class="panel provenance">
+      <p><strong>贡献角色：</strong>导师原创整理　<strong>对象：</strong>感知、定位与规划入门学习者　<strong>证据状态：</strong>通用刚体变换推导</p>
+      <p><strong>统一约定：</strong>列向量、右手坐标系；<code>^A T_B</code> 表示从 B 坐标转换到 A 坐标，也就是“B 在 A 中的位姿”。</p>
+    </div>
+
+    <div class="toc">
+      <a href="#notation">对象与记号</a><a href="#rotation">旋转和平移</a><a href="#homogeneous">齐次变换</a><a href="#compose">组合与求逆</a><a href="#example">二维例子</a><a href="#time">三维、四元数与时间</a><a href="#checks">自检与误区</a><a href="#sources">资料</a>
+    </div>
+
+    <section id="notation">
+      <h2>先把“点、向量、坐标系”分开</h2>
+      <ul>
+        <li><code>^A p</code>：同一个几何点在坐标系 A 下的坐标。</li>
+        <li><code>^A R_B</code>：把 B 系中的方向坐标旋转到 A 系；三列分别是 B 的三个单位轴在 A 中的表示。</li>
+        <li><code>^A t_B</code>：B 系原点在 A 系中的坐标。</li>
+        <li><code>^A T_B</code>：把 B 系坐标直接转换到 A 系的刚体变换。</li>
+      </ul>
+      <pre class="equation" role="math" aria-label="点从 B 坐标系转换到 A 坐标系"><code>^A p = ^A R_B · ^B p + ^A t_B</code></pre>
+      <p>点依赖原点，因此要加平移；方向、速度增量和法向量没有原点，不应直接加平移。</p>
+    </section>
+
+    <section id="rotation">
+      <h2>二维旋转：新坐标来自基向量投影</h2>
+      <p>采用车辆常见约定：x 向前、y 向左、逆时针为正。B 相对 A 逆时针旋转 <code>θ</code> 时：</p>
+      <pre class="equation" role="math" aria-label="二维旋转矩阵"><code>           [ cosθ  -sinθ ]
+^A R_B =  [ sinθ   cosθ ]
+
+^A p = ^A R_B · ^B p + ^A t_B</code></pre>
+      <p>旋转矩阵的列是新坐标轴在旧坐标系中的方向。它满足：</p>
+      <pre class="equation" role="math" aria-label="合法旋转矩阵的条件"><code>RᵀR = I        det(R) = 1        R⁻¹ = Rᵀ</code></pre>
+      <div class="key"><p><strong>主动还是被动：</strong>“旋转一个向量”和“换一个坐标系”常使用互为转置的矩阵。不要靠记忆正负号；先写出 <code>^A R_B</code> 的含义，再代入单位轴检查。</p></div>
+    </section>
+
+    <section id="homogeneous">
+      <h2>齐次坐标：把旋转和平移放进一次乘法</h2>
+      <pre class="equation" role="math" aria-label="三维齐次变换矩阵"><code>          [ ^A R_B   ^A t_B ]
+^A T_B = [  0 0 0       1   ]
+
+[ ^A p ]           [ ^B p ]
+[   1   ] = ^A T_B [   1   ]</code></pre>
+      <p>齐次坐标最后一维同时区分对象类型：</p>
+      <pre class="equation" role="math" aria-label="齐次坐标中点和方向向量的区别"><code>点：     [p, 1]  → 旋转 + 平移
+方向：   [v, 0]  → 只旋转，不平移</code></pre>
+    </section>
+
+    <section id="compose">
+      <h2>组合与求逆：右边的变换先发生</h2>
+      <p>传感器 S 的点先到车体 B，再到地图 M：</p>
+      <pre class="equation" role="math" aria-label="传感器到车体再到地图的变换组合"><code>^M T_S = ^M T_B · ^B T_S
+
+^M p = ^M T_B · ^B T_S · ^S p</code></pre>
+      <p>矩阵一般不可交换，乘法从右向左作用。若已知 <code>^A T_B=[R,t]</code>，反向变换为：</p>
+      <pre class="equation" role="math" aria-label="刚体变换的逆"><code>          [ Rᵀ   -Rᵀt ]
+^B T_A = [ 0        1 ]</code></pre>
+      <p>逆变换中的平移是 <code>-Rᵀt</code>，不是简单的 <code>-t</code>。</p>
+    </section>
+
+    <section id="example">
+      <h2>二维数值例子：车辆点变到地图</h2>
+      <p>车辆原点在地图 <code>(10,5)</code>，yaw 为 <code>90°</code>；车辆系中有一点 <code>^B p=(2,1)</code>。</p>
+      <pre class="equation" role="math" aria-label="二维车辆坐标转换数值例子"><code>         [ 0  -1 ] [ 2 ]   [ 10 ]   [ 9 ]
+^M p =  [ 1   0 ] [ 1 ] + [  5 ] = [ 7 ]
+
+回代：^B p = Rᵀ(^M p - t) = (2,1)</code></pre>
+      <p>解释：车辆前方 2 米在地图中向上移动 2 米，车辆左侧 1 米在地图中向左移动 1 米，所以结果是 <code>(9,7)</code>。</p>
+    </section>
+
+    <section id="time">
+      <h2>三维工程里还要处理四元数和时间</h2>
+      <div class="grid">
+        <div class="panel"><h3>旋转顺序</h3><p>如果使用 yaw/pitch/roll，必须声明是固定轴还是随体轴以及乘法顺序；不同顺序结果不同。</p></div>
+        <div class="panel"><h3>四元数顺序</h3><p>nuScenes 记录为 <code>w,x,y,z</code>，ROS 消息字段通常排列为 <code>x,y,z,w</code>。读取接口前必须核对并归一化。</p></div>
+        <div class="panel"><h3>静态外参</h3><p>传感器相对车体的安装关系通常近似固定，可写为 <code>^E T_S</code>。</p></div>
+        <div class="panel"><h3>动态位姿</h3><p>车体相对地图随时间变化，应写成 <code>^G T_E(t)</code>；点和变换必须对应同一时刻或经过插值。</p></div>
+      </div>
+      <pre class="equation" role="math" aria-label="nuScenes 传感器到全局的时间相关变换"><code>^G T_S(t) = ^G T_E(t) · ^E T_S
+
+源传感器 S₁ 在 t₁ 的点变到目标传感器 S₂ 在 t₂：
+^S₂ T_S₁ = [^G T_S₂(t₂)]⁻¹ · ^G T_S₁(t₁)</code></pre>
+      <p>相机投影还需要内参和有效深度：先用外参把三维点变到相机坐标，确认 <code>z&gt;0</code>，再用相机内参投影到像素；只做外参不能得到正确像素。</p>
+    </section>
+
+    <section id="checks">
+      <h2>四类自检与常见错误</h2>
+      <ol>
+        <li><strong>原点测试：</strong>令 <code>^B p=0</code>，结果应该正好是 <code>^A t_B</code>。</li>
+        <li><strong>单位轴测试：</strong>分别变换 B 的 x/y/z 单位轴，检查是否与 A 中预期方向一致。</li>
+        <li><strong>往返测试：</strong><code>T⁻¹(Tp)</code> 应在数值容差内回到原点。</li>
+        <li><strong>矩阵测试：</strong><code>RᵀR=I</code>、<code>det(R)=1</code>、<code>TT⁻¹=I</code>。</li>
+      </ol>
+      <div class="grid">
+        <div class="panel"><h3>方向写反</h3><p>没有声明 <code>T_AB</code> 是 A→B 还是 B→A，导致矩阵正确、语义错误。</p></div>
+        <div class="panel"><h3>顺序写反</h3><p>传感器→车体→地图却把矩阵按口头顺序从左向右作用。</p></div>
+        <div class="panel"><h3>约定混用</h3><p>行/列向量、左/右手系、度/弧度、欧拉角顺序或四元数分量混在一起。</p></div>
+        <div class="panel"><h3>忽略时间</h3><p>拿 t₁ 的点配 t₂ 的 ego pose，静态外参看似正确但运动目标和背景都会错位。</p></div>
+        <div class="panel"><h3>错误处理向量</h3><p>给速度、法向量或方向加了平移；法向量在非刚体变换下还有不同规则。</p></div>
+        <div class="panel"><h3>把经纬度当直角坐标</h3><p>经纬度需先选择基准、投影和局部原点，不能直接塞进普通 SE(3) 矩阵。</p></div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <h2>参考资料</h2>
+      <ul>
+        <li><a href="https://www.ros.org/reps/rep-0103.html">ROS REP 103：单位与坐标约定</a></li>
+        <li><a href="https://www.ros.org/reps/rep-0105.html">ROS REP 105：移动平台坐标系</a></li>
+        <li><a href="https://docs.ros.org/en/jazzy/Concepts/Intermediate/About-Tf2.html">ROS 2 Jazzy tf2 概念</a></li>
+        <li><a href="https://github.com/nutonomy/nuscenes-devkit/blob/master/docs/schema_nuscenes.md">nuScenes schema 中的标定、位姿和四元数约定</a></li>
+      </ul>
+    </section>
+
+    <div class="related"><a href="ackermann-bicycle-model.html">下一篇：阿克曼转向与运动学自行车模型推导 →</a></div>
+  </article>
+</body>
+</html>

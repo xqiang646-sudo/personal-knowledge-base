@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="从关系型数据结构、时间、标定和坐标系理解 nuScenes 多传感器自动驾驶数据集。">
+  <title>读懂 nuScenes 数据集｜导师补充知识</title>
+  <link rel="stylesheet" href="../assets/knowledge.css">
+</head>
+<body>
+  <nav class="topbar"><div class="wrap"><a class="back" href="mentor-index.html">← 返回导师补充目录</a></div></nav>
+  <article class="page wrap">
+    <div class="meta">导师补充 M05 · 数据基础 · 复核于 2026-07-15</div>
+    <h1>读懂 nuScenes 数据集</h1>
+    <p class="lead">nuScenes 不是“一堆图片和点云文件”，而是一套由传感器文件、关系型元数据、标定、车辆位姿、地图、标注与评测协议共同组成的多传感器时序数据库。</p>
+
+    <div class="panel provenance">
+      <p><strong>贡献角色：</strong>导师原创整理　<strong>对象：</strong>多传感器感知入门学习者　<strong>证据状态：</strong>基于 nuScenes v1.0 官方网站、论文、schema 与 devkit</p>
+      <p><strong>使用边界：</strong>下载、使用和再分发数据前，应阅读并遵守 nuScenes 当前使用条款；mini 集只适合熟悉数据和调通代码，不能支撑正式模型结论。</p>
+    </div>
+
+    <div class="toc">
+      <a href="#overview">数据集定位</a><a href="#relations">数据关系</a><a href="#time">文件与时间</a><a href="#coordinates">坐标边界</a><a href="#evaluation">类别与评测</a><a href="#example">最小练习</a><a href="#mistakes">常见误区</a><a href="#sources">资料</a>
+    </div>
+
+    <section id="overview">
+      <h2>先理解它解决什么问题</h2>
+      <p>nuScenes 面向自动驾驶多模态研究。官方 v1.0 数据包含 1000 个约 20 秒的城市驾驶场景，采集于波士顿和新加坡；传感器套件包括 6 个相机、5 个毫米波雷达、1 个激光雷达以及 GPS/IMU。</p>
+      <div class="flow" role="img" aria-label="nuScenes 从多传感器采集到标注、地图和任务评测的组成">
+        <div class="flow-row">
+          <div class="node">Camera / LiDAR / Radar</div><div class="arrow">+</div>
+          <div class="node accent">Calibration / Ego Pose</div><div class="arrow">+</div>
+          <div class="node">3D Annotation / Map</div><div class="arrow">→</div>
+          <div class="node accent">Detection / Tracking / Prediction</div>
+        </div>
+      </div>
+      <p>学习重点不是背数据规模，而是能从一条记录沿 token 找到真实传感器文件，并清楚说出它对应的时间、标定、自车位姿、标注和坐标系。</p>
+    </section>
+
+    <section id="relations">
+      <h2>核心：它是一张由 token 连接的数据图</h2>
+      <pre class="equation" role="math" aria-label="nuScenes 数据表关系"><code>scene
+  ├─ log ── location / map
+  └─ sample ── prev / next
+       ├─ sample_data ── sensor file
+       │    ├─ calibrated_sensor ── sensor → ego 外参、相机内参
+       │    └─ ego_pose ── ego → global 位姿
+       └─ sample_annotation
+            ├─ instance
+            └─ category / attribute / visibility</code></pre>
+      <div class="table-wrap" role="region" aria-label="nuScenes 核心数据表说明" tabindex="0">
+        <table>
+          <caption>先分清逻辑时刻、传感器帧和标注属于哪一层</caption>
+          <thead><tr><th scope="col">记录</th><th scope="col">表示什么</th><th scope="col">关键连接</th></tr></thead>
+          <tbody>
+            <tr><td><code>scene</code></td><td>从一段 log 中抽取的连续场景</td><td>首尾 sample、log、场景内 sample 数量</td></tr>
+            <tr><td><code>sample</code></td><td>2 Hz 的多传感器标注关键时刻，不是磁盘文件</td><td><code>prev</code>/<code>next</code>、各通道 sample_data、annotation</td></tr>
+            <tr><td><code>sample_data</code></td><td>某个传感器在某一时刻的一份真实数据</td><td>文件、时间戳、是否关键帧、标定、自车位姿</td></tr>
+            <tr><td><code>calibrated_sensor</code></td><td>传感器相对 ego body frame 的标定</td><td>外参；相机记录内参</td></tr>
+            <tr><td><code>ego_pose</code></td><td>该传感器时刻的 ego 相对地图 global frame 位姿</td><td>平移、四元数、时间戳</td></tr>
+            <tr><td><code>sample_annotation</code></td><td>某个 sample 上一个目标的 3D 标注</td><td>instance、类别、属性、可见性、前后标注</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="key"><p><strong>token 的意义：</strong>每条记录用 <code>token</code> 唯一标识，<code>*_token</code> 像数据库外键一样连接其他表。理解模型代码前，先手工走通一次这张关系图。</p></div>
+    </section>
+
+    <section id="time">
+      <h2>目录名不能替代时间关系</h2>
+      <pre><code>&lt;NUSCENES_ROOT&gt;/
+├── samples/       # 关键帧传感器数据
+├── sweeps/        # 关键帧之间的中间传感器数据
+├── maps/          # 地图数据
+└── v1.0-mini/     # JSON 元数据；也可能是 trainval / test</code></pre>
+      <ul>
+        <li><code>sample</code> 是一次逻辑关键时刻；<code>sample_data</code> 才对应相机图像、点云或雷达文件。</li>
+        <li>不同传感器有各自时间戳，不能默认完全同步；多帧融合要按真实时间和自车位姿补偿。</li>
+        <li><code>is_key_frame=false</code> 的 sweep 仍有自己的时间戳、ego pose 和 calibration 引用。</li>
+        <li>一个 20 秒 scene 通常约有 40 个 sample，但程序应读取 <code>scene["nbr_samples"]</code>，不要写死。</li>
+      </ul>
+    </section>
+
+    <section id="coordinates">
+      <h2>先画清坐标链，再搬点和框</h2>
+      <div class="flow" role="img" aria-label="nuScenes 中传感器坐标经自车坐标转换到全局坐标">
+        <div class="flow-row">
+          <div class="node">sensor frame</div><div class="arrow">→</div>
+          <div class="node accent">ego frame at sensor time</div><div class="arrow">→</div>
+          <div class="node">global frame of map</div>
+        </div>
+      </div>
+      <ul>
+        <li><code>calibrated_sensor</code> 提供 sensor 到 ego 的外参；<code>ego_pose</code> 提供该数据时刻 ego 到 global 的位姿。</li>
+        <li>原始 <code>sample_annotation</code> 的位置和旋转位于 global frame；devkit 的 <code>get_sample_data()</code> 会把 box 转到当前 sensor frame。</li>
+        <li>标注尺寸顺序是 <code>width, length, height</code>；记录中的四元数顺序是 <code>w, x, y, z</code>。</li>
+        <li>把两个传感器或两个时刻的数据融合时，必须同时处理外参、ego motion 与各自时间戳。</li>
+      </ul>
+      <div class="warning"><p><strong>最常见的双重变换：</strong>先用 <code>get_sample_data()</code> 得到 sensor-frame box，又把它当 global box 再执行一次 global→sensor。每次变换前都要写出“当前坐标系”和“目标坐标系”。</p></div>
+    </section>
+
+    <section id="evaluation">
+      <h2>数据类别与评测类别不是同一个概念</h2>
+      <div class="table-wrap" role="region" aria-label="nuScenes 类别和检测评测概念对照" tabindex="0">
+        <table>
+          <caption>基础 taxonomy、任务输出和评测协议各有自己的边界</caption>
+          <thead><tr><th scope="col">概念</th><th scope="col">官方 v1.0 规则</th><th scope="col">用途</th></tr></thead>
+          <tbody>
+            <tr><td>论文中的 3D box taxonomy</td><td>23 类，另有 8 种属性</td><td>描述原始 3D 目标标注</td></tr>
+            <tr><td>Detection benchmark</td><td>合并和过滤后使用 10 个检测类</td><td>提交检测结果并统一评测</td></tr>
+            <tr><td>nuScenes-lidarseg</td><td>32 个通用语义类，挑战合并为 16 类</td><td>逐点激光雷达语义分割</td></tr>
+            <tr><td>关键帧</td><td>sample 为 2 Hz 标注时刻</td><td>任务结果按 sample 组织</td></tr>
+            <tr><td>NDS</td><td>综合 mAP 与多项真实误差</td><td>不能只看一个 IoU 或单次可视化</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>“23 类、10 类、32 类、16 类”来自不同标签空间和任务，不能混用。模型能输出 box，也不等于结果可评测；类别映射、global 坐标、速度、属性、结果 JSON 和官方 split 都必须满足对应任务协议。</p>
+    </section>
+
+    <section id="example">
+      <h2>最小练习：沿 token 走一遍数据图</h2>
+      <pre><code>from nuscenes.nuscenes import NuScenes
+
+nusc = NuScenes(
+    version="v1.0-mini",
+    dataroot="&lt;NUSCENES_ROOT&gt;",
+    verbose=False,
+)
+
+scene = nusc.scene[0]
+sample = nusc.get("sample", scene["first_sample_token"])
+
+for channel, sd_token in sample["data"].items():
+    sd = nusc.get("sample_data", sd_token)
+    calib = nusc.get("calibrated_sensor", sd["calibrated_sensor_token"])
+    sensor = nusc.get("sensor", calib["sensor_token"])
+    pose = nusc.get("ego_pose", sd["ego_pose_token"])
+
+    print(channel, sensor["modality"], sd["timestamp"],
+          sd["is_key_frame"], sd["filename"], pose["translation"])
+
+ann = nusc.get("sample_annotation", sample["anns"][0])
+print("box in global:", ann["translation"], ann["size"], ann["rotation"])</code></pre>
+      <p><strong>验收标准：</strong>能画出代码经过的表关系；能比较各通道时间戳；能解释原始 annotation 与传感器画面中 box 的坐标差异；能沿 <code>sample["next"]</code> 遍历 scene，而不是假设固定帧数。</p>
+    </section>
+
+    <section id="mistakes">
+      <h2>常见误区</h2>
+      <div class="grid">
+        <div class="panel"><h3>“sample 就是一帧图片”</h3><p>它是多传感器标注时刻；每份真实文件属于 sample_data。</p></div>
+        <div class="panel"><h3>“所有通道完全同步”</h3><p>应比较各自 timestamp；跨时刻融合还要补偿 ego motion。</p></div>
+        <div class="panel"><h3>“annotation 默认在 LiDAR 坐标”</h3><p>原始 annotation 位于 global；SDK 不同接口可能返回不同坐标系。</p></div>
+        <div class="panel"><h3>“mini 指标高说明模型有效”</h3><p>mini 用于学习与集成调试，正式结论需官方 split 和评测协议。</p></div>
+        <div class="panel"><h3>“instance 能跨 scene 追踪”</h3><p>官方 schema 明确 instance identity 不跨 scene 保留。</p></div>
+        <div class="panel"><h3>“公开下载等于可随意商用”</h3><p>必须查看当前 Dataset Terms，不自行扩大使用与再分发权限。</p></div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <h2>官方资料</h2>
+      <ul>
+        <li><a href="https://www.nuscenes.org/nuscenes">nuScenes 数据集主页与在线教程</a></li>
+        <li><a href="https://arxiv.org/abs/1903.11027">nuScenes 原始论文</a></li>
+        <li><a href="https://github.com/nutonomy/nuscenes-devkit">nuScenes 官方 devkit</a>与<a href="https://github.com/nutonomy/nuscenes-devkit/blob/master/docs/schema_nuscenes.md">数据库 schema</a></li>
+        <li><a href="https://github.com/nutonomy/nuscenes-devkit/blob/master/python-sdk/nuscenes/eval/detection/README.md">Detection 评测规则</a>、<a href="https://www.nuscenes.org/lidar-segmentation">Lidarseg 评测规则</a>与<a href="https://www.nuscenes.org/terms-of-use">当前使用条款</a></li>
+      </ul>
+    </section>
+
+    <div class="related"><a href="coordinate-transformations.html">下一篇：从第一性原理理解坐标系转换 →</a></div>
+  </article>
+</body>
+</html>
