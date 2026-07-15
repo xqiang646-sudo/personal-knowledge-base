@@ -6,4 +6,4 @@
 
 - `index.html`：网站首页
 - `notes/`：知识笔记目录
-
+  - `can-bus-interface.html`：CAN 总线接口、RViz/HMI 与 GPU 基础

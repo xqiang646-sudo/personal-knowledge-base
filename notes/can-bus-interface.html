@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="简单理解 CAN 总线、RViz、HMI 与 GPU 在自动驾驶系统中的作用。">
+  <title>CAN 总线接口功能解析｜我的个人知识库</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f8fc;
+      --surface: #fff;
+      --text: #182033;
+      --muted: #657087;
+      --brand: #3157d5;
+      --brand-soft: #edf1ff;
+      --line: #e2e7f0;
+      --good: #147a54;
+      font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--bg); color: var(--text); line-height: 1.75; }
+    .wrap { width: min(900px, calc(100% - 36px)); margin: 0 auto; }
+    .topbar { padding: 18px 0; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.9); }
+    .back { color: var(--brand); text-decoration: none; font-weight: 650; }
+    article { margin: 36px auto 72px; padding: clamp(24px, 6vw, 56px); background: var(--surface); border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 16px 40px rgba(28, 42, 82, .07); }
+    .meta { color: var(--muted); font-size: 14px; }
+    h1 { margin: 8px 0 12px; font-size: clamp(34px, 7vw, 52px); line-height: 1.18; letter-spacing: -.03em; }
+    .lead { margin: 0 0 30px; color: var(--muted); font-size: 19px; }
+    h2 { margin: 46px 0 14px; padding-top: 6px; font-size: 27px; }
+    h3 { margin: 28px 0 8px; font-size: 20px; }
+    p { margin: 10px 0; }
+    ul, ol { padding-left: 22px; }
+    li + li { margin-top: 6px; }
+    strong { color: #10182a; }
+    .key { margin: 24px 0; padding: 20px 22px; border-left: 4px solid var(--brand); border-radius: 0 12px 12px 0; background: var(--brand-soft); }
+    .key p { margin: 0; }
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 18px 0; }
+    .panel { padding: 20px; border: 1px solid var(--line); border-radius: 14px; background: #fbfcff; }
+    .panel h3 { margin-top: 0; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { background: #f6f8fc; }
+    code { padding: 2px 6px; border-radius: 5px; background: #eef1f6; font-family: Consolas, monospace; }
+    pre { overflow-x: auto; padding: 18px; border-radius: 12px; background: #111827; color: #e5e7eb; line-height: 1.55; }
+    pre code { padding: 0; background: transparent; }
+    .flow { margin: 24px 0; padding: 24px; border: 1px solid var(--line); border-radius: 16px; background: #f9faff; text-align: center; }
+    .flow-row { display: flex; align-items: stretch; justify-content: center; flex-wrap: wrap; gap: 8px; }
+    .node { display: flex; align-items: center; justify-content: center; min-width: 108px; min-height: 64px; padding: 10px; border: 1px solid #cbd5f8; border-radius: 12px; background: white; font-size: 15px; font-weight: 650; }
+    .node.accent { background: var(--brand); border-color: var(--brand); color: white; }
+    .arrow { display: flex; align-items: center; color: var(--brand); font-size: 24px; font-weight: 800; }
+    .flow-note { margin: 18px 0 0; color: var(--muted); font-size: 14px; }
+    .check li::marker { color: var(--good); }
+    .mini-nav { display: flex; flex-wrap: wrap; gap: 9px; margin: 26px 0 6px; }
+    .mini-nav a { padding: 6px 11px; border-radius: 999px; background: var(--brand-soft); color: var(--brand); text-decoration: none; font-size: 14px; }
+    @media (max-width: 700px) {
+      .grid { grid-template-columns: 1fr; }
+      .flow-row { flex-direction: column; align-items: stretch; }
+      .arrow { justify-content: center; transform: rotate(90deg); }
+    }
+  </style>
+</head>
+<body>
+  <nav class="topbar"><div class="wrap"><a class="back" href="../index.html">← 返回知识库</a></div></nav>
+  <article class="wrap">
+    <div class="meta">自动驾驶基础 · 整理于 2026-07-15</div>
+    <h1>CAN 总线接口功能解析</h1>
+    <p class="lead">理解 CAN 总线的作用，并分清 IPC、RViz、HMI 与 NVIDIA GPU 在自动驾驶系统中的位置。</p>
+
+    <div class="mini-nav">
+      <a href="#overview">系统全景</a>
+      <a href="#can">CAN 核心</a>
+      <a href="#ui">RViz 与 HMI</a>
+      <a href="#gpu">GPU</a>
+      <a href="#troubleshooting">排查清单</a>
+    </div>
+
+    <section id="overview">
+      <h2>一张图看懂完整流程</h2>
+      <div class="flow" aria-label="自动驾驶数据处理流程图">
+        <div class="flow-row">
+          <div class="node">相机<br>激光雷达</div><div class="arrow">→</div>
+          <div class="node accent">GPU 感知<br>识别环境</div><div class="arrow">→</div>
+          <div class="node">CPU 规划<br>决定怎么走</div><div class="arrow">→</div>
+          <div class="node accent">CAN 接口<br>发送指令</div><div class="arrow">→</div>
+          <div class="node">车辆底盘<br>转向/制动/油门</div>
+        </div>
+        <p class="flow-note">RViz 用于查看系统“看到了什么、计划怎么走”；HMI 用于下达任务、启停车辆和查看关键状态。</p>
+      </div>
+      <div class="key"><p><strong>一句话记忆：</strong>GPU 负责快速理解环境，CPU 负责组织和决策，CAN 负责把控制命令交给车辆。</p></div>
+    </section>
+
+    <section id="can">
+      <h2>CAN 总线接口有什么用</h2>
+      <p>CAN 总线是车辆控制器之间交换短消息的通信网络。自动驾驶计算机通过 CAN 接口发送转向、油门和制动指令，同时接收车速、方向盘角度、挡位和故障状态。</p>
+      <p>CAN 传输的是一帧一帧的<strong>报文</strong>，不是文件。一帧通常包含：</p>
+      <ul>
+        <li><strong>CAN ID：</strong>消息类型和总线仲裁优先级；数值越小，优先级通常越高。</li>
+        <li><strong>Data：</strong>真正的数据字节。</li>
+        <li><strong>DLC：</strong>数据长度。</li>
+        <li><strong>时间戳：</strong>报文接收或发送的时间。</li>
+      </ul>
+      <pre><code>CAN ID：0x201
+数据：08 64 00 15 00 00 00 00</code></pre>
+
+      <h3>物理连接的三个重点</h3>
+      <ol>
+        <li><strong>CAN_H 接 CAN_H，CAN_L 接 CAN_L，并确保设备共地。</strong></li>
+        <li><strong>所有设备波特率一致。</strong>常见值包括 125、250、500 kbps 和 1 Mbps。</li>
+        <li><strong>总线最远两端各有一个 120Ω 终端电阻。</strong>断电测量 CAN_H 与 CAN_L，正常通常约为 60Ω。</li>
+      </ol>
+
+      <h3>真正理解报文需要 DBC 或通信协议</h3>
+      <p>能收到数据不等于能看懂数据。要正确控制车辆，还需要知道信号所在字节、比例系数、偏移量、大小端、校验方式、计数器、发送周期和使能条件。</p>
+      <div class="key"><p><strong>核心：</strong>CAN 接口只是收发通道，车辆厂商提供的 DBC 或 CAN 通信协议才决定每个字节的真实含义。</p></div>
+    </section>
+
+    <section id="ui">
+      <h2>RViz 与 HMI 有什么区别</h2>
+      <div class="grid">
+        <div class="panel">
+          <h3>IPC@RVIZ</h3>
+          <p><strong>面向工程师调试。</strong></p>
+          <p>显示点云、地图、目标框、坐标系、规划轨迹和算法状态，用来检查系统“看到了什么、在想什么”。</p>
+        </div>
+        <div class="panel">
+          <h3>IPC@HMI</h3>
+          <p><strong>面向驾驶员或操作员。</strong></p>
+          <p>提供启停、任务设置、模式切换、车速、故障和报警等关键信息，用来告诉系统“要做什么”。</p>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>对比项</th><th>RViz</th><th>HMI</th></tr></thead>
+          <tbody>
+            <tr><td>主要用户</td><td>开发、测试、调试人员</td><td>驾驶员、操作员</td></tr>
+            <tr><td>主要内容</td><td>点云、地图、目标、轨迹</td><td>按钮、仪表、状态、报警</td></tr>
+            <tr><td>主要目的</td><td>定位算法与数据问题</td><td>安全、清晰地操作车辆</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><code>ipc@RVIZ</code> 也可能只是 Linux 终端中的“用户名@主机名”，可用 <code>hostname</code> 确认。</p>
+    </section>
+
+    <section id="gpu">
+      <h2>NVIDIA GPU 在系统中做什么</h2>
+      <p>CPU 擅长复杂控制逻辑和串行任务；GPU 拥有大量相对简单的计算单元，擅长让大量数据同时执行相似运算，因此适合图像、点云、矩阵计算和神经网络。</p>
+      <ul>
+        <li><strong>CUDA Core：</strong>执行通用并行运算。</li>
+        <li><strong>Tensor Core：</strong>加速神经网络中的矩阵乘加。</li>
+        <li><strong>显存 VRAM：</strong>存放模型参数、图像、点云和中间特征。</li>
+        <li><strong>CUDA / cuDNN / TensorRT：</strong>分别提供通用计算、深度学习算子和推理优化能力。</li>
+      </ul>
+      <p>在自动驾驶中，YOLOX、BEVFusion 等感知模型通常使用 GPU；规划、状态机和车辆控制更多依赖 CPU。RViz 也会使用 GPU，但主要用于三维画面渲染。</p>
+      <div class="key"><p><strong>注意：</strong>有 NVIDIA 显卡不代表程序一定在使用 GPU。还需要正确的驱动、CUDA 环境，以及程序把模型和数据放到 GPU。</p></div>
+      <h3>常用检查命令</h3>
+      <pre><code># 查看 GPU、驱动、显存、温度与进程
+nvidia-smi
+
+# 查看本地 CUDA Toolkit
+nvcc --version
+
+# Jetson 平台查看资源与功耗
+tegrastats</code></pre>
+    </section>
+
+    <section id="troubleshooting">
+      <h2>CAN 通信异常排查清单</h2>
+      <ol class="check">
+        <li>确认 CAN_H、CAN_L 没有接反，设备已经共地。</li>
+        <li>确认所有设备使用相同波特率。</li>
+        <li>断电测量 CAN_H 与 CAN_L，检查是否约为 60Ω。</li>
+        <li>确认 Linux 中正确的 CAN 通道已经启动。</li>
+        <li>使用 <code>candump can0</code> 检查是否收到报文。</li>
+        <li>检查错误帧、错误计数以及是否进入 bus-off。</li>
+        <li>最后核对 CAN ID、DBC、发送周期、计数器和校验规则。</li>
+      </ol>
+      <pre><code>sudo ip link set can0 type can bitrate 500000
+sudo ip link set can0 up
+candump can0
+ip -details -statistics link show can0</code></pre>
+    </section>
+
+    <div class="key"><p><strong>最终总结：</strong>CAN 让控制器可靠通信；GPU 处理大规模感知计算；CPU 完成系统调度与决策；RViz 用于调试，HMI 用于操作。</p></div>
+  </article>
+</body>
+</html>
