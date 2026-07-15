@@ -26,6 +26,7 @@
     .intro { max-width: 600px; margin: 18px 0 0; color: #dce5ff; font-size: 18px; }
     main { padding: 48px 0 80px; }
     .section-title { margin: 0 0 20px; font-size: 24px; }
+    .cards { display: grid; gap: 20px; }
     .card {
       display: block;
       padding: 28px;
@@ -56,17 +57,29 @@
   </header>
   <main class="wrap">
     <h2 class="section-title">最新条目</h2>
-    <a class="card" href="notes/can-bus-interface.html">
-      <div class="meta">
-        <span class="tag">自动驾驶</span>
-        <span class="tag">CAN 总线</span>
-        <span class="tag">GPU</span>
-        <span class="tag">入门</span>
-      </div>
-      <h2>CAN 总线接口功能解析</h2>
-      <p class="summary">从 CAN 报文、接线和终端电阻出发，理解 RViz、HMI、NVIDIA GPU 在自动驾驶系统中的位置，并用一张流程图串起完整数据链路。</p>
-      <span class="read">阅读笔记 →</span>
-    </a>
+    <div class="cards">
+      <a class="card" href="notes/gpu-workflow.html">
+        <div class="meta">
+          <span class="tag">自动驾驶</span>
+          <span class="tag">GPU</span>
+          <span class="tag">流程图</span>
+        </div>
+        <h2>GPU 工作流程图（自动驾驶版）</h2>
+        <p class="summary">从传感器输入、CPU 预处理到 GPU 并行计算、AI 模型推理、感知结果和车辆控制，一张图看懂完整数据链路。</p>
+        <span class="read">查看流程图 →</span>
+      </a>
+      <a class="card" href="notes/can-bus-interface.html">
+        <div class="meta">
+          <span class="tag">自动驾驶</span>
+          <span class="tag">CAN 总线</span>
+          <span class="tag">GPU</span>
+          <span class="tag">入门</span>
+        </div>
+        <h2>CAN 总线接口功能解析</h2>
+        <p class="summary">从 CAN 报文、接线和终端电阻出发，理解 RViz、HMI、NVIDIA GPU 在自动驾驶系统中的位置，并用一张流程图串起完整数据链路。</p>
+        <span class="read">阅读笔记 →</span>
+      </a>
+    </div>
   </main>
   <footer class="wrap">持续学习，持续整理。</footer>
 </body>

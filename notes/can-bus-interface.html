@@ -154,6 +154,7 @@
         <li><strong>CUDA / cuDNN / TensorRT：</strong>分别提供通用计算、深度学习算子和推理优化能力。</li>
       </ul>
       <p>在自动驾驶中，YOLOX、BEVFusion 等感知模型通常使用 GPU；规划、状态机和车辆控制更多依赖 CPU。RViz 也会使用 GPU，但主要用于三维画面渲染。</p>
+      <p><a href="gpu-workflow.html">查看“GPU 工作流程图（自动驾驶版）” →</a></p>
       <div class="key"><p><strong>注意：</strong>有 NVIDIA 显卡不代表程序一定在使用 GPU。还需要正确的驱动、CUDA 环境，以及程序把模型和数据放到 GPU。</p></div>
       <h3>常用检查命令</h3>
       <pre><code># 查看 GPU、驱动、显存、温度与进程
