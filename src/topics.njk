@@ -1,0 +1,20 @@
+---
+layout: layouts/base.njk
+title: 按专题查阅
+description: 按数学、数据、深度学习、坐标、车辆和工程主题查阅课程。
+permalink: /topics.html
+bodyClass: portal-body
+---
+{% from "partials/course-card.njk" import courseCard with context %}
+{% set topics = curriculum.courses | uniqueTopics %}
+<div class="portal-wrap directory-page">
+  <header class="directory-heading"><p class="section-kicker">专题索引</p><h1>按问题查知识，不改变正式先修关系</h1><p class="lead">专题页用于复习和查阅；第一次学习仍建议从主页路线进入。</p></header>
+  <nav class="topic-jump" aria-label="专题快速导航">{% for topic in topics %}<a href="#topic-{{ loop.index }}">{{ topic }}</a>{% endfor %}</nav>
+  {% for topic in topics %}
+  {% set topicCourses = curriculum.courses | coursesByTopic(topic) %}
+  <section class="topic-section" id="topic-{{ loop.index }}">
+    <div class="section-heading compact-heading"><p class="section-kicker">{{ topicCourses.length }} 门课程</p><h2>{{ topic }}</h2></div>
+    <div class="course-grid topic-grid">{% for course in topicCourses %}{{ courseCard(course) }}{% endfor %}</div>
+  </section>
+  {% endfor %}
+</div>

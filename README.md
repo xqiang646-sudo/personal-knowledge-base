@@ -1,30 +1,58 @@
 # Personal Knowledge Base
 
-个人知识库网站，使用 GitHub Pages 发布。
+面向零基础实习生的自动驾驶学习知识库，使用 GitHub Pages 发布。首页不是文章列表，而是一条包含诊断、练习、交付物和阶段验收的统一学习路线。
 
-## 本地内容
+> V2 正在 `refactor/learning-system-v2` 分支试点：使用 Eleventy 从课程元数据和 Markdown 生成数学、数据、深度学习与自动驾驶路线。当前 GitHub Pages 仍保持原发布方式，V2 尚未切换上线。
 
-- `index.html`：网站首页
-- `assets/`：知识库图片资源
-- `notes/`：知识笔记目录
-  - `autonomous-driving-index.html`：自动驾驶知识分类总目录
-  - `autonomous-driving-overview.html`：自动驾驶系统总览
-  - `vehicle-hardware-network.html`：车辆硬件与车载网络
-  - `perception-maps.html`：感知算法与地图基础
-  - `planning-autoware.html`：规划控制与 Autoware
-  - `engineering-toolkit.html`：远程运维与开发工具
-  - `can-bus-interface.html`：CAN 总线接口、RViz/HMI 与 GPU 基础
-  - `gpu-workflow.html`：GPU 在自动驾驶中的工作流程图
-  - `mentor-index.html`：导师补充知识目录
-  - `evidence-first-engineering.html`：证据优先的工程排障
-  - `ros2-autoware-debugging.html`：沿 ROS 2 图谱排查数据链
-  - `perception-deployment-contracts.html`：感知模型从训练到部署的契约
-  - `validation-closure.html`：从候选结果到正式验证与交接闭环
-  - `nuscenes-dataset.html`：面向数据任务的 nuScenes 盘点、索引、QC、切分与交付课程
-  - `coordinate-transformations.html`：参考《视觉 SLAM 十四讲》的线性代数与刚体坐标变换课程
-  - `ackermann-bicycle-model.html`：从叉积和无侧滑约束推导阿克曼与运动学自行车模型
-  - `curvature-calculation.html`：从微积分和线性代数推导连续与离散路径曲率
+## V2 本地预览与校验
+
+```bash
+npm ci
+npm run dev
+```
+
+完整校验：
+
+```bash
+npm run check
+```
+
+V2 的课程事实来源位于 `src/_data/curriculum.json`，试点课程正文位于 `src/courses/`，生成目录 `_site/` 不提交到 Git。
+
+## V2 入口
+
+- `index.html`：由课程元数据生成的 T 型学习路线。
+- `topics.html`：按数学、数据、深度学习、车辆等专题查阅。
+- `mentor.html`：诊断、迁移任务、验收量表和课程映射。
+- `search.html`：Pagefind 生成的静态中文全文搜索。
+
+第一版进度使用浏览器 `localStorage`，支持未开始、学习中、产物已就绪以及 JSON 导入导出。导师验收和实习生作业不进入公开站点。
+
+## 零基础学习路线
+
+| 阶段 | 核心内容 | 建议投入 | 阶段产物 |
+| --- | --- | --- | --- |
+| P0 起点与工具 | 数学诊断、Python、Linux、Git、证据方法 | 27–38h | 数据脚本与基础证据卡 |
+| M1 数学核心 | 线性代数、微积分、概率论 | 36–44h | 坐标、曲率、场景切分实验 |
+| A1 数据主线 | 系统、传感器、坐标、感知、nuScenes | 38–54h | 可追溯 mini 数据包 |
+| DL 深度学习 | 训练闭环、MLP、CNN、ResNet、视觉数据 | 45–62h | 小型视觉实验与失败分析 |
+| E1 ROS/Autoware | 规划控制与只读数据链排障 | 14–18h | 断链分析报告 |
+| E2 车辆控制 | 曲率、自行车、阿克曼、离线 CAN | 18–26h | 轨迹仿真与边界分析 |
+| P4 工程交付 | 数据契约、部署和验证闭环 | 10–16h | 可由他人复现的结业证据包 |
+
+基础数据任务不必等待全部课程完成：路线在基础协作、独立数据任务和视觉模型实验三个里程碑分别产生产物。
+
+## 内容组织
+
+- `src/_data/curriculum.json`：课程、阶段、先修关系和交付物的唯一元数据源。
+- `src/courses/`：Markdown 课程正文，公式统一使用 LaTeX。
+- `src/_includes/`：课程、导航和页面布局。
+- `src/assets/`：V2 样式和设备本地进度逻辑。
+- `notes/`：尚未完成 Markdown 迁移的现有课程，构建时保持原 URL。
+- `scripts/`：课程依赖、内容和站内链接校验。
+
+V2 试点包含数学入口诊断、线性代数、微积分、概率论和第一个深度学习训练闭环。D2L 作为深度学习参考路线，知识库使用自己的自动驾驶例子、练习和验收标准。
 
 ## 公开内容边界
 
-导师补充内容使用原创文字、公开官方资料和合成占位符示例，不收录真实账号、IP、主机名、车辆标识、内部仓库路径、现场日志或未公开指标。具体项目结论仍需在目标主机、版本、配置和场景中重新验证。
+课程使用原创文字、公开官方资料和通用或合成示例，不收录真实账号、密码、IP、主机名、车辆标识、内部仓库路径、现场日志或未公开指标。完成课程不自动获得真实车辆写操作、生产发布或正式验收权限；项目结论仍需在目标主机、版本、配置和场景中重新验证。

@@ -1,0 +1,56 @@
+---
+layout: layouts/base.njk
+---
+{% set course = curriculum.courses | courseById(courseId) %}
+{% set stage = curriculum.stages | stageById(course.stage) %}
+{% set prerequisites = curriculum.courses | prerequisiteCourses(course.prerequisites) %}
+{% set previousCourse = curriculum.courses | previousAvailableCourse(course.id) %}
+{% set nextCourse = curriculum.courses | nextAvailableCourse(course.id) %}
+
+<div class="portal-wrap course-shell" data-pagefind-body>
+  <aside class="course-sidebar" data-pagefind-ignore>
+    <p class="section-kicker">{{ stage.code }} · {{ stage.title }}</p>
+    <a class="course-back" href="{{ '/' | siteUrl }}#stage-{{ stage.id }}">← 返回学习路线</a>
+    <div class="course-progress-card">
+      <label for="progress-{{ course.id }}">本课学习状态</label>
+      <select id="progress-{{ course.id }}" data-progress-select data-course-id="{{ course.id }}">
+        <option value="not-started">未开始</option>
+        <option value="in-progress">学习中</option>
+        <option value="artifact-ready">产物已就绪</option>
+      </select>
+      <p>状态仅保存在当前浏览器；导师验收记录不进入公开网站。</p>
+    </div>
+    <dl class="course-facts compact">
+      <div><dt>预计时间</dt><dd>{{ course.effort }}</dd></div>
+      <div><dt>路线</dt><dd>{{ course.track }}</dd></div>
+      <div><dt>交付物</dt><dd>{{ course.deliverable }}</dd></div>
+    </dl>
+    <div class="sidebar-section">
+      <h2>先修课程</h2>
+      {% if prerequisites.length %}
+      <ul>
+        {% for item in prerequisites %}
+        <li>{% if item.url %}<a href="{{ item.url | siteUrl }}">{{ item.title }}</a>{% else %}<span>{{ item.title }}（待建设）</span>{% endif %}</li>
+        {% endfor %}
+      </ul>
+      {% else %}<p>无硬性先修，从这里开始即可。</p>{% endif %}
+    </div>
+  </aside>
+  <article class="course-content">
+    <div class="course-heading">
+      <div class="course-top">
+        <span class="course-order">{{ stage.code }}</span>
+        <span class="tag">{{ course.track }}</span>
+        <span class="tag">{{ course.effort }}</span>
+      </div>
+      <h1>{{ course.title }}</h1>
+      <p class="lead">{{ course.description }}</p>
+      <div class="course-outcome"><strong>本课交付：</strong>{{ course.deliverable }}</div>
+    </div>
+    {{ content | safe }}
+    <nav class="course-next" aria-label="课程前后导航" data-pagefind-ignore>
+      {% if previousCourse %}<a href="{{ previousCourse.url | siteUrl }}"><span>上一课</span><strong>{{ previousCourse.title }}</strong></a>{% else %}<span></span>{% endif %}
+      {% if nextCourse %}<a class="next" href="{{ nextCourse.url | siteUrl }}"><span>下一课</span><strong>{{ nextCourse.title }}</strong></a>{% endif %}
+    </nav>
+  </article>
+</div>

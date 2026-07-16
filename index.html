@@ -3,109 +3,340 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="记录自动驾驶、人工智能与工程实践的个人知识库。">
-  <title>我的个人知识库</title>
-  <style>
-    :root {
-      color-scheme: light;
-      --bg: #f5f7fb;
-      --surface: #ffffff;
-      --text: #172033;
-      --muted: #687085;
-      --brand: #3157d5;
-      --line: #e2e6ef;
-      font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-    }
-    * { box-sizing: border-box; }
-    body { margin: 0; background: var(--bg); color: var(--text); line-height: 1.7; }
-    header { background: linear-gradient(135deg, #172554, #3157d5); color: white; }
-    .wrap { width: min(960px, calc(100% - 40px)); margin: 0 auto; }
-    .hero { padding: 72px 0 64px; }
-    .eyebrow { margin: 0 0 8px; opacity: .72; font-size: 14px; letter-spacing: .12em; }
-    h1 { margin: 0; font-size: clamp(34px, 7vw, 58px); line-height: 1.15; }
-    .intro { max-width: 600px; margin: 18px 0 0; color: #dce5ff; font-size: 18px; }
-    main { padding: 48px 0 80px; }
-    .section-title { margin: 0 0 20px; font-size: 24px; }
-    .cards { display: grid; gap: 20px; }
-    .card {
-      display: block;
-      padding: 28px;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: var(--surface);
-      color: inherit;
-      text-decoration: none;
-      box-shadow: 0 10px 28px rgba(30, 45, 90, .06);
-      transition: transform .18s ease, box-shadow .18s ease;
-    }
-    .card:hover { transform: translateY(-3px); box-shadow: 0 16px 36px rgba(30, 45, 90, .12); }
-    .card:focus-visible { outline: 3px solid #f59e0b; outline-offset: 3px; }
-    .meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
-    .tag { padding: 3px 10px; border-radius: 999px; background: #edf1ff; color: var(--brand); font-size: 13px; }
-    h2 { margin: 0 0 10px; font-size: 25px; }
-    .summary { margin: 0; color: var(--muted); }
-    .read { display: inline-block; margin-top: 18px; color: var(--brand); font-weight: 650; }
-    footer { padding: 24px 0 40px; color: var(--muted); font-size: 14px; }
-    @media (prefers-reduced-motion: reduce) {
-      .card { transition: none; }
-      .card:hover { transform: none; }
-    }
-  </style>
+  <meta name="description" content="面向零基础实习生的自动驾驶学习路线：从计算机、Python 和数学预备知识，逐步学习系统、硬件、数据、感知、Autoware、车辆模型、部署与验证。">
+  <title>零基础自动驾驶学习路线｜个人知识库</title>
+  <link rel="stylesheet" href="assets/knowledge.css">
 </head>
-<body>
-  <header>
-    <div class="wrap hero">
-      <p class="eyebrow">PERSONAL KNOWLEDGE BASE</p>
-      <h1>我的个人知识库</h1>
-      <p class="intro">记录、整理并连接自动驾驶、人工智能与工程实践中的关键知识。</p>
+<body class="portal-body">
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+
+  <header class="site-header">
+    <div class="portal-wrap">
+      <nav class="site-nav" aria-label="知识库导航">
+        <a class="site-brand" href="index.html">个人知识库</a>
+        <div class="site-nav-links">
+          <a href="#learning-path">学习路线</a>
+          <a href="#branches">能力分支</a>
+          <a href="notes/mentor-index.html">带教面板</a>
+        </div>
+      </nav>
+
+      <div class="portal-hero">
+        <div>
+          <p class="eyebrow">INTERN LEARNING PATH · 从零开始</p>
+          <h1>从看懂一个名词，走到完成一次可复查的工程交付</h1>
+          <p class="hero-intro">默认学习者不会 Linux、Python、ROS 2、线性代数和自动驾驶。路线先补最小基础，再用 16 门课程串起系统、数据、几何、运行时、部署和验证。</p>
+          <div class="hero-actions">
+            <a class="button" href="#stage-0">从阶段 0 开始</a>
+            <a class="button button-secondary" href="#how-to-learn">先看学习方法</a>
+          </div>
+        </div>
+        <aside class="hero-card" aria-label="学习路线默认起点">
+          <span class="hero-card-label">默认起点</span>
+          <strong>完全零基础</strong>
+          <ul class="plain-list">
+            <li>术语先解释，再使用。</li>
+            <li>公式从定义和直觉开始。</li>
+            <li>命令先说明在哪台机器执行。</li>
+            <li>任何结论都要带范围和证据。</li>
+          </ul>
+        </aside>
+      </div>
+
+      <div class="portal-stats" aria-label="学习路线规模">
+        <div><strong>16</strong><span>门课程</span></div>
+        <div><strong>7</strong><span>个阶段</span></div>
+        <div><strong>110–150h</strong><span>建议总投入</span></div>
+        <div><strong>1</strong><span>个结业交付</span></div>
+      </div>
     </div>
   </header>
-  <main class="wrap">
-    <h2 class="section-title">最新条目</h2>
-    <div class="cards">
-      <a class="card" href="notes/mentor-index.html">
-        <div class="meta">
-          <span class="tag">导师补充</span>
-          <span class="tag">工程方法</span>
-          <span class="tag">数学基础</span>
+
+  <main id="main-content" class="portal-wrap portal-main">
+    <section class="portal-section" id="orientation">
+      <div class="section-heading">
+        <p class="section-kicker">先对齐边界</p>
+        <h2>“学完”到底意味着什么</h2>
+        <p>这条路线培养的是受限范围内的独立学习与工程交付能力，不把读过文章误写成生产权限或实车验收资格。</p>
+      </div>
+      <div class="grid three">
+        <div class="panel">
+          <h3>默认不假设</h3>
+          <p>不预设终端、Git、Python、ROS 2、矩阵、导数、数据集或车辆控制经验。</p>
         </div>
-        <h2>从知识到工程证据</h2>
-        <p class="summary">补充工程证据与验证方法，并用可授课课程建立 nuScenes 数据任务、坐标变换、车辆模型和曲率所需的数学基础。</p>
-        <span class="read">进入导师补充目录 →</span>
-      </a>
-      <a class="card" href="notes/autonomous-driving-index.html">
-        <div class="meta">
-          <span class="tag">专题目录</span>
-          <span class="tag">自动驾驶</span>
-          <span class="tag">Autoware</span>
+        <div class="panel">
+          <h3>结业可以做到</h3>
+          <p>完成小型数据任务、离线分析、只读排障和带环境边界的证据化交付。</p>
         </div>
-        <h2>自动驾驶知识体系</h2>
-        <p class="summary">分类整理系统原理、车辆硬件、车载网络、点云地图、感知算法、规划控制，以及 SSH、SCP、NoMachine 和 Git 工程工具。</p>
-        <span class="read">进入专题目录 →</span>
-      </a>
-      <a class="card" href="notes/gpu-workflow.html">
-        <div class="meta">
-          <span class="tag">自动驾驶</span>
-          <span class="tag">GPU</span>
-          <span class="tag">流程图</span>
+        <div class="panel">
+          <h3>结业不自动获得</h3>
+          <p>真实车辆写操作、生产发布、正式验收和扩大测试范围仍需要明确授权。</p>
         </div>
-        <h2>GPU 工作流程图（自动驾驶版）</h2>
-        <p class="summary">从传感器输入、CPU 预处理到 GPU 并行计算、AI 模型推理、感知结果和车辆控制，一张图看懂完整数据链路。</p>
-        <span class="read">查看流程图 →</span>
-      </a>
-      <a class="card" href="notes/can-bus-interface.html">
-        <div class="meta">
-          <span class="tag">自动驾驶</span>
-          <span class="tag">CAN 总线</span>
-          <span class="tag">GPU</span>
-          <span class="tag">入门</span>
-        </div>
-        <h2>CAN 总线接口功能解析</h2>
-        <p class="summary">从 CAN 报文、接线和终端电阻出发，理解 RViz、HMI、NVIDIA GPU 在自动驾驶系统中的位置，并用一张流程图串起完整数据链路。</p>
-        <span class="read">阅读笔记 →</span>
-      </a>
-    </div>
+      </div>
+    </section>
+
+    <section class="portal-section" id="how-to-learn">
+      <div class="section-heading">
+        <p class="section-kicker">学习闭环</p>
+        <h2>每一课都按五步完成，不以“看完页面”为终点</h2>
+      </div>
+      <ol class="learning-loop">
+        <li><span>1</span><strong>诊断</strong><p>先做先修小题，会的跳过，不会的补齐。</p></li>
+        <li><span>2</span><strong>理解</strong><p>用自己的话解释对象、输入、输出和假设。</p></li>
+        <li><span>3</span><strong>动手</strong><p>手算、写脚本或在沙箱执行只读检查。</p></li>
+        <li><span>4</span><strong>留证</strong><p>保存命令、输入、结果、版本、失败样本和边界。</p></li>
+        <li><span>5</span><strong>过门</strong><p>达到阶段验收后再进入下一阶段。</p></li>
+      </ol>
+      <div class="key"><p><strong>带教原则：</strong>学习者必须能解释、能做一个新例子、能指出失效条件并给出证据；背术语、背公式、背命令都不等于掌握。</p></div>
+    </section>
+
+    <section class="portal-section" id="learning-path">
+      <div class="section-heading">
+        <p class="section-kicker">唯一主线</p>
+        <h2>零基础到工程闭环的 7 个阶段</h2>
+        <p>建议按顺序完成。已有基础时可以通过阶段诊断跳过局部内容，但阶段交付和验收不能跳过。</p>
+      </div>
+
+      <nav class="stage-nav" aria-label="学习阶段快捷导航">
+        <a href="#stage-0">0 预备</a>
+        <a href="#stage-1">1 系统</a>
+        <a href="#stage-2">2 工具</a>
+        <a href="#stage-3">3 数据</a>
+        <a href="#stage-4">4 Autoware</a>
+        <a href="#stage-5">5 车辆</a>
+        <a href="#stage-6">6 交付</a>
+      </nav>
+
+      <ol class="stage-list">
+        <li class="learning-stage" id="stage-0">
+          <div class="stage-summary">
+            <span class="stage-number">阶段 0</span>
+            <h3>零基础预备</h3>
+            <p>先补共同语言和安全边界，避免后面每个术语都成为断点。</p>
+            <p class="stage-time">建议 18–24 小时</p>
+            <div class="stage-gate"><strong>阶段门：</strong>能在沙箱运行脚本、解释命令输出和退出码，并区分只读与写操作。</div>
+          </div>
+          <div class="course-grid">
+            <a class="course-card" href="notes/foundations-bootcamp.html">
+              <div class="course-top"><span class="course-order">01</span><span class="tag">必修</span><span class="tag">可诊断跳过</span></div>
+              <h4>零基础预备课</h4>
+              <p>计算机、Python、数学、时间与网络、ROS 词汇、机器学习统计和 CAN 数字基础。</p>
+              <span class="course-result"><strong>交付：</strong>基础诊断表与六组最小练习。</span>
+              <span class="course-link">开始第一课 →</span>
+            </a>
+          </div>
+        </li>
+
+        <li class="learning-stage" id="stage-1">
+          <div class="stage-summary">
+            <span class="stage-number">阶段 1</span>
+            <h3>建立系统全景</h3>
+            <p>先知道整车系统为什么存在，再认识硬件和 CPU/GPU 数据通路。</p>
+            <p class="stage-time">建议 6–8 小时</p>
+            <div class="stage-gate"><strong>阶段门：</strong>独立画出传感器到车辆执行的闭环，并标注每段数据和责任模块。</div>
+          </div>
+          <div class="course-grid">
+            <a class="course-card" href="notes/autonomous-driving-overview.html">
+              <div class="course-top"><span class="course-order">02</span><span class="tag">系统</span></div>
+              <h4>自动驾驶系统总览</h4>
+              <p>从测量、估计、决策和执行理解感知、定位、规划、控制与安全闭环。</p>
+              <span class="course-result"><strong>交付：</strong>一张系统闭环图。</span>
+              <span class="course-link">进入课程 →</span>
+            </a>
+            <a class="course-card" href="notes/vehicle-hardware-network.html">
+              <div class="course-top"><span class="course-order">03</span><span class="tag">硬件</span><span class="tag">网络</span></div>
+              <h4>车辆硬件与车载网络</h4>
+              <p>分清传感器、组合导航、IPC、VCU、交换机、路由器和常见接口。</p>
+              <span class="course-result"><strong>交付：</strong>硬件角色与数据链图。</span>
+              <span class="course-link">进入课程 →</span>
+            </a>
+            <a class="course-card" href="notes/gpu-workflow.html">
+              <div class="course-top"><span class="course-order">04</span><span class="tag">GPU 图解</span></div>
+              <h4>GPU 工作流程图</h4>
+              <p>看懂 CPU 预处理、显存、并行计算、模型推理和感知输出之间的分工。</p>
+              <span class="course-result"><strong>交付：</strong>CPU/GPU 分工说明。</span>
+              <span class="course-link">进入课程 →</span>
+            </a>
+          </div>
+        </li>
+
+        <li class="learning-stage" id="stage-2">
+          <div class="stage-summary">
+            <span class="stage-number">阶段 2</span>
+            <h3>掌握工程工具与证据</h3>
+            <p>会操作不等于会判断。先学安全地取得证据，再提出工程结论。</p>
+            <p class="stage-time">建议 8–12 小时</p>
+            <div class="stage-gate"><strong>阶段门：</strong>为一个虚构故障提交包含主机、版本、配置、时间和原始输出的证据卡。</div>
+          </div>
+          <div class="course-grid">
+            <a class="course-card" href="notes/engineering-toolkit.html">
+              <div class="course-top"><span class="course-order">05</span><span class="tag">Linux</span><span class="tag">Git</span></div>
+              <h4>远程运维与开发工具</h4>
+              <p>学习 SSH、SCP、NoMachine、VS Code Remote、Git、目录、网络、日志和服务。</p>
+              <span class="course-result"><strong>交付：</strong>沙箱操作记录与主机边界说明。</span>
+              <span class="course-link">进入课程 →</span>
+            </a>
+            <a class="course-card" href="notes/evidence-first-engineering.html">
+              <div class="course-top"><span class="course-order">06</span><span class="tag">M01</span><span class="tag">方法</span></div>
+              <h4>证据优先的工程排障</h4>
+              <p>区分源码、部署、运行和验收事实，先做只读采样，再建立假设。</p>
+              <span class="course-result"><strong>交付：</strong>一张可复查证据卡。</span>
+              <span class="course-link">进入课程 →</span>
+            </a>
+          </div>
+        </li>
+
+        <li class="learning-stage" id="stage-3">
+          <div class="stage-summary">
+            <span class="stage-number">阶段 3</span>
+            <h3>理解坐标、感知与数据任务</h3>
+            <p>先建立空间坐标，再把点云、地图、模型和 nuScenes 数据关系连起来。</p>
+            <p class="stage-time">建议 28–36 小时</p>
+            <div class="stage-gate"><strong>阶段门：</strong>交付一份可追溯 mini 数据包，所有点、框、位姿和统计都声明坐标系、时间和分母。</div>
+          </div>
+          <div class="course-grid">
+            <a class="course-card" href="notes/coordinate-transformations.html">
+              <div class="course-top"><span class="course-order">07</span><span class="tag">M06</span><span class="tag">数学</span></div>
+              <h4>从线性代数到坐标系转换</h4>
+              <p>从向量、基和换基推导旋转、平移、齐次变换、四元数与传感器坐标链。</p>
+              <span class="course-result"><strong>交付：</strong>手算例题、变换脚本和往返测试。</span>
+              <span class="course-link">进入课程 →</span>
+            </a>
+            <a class="course-card" href="notes/perception-maps.html">
+              <div class="course-top"><span class="course-order">08</span><span class="tag">感知</span><span class="tag">地图</span></div>
+              <h4>感知算法与地图基础</h4>
+              <p>认识点云、地图、检测、融合、跟踪、预测、YOLOX、BEVFusion、训练与推理。</p>
+              <span class="course-result"><strong>交付：</strong>感知输入—处理—输出契约图。</span>
+              <span class="course-link">进入课程 →</span>
+            </a>
+            <a class="course-card" href="notes/nuscenes-dataset.html">
+              <div class="course-top"><span class="course-order">09</span><span class="tag">M05</span><span class="tag">数据任务</span></div>
+              <h4>nuScenes 数据集与数据任务入门</h4>
+              <p>完成盘点、索引、QC、scene split、标签合同、统计、可视化和交付。</p>
+              <span class="course-result"><strong>交付：</strong>inventory、manifests、QC 与 dataset card。</span>
+              <span class="course-link">进入课程 →</span>
+            </a>
+          </div>
+        </li>
+
+        <li class="learning-stage" id="stage-4">
+          <div class="stage-summary">
+            <span class="stage-number">阶段 4</span>
+            <h3>进入 Autoware 与 ROS 2 运行时</h3>
+            <p>理解规划控制的职责，再沿 ROS 2 图谱证明数据在哪一段失效。</p>
+            <p class="stage-time">建议 14–18 小时</p>
+            <div class="stage-gate"><strong>阶段门：</strong>在合成或离线环境完成一次只读断链分析，结论能指向具体发布者、契约或消费者。</div>
+          </div>
+          <div class="course-grid">
+            <a class="course-card" href="notes/planning-autoware.html">
+              <div class="course-top"><span class="course-order">10</span><span class="tag">规划</span><span class="tag">Autoware</span></div>
+              <h4>规划控制与 Autoware</h4>
+              <p>分清 route、scenario、behavior、path、trajectory、control 和主要功能域。</p>
+              <span class="course-result"><strong>交付：</strong>规划控制分层图与消息语义表。</span>
+              <span class="course-link">进入课程 →</span>
+            </a>
+            <a class="course-card" href="notes/ros2-autoware-debugging.html">
+              <div class="course-top"><span class="course-order">11</span><span class="tag">M02</span><span class="tag">ROS 2</span></div>
+              <h4>沿 ROS 2 图谱排查数据链</h4>
+              <p>从进程、节点、话题、QoS、频率、内容、时间和 TF 逐层查找断点。</p>
+              <span class="course-result"><strong>交付：</strong>一份可复现的断链定位报告。</span>
+              <span class="course-link">进入课程 →</span>
+            </a>
+          </div>
+        </li>
+
+        <li class="learning-stage" id="stage-5">
+          <div class="stage-summary">
+            <span class="stage-number">阶段 5</span>
+            <h3>理解车辆运动与控制接口</h3>
+            <p>从无侧滑和曲率走到轨迹、转角和离线 CAN 信号，不在真实车辆上试发命令。</p>
+            <p class="stage-time">建议 20–24 小时</p>
+            <div class="stage-gate"><strong>阶段门：</strong>通过直线、圆、左右转、倒车、噪声和离线报文测试，并解释模型失效条件。</div>
+          </div>
+          <div class="course-grid">
+            <a class="course-card" href="notes/ackermann-bicycle-model.html">
+              <div class="course-top"><span class="course-order">12</span><span class="tag">M07</span><span class="tag">车辆模型</span></div>
+              <h4>阿克曼转向与自行车模型</h4>
+              <p>第一遍学到自行车模型；完成下一课曲率后，再回来学习倒车、积分和质心模型。</p>
+              <span class="course-result"><strong>交付：</strong>公式推导与小型轨迹仿真。</span>
+              <span class="course-link">进入课程 →</span>
+            </a>
+            <a class="course-card" href="notes/curvature-calculation.html">
+              <div class="course-top"><span class="course-order">13</span><span class="tag">M08</span><span class="tag">曲率</span></div>
+              <h4>从微积分和线性代数推导曲率</h4>
+              <p>从弧长、导数和行列式推导连续曲率、三点曲率和航向差分。</p>
+              <span class="course-result"><strong>交付：</strong>曲率实现、数值实验和边界测试。</span>
+              <span class="course-link">进入课程 →</span>
+            </a>
+            <a class="course-card" href="notes/can-bus-interface.html">
+              <div class="course-top"><span class="course-order">14</span><span class="tag">CAN</span><span class="tag">仅离线</span></div>
+              <h4>CAN 总线接口功能解析</h4>
+              <p>理解报文、接线、终端电阻、DBC、RViz/HMI 和车辆接口的边界。</p>
+              <span class="course-result"><strong>交付：</strong>离线帧解码与控制信号映射。</span>
+              <span class="course-link">进入课程 →</span>
+            </a>
+          </div>
+        </li>
+
+        <li class="learning-stage" id="stage-6">
+          <div class="stage-summary">
+            <span class="stage-number">阶段 6</span>
+            <h3>把结果变成可交付结论</h3>
+            <p>最后统一训练/部署契约、性能口径、回归证据和正式结论边界。</p>
+            <p class="stage-time">建议 16–24 小时</p>
+            <div class="stage-gate"><strong>结业门：</strong>另一位工程师能按文档复现结果，失败、未执行项和目标环境边界没有被隐藏。</div>
+          </div>
+          <div class="course-grid">
+            <a class="course-card" href="notes/perception-deployment-contracts.html">
+              <div class="course-top"><span class="course-order">15</span><span class="tag">M03</span><span class="tag">部署</span></div>
+              <h4>训练到部署的契约</h4>
+              <p>对齐数据、几何、语义、运行时和性能，避免“引擎能跑”被误写成结果等价。</p>
+              <span class="course-result"><strong>交付：</strong>训练/部署 manifest 与 golden sample 记录。</span>
+              <span class="course-link">进入课程 →</span>
+            </a>
+            <a class="course-card" href="notes/validation-closure.html">
+              <div class="course-top"><span class="course-order">16</span><span class="tag">M04</span><span class="tag">结业</span></div>
+              <h4>从候选结果到正式结论</h4>
+              <p>定义环境、场景、指标、例外、回归和交接，把一次成功升级成可复查结论。</p>
+              <span class="course-result"><strong>交付：</strong>结业项目的完整证据包与复现说明。</span>
+              <span class="course-link">进入最后一课 →</span>
+            </a>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="portal-section" id="branches">
+      <div class="section-heading">
+        <p class="section-kicker">主线完成后</p>
+        <h2>按任务方向加深，不重新开一套基础课</h2>
+      </div>
+      <div class="grid">
+        <div class="panel"><span class="tag">数据 / 感知</span><h3>数据质量与模型输入</h3><p>深做坐标、nuScenes、感知、GPU 与部署契约，交付数据卡、QC、可视化和模型输入 manifest。</p></div>
+        <div class="panel"><span class="tag">ROS / 集成</span><h3>数据链与系统排障</h3><p>深做工程工具、证据卡、Autoware、ROS 2 和只读 CAN 诊断，交付可复现的断链报告。</p></div>
+        <div class="panel"><span class="tag">规划 / 控制</span><h3>几何、轨迹与车辆接口</h3><p>深做坐标、阿克曼、曲率、规划控制和离线 CAN 映射，交付带边界测试的几何工具。</p></div>
+        <div class="panel"><span class="tag">部署 / 验证</span><h3>运行时契约与回归</h3><p>深做 GPU、部署契约、证据方法和验证闭环，交付环境矩阵、golden samples 与回归报告。</p></div>
+      </div>
+    </section>
+
+    <section class="portal-section portal-cta" aria-labelledby="browse-title">
+      <div>
+        <p class="section-kicker">两种辅助入口</p>
+        <h2 id="browse-title">主线在这里，专题索引和带教面板只负责查阅</h2>
+        <p>想按主题找文章时使用专题索引；准备一对一授课、诊断和验收时使用带教面板。</p>
+      </div>
+      <div class="hero-actions">
+        <a class="button" href="notes/autonomous-driving-index.html">按主题查阅</a>
+        <a class="button button-secondary dark" href="notes/mentor-index.html">进入带教面板</a>
+      </div>
+    </section>
   </main>
-  <footer class="wrap">持续学习，持续整理。</footer>
+
+  <footer class="site-footer">
+    <div class="portal-wrap footer-grid">
+      <p>最后整理：2026-07-16。示例使用通用占位符；真实项目结论必须回到目标主机、版本、配置和运行证据验证。</p>
+      <a href="https://github.com/xqiang646-sudo/personal-knowledge-base">GitHub 仓库</a>
+    </div>
+  </footer>
 </body>
 </html>

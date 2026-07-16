@@ -3,78 +3,153 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="自动驾驶基础知识分类目录：系统、硬件、感知、地图、规划、Autoware与工程工具。">
-  <title>自动驾驶知识体系｜我的个人知识库</title>
+  <meta name="description" content="自动驾驶知识按主题查阅入口：覆盖系统、车端、数据、坐标、感知、车辆运动、规划与工程闭环；零基础学习顺序以首页主线为准。">
+  <title>按主题查阅自动驾驶知识｜我的个人知识库</title>
   <link rel="stylesheet" href="../assets/knowledge.css">
 </head>
 <body>
-  <nav class="topbar"><div class="wrap"><a class="back" href="../index.html">← 返回知识库</a></div></nav>
+  <nav class="topbar"><div class="wrap"><a class="back" href="../index.html">← 返回零基础首页</a></div></nav>
   <main class="page wrap">
-    <div class="meta">专题目录 · 整理于 2026-07-15</div>
-    <h1>自动驾驶知识体系</h1>
-    <p class="lead">将实车硬件、Autoware 软件、感知算法、地图规划和远程工程操作放进同一条数据链路中理解。</p>
+    <div class="meta">兼容入口 · 按主题查阅 · 复核于 2026-07-16</div>
+    <h1>按主题查阅自动驾驶知识</h1>
+    <p class="lead">已经知道自己要查什么时，可以从系统、车端、数据、运动或工程问题直接进入对应课程。本页是查阅索引，不是另一条学习顺序。</p>
 
-    <div class="flow" aria-label="自动驾驶系统主流程">
-      <div class="flow-row">
-        <div class="node">传感器<br>图像/点云</div><div class="arrow">→</div>
-        <div class="node accent">感知与定位<br>理解环境</div><div class="arrow">→</div>
-        <div class="node">地图与规划<br>生成轨迹</div><div class="arrow">→</div>
-        <div class="node accent">控制与 CAN<br>发送指令</div><div class="arrow">→</div>
-        <div class="node">车辆执行<br>形成闭环</div>
-      </div>
-    </div>
+    <a class="link-card" href="../index.html#learning-path">
+      <span class="tag">唯一学习主线</span><span class="tag">零基础从这里开始</span>
+      <h3>进入完整学习路线</h3>
+      <p>第一次学习或不确定先后关系时，请回到首页，按统一阶段完成课程、练习与验收。</p>
+    </a>
 
-    <h2>按主题学习</h2>
-    <div class="grid">
-      <a class="link-card" href="autonomous-driving-overview.html">
-        <span class="tag">01 系统</span>
-        <h3>自动驾驶系统总览</h3>
-        <p>从第一性原理理解传感器、定位、地图、感知、规划、控制与车辆接口。</p>
-      </a>
-      <a class="link-card" href="vehicle-hardware-network.html">
-        <span class="tag">02 硬件</span><span class="tag">网络</span>
-        <h3>车辆硬件与车载网络</h3>
-        <p>摄像头、雷达、组合导航、ADCU、IPC、VCU、交换机、路由器和常见接口。</p>
-      </a>
-      <a class="link-card" href="perception-maps.html">
-        <span class="tag">03 感知</span><span class="tag">地图</span>
-        <h3>感知算法与地图基础</h3>
-        <p>点云、矢量地图、Lanelet2、YOLOX、BEVFusion、训练、推理、跟踪与预测。</p>
-      </a>
-      <a class="link-card" href="planning-autoware.html">
-        <span class="tag">04 规划</span><span class="tag">Autoware</span>
-        <h3>规划控制与 Autoware</h3>
-        <p>Scenario、Behavior、Motion Planner 的分工，以及 Autoware 各功能域。</p>
-      </a>
-      <a class="link-card" href="engineering-toolkit.html">
-        <span class="tag">05 工程实践</span>
-        <h3>远程运维与开发工具</h3>
-        <p>SSH、SCP、NoMachine、VS Code Remote SSH、Git、Linux 和网络排障。</p>
-      </a>
-      <a class="link-card" href="can-bus-interface.html">
-        <span class="tag">专题</span>
-        <h3>CAN 总线接口功能解析</h3>
-        <p>报文、接线、波特率、终端电阻、DBC、RViz 与 HMI。</p>
-      </a>
-      <a class="link-card" href="gpu-workflow.html">
-        <span class="tag">专题</span>
-        <h3>GPU 工作流程图</h3>
-        <p>CPU 与 GPU 如何配合完成感知、模型推理和车辆控制。</p>
-      </a>
-    </div>
-
-    <h2>导师补充</h2>
-    <div class="grid">
-      <a class="link-card" href="mentor-index.html">
-        <span class="tag">工程方法</span><span class="tag">数学基础</span>
-        <h3>从知识到工程证据</h3>
-        <p>学习工程证据与验证闭环，并通过可授课的 nuScenes 数据任务、坐标变换、车辆模型和曲率课程补齐数学基础。</p>
-      </a>
-    </div>
+    <nav class="toc" aria-label="主题快速跳转">
+      <a href="#foundation">基础预备</a>
+      <a href="#system">系统全景</a>
+      <a href="#vehicle">车端与计算</a>
+      <a href="#data">数据与空间</a>
+      <a href="#motion">运动与规划</a>
+      <a href="#engineering">工程闭环</a>
+    </nav>
 
     <div class="key">
-      <p><strong>建议学习顺序：</strong>先掌握系统总览和硬件数据流，再学习点云、地图和感知，之后进入规划控制，最后用工程工具在真实平台上验证每一层。</p>
+      <p><strong>怎样使用本页：</strong>按当前问题选主题，不按卡片位置判断先后。课程之间的先修关系、推荐顺序和“下一课”都以首页学习主线为准。</p>
     </div>
+
+    <section id="foundation">
+      <h2>基础预备：不知道术语或工具时先回到这里</h2>
+      <div class="grid">
+        <a class="link-card" href="foundations-bootcamp.html">
+          <span class="tag">零基础</span><span class="tag">诊断后学习</span>
+          <h3>计算机、Python 与数学预备课</h3>
+          <p>补齐文件与命令、Python 数据工具、向量矩阵与导数、时间和网络、ROS 词汇、统计和 CAN 数字基础。</p>
+        </a>
+      </div>
+    </section>
+
+    <section id="system">
+      <h2>系统全景：先回答“自动驾驶整体怎样工作”</h2>
+      <div class="grid">
+        <a class="link-card" href="autonomous-driving-overview.html">
+          <span class="tag">系统总览</span><span class="tag">第一性原理</span>
+          <h3>自动驾驶系统总览</h3>
+          <p>理解传感器、定位、地图、感知、规划、控制与车辆接口怎样组成闭环。</p>
+        </a>
+      </div>
+    </section>
+
+    <section id="vehicle">
+      <h2>车端与计算：数据从哪里来、在哪里算、怎样发给车辆</h2>
+      <div class="grid">
+        <a class="link-card" href="vehicle-hardware-network.html">
+          <span class="tag">车辆硬件</span><span class="tag">车载网络</span>
+          <h3>车辆硬件与车载网络</h3>
+          <p>认识摄像头、雷达、组合导航、ADCU、IPC、VCU、交换机、路由器和常见接口。</p>
+        </a>
+        <a class="link-card" href="gpu-workflow.html">
+          <span class="tag">GPU</span><span class="tag">数据链路</span>
+          <h3>GPU 工作流程图</h3>
+          <p>理解 CPU 与 GPU 如何配合完成预处理、模型推理、感知输出和后续控制。</p>
+        </a>
+        <a class="link-card" href="can-bus-interface.html">
+          <span class="tag">CAN</span><span class="tag">车辆接口</span>
+          <h3>CAN 总线接口功能解析</h3>
+          <p>查阅报文、接线、波特率、终端电阻、DBC，以及 RViz、HMI 与车辆接口的分工。</p>
+        </a>
+      </div>
+    </section>
+
+    <section id="data">
+      <h2>数据与空间：数据怎样组织，坐标怎样统一，感知怎样理解环境</h2>
+      <div class="grid">
+        <a class="link-card" href="nuscenes-dataset.html">
+          <span class="tag">nuScenes</span><span class="tag">数据任务</span>
+          <h3>nuScenes 数据集与数据任务入门</h3>
+          <p>从数据关系走到盘点、索引、QC、scene split、标签合同、统计和可追溯交付。</p>
+        </a>
+        <a class="link-card" href="coordinate-transformations.html">
+          <span class="tag">坐标系</span><span class="tag">线性代数</span>
+          <h3>从线性代数到坐标系转换</h3>
+          <p>从基和换基推导旋转、平移、SO(3)、SE(3)、四元数和多传感器坐标链。</p>
+        </a>
+        <a class="link-card" href="perception-maps.html">
+          <span class="tag">感知</span><span class="tag">地图</span>
+          <h3>感知算法与地图基础</h3>
+          <p>查阅点云、矢量地图、Lanelet2、YOLOX、BEVFusion、训练、推理、跟踪与预测。</p>
+        </a>
+      </div>
+    </section>
+
+    <section id="motion">
+      <h2>运动与规划：车辆为什么这样转，轨迹为什么这样弯</h2>
+      <div class="grid">
+        <a class="link-card" href="ackermann-bicycle-model.html">
+          <span class="tag">车辆模型</span><span class="tag">几何推导</span>
+          <h3>阿克曼转向与自行车模型完整推导</h3>
+          <p>从刚体点速度和无侧滑约束推到 ICR、内外轮转角、运动方程与倒车符号。</p>
+        </a>
+        <a class="link-card" href="curvature-calculation.html">
+          <span class="tag">曲率</span><span class="tag">微积分</span>
+          <h3>从微积分和线性代数推导曲率</h3>
+          <p>从行列式、导数、链式法则和弧长推出连续与离散曲率，并分析采样和噪声。</p>
+        </a>
+        <a class="link-card" href="planning-autoware.html">
+          <span class="tag">规划控制</span><span class="tag">Autoware</span>
+          <h3>规划控制与 Autoware</h3>
+          <p>理解 Scenario、Behavior、Motion Planner 的分工，以及 Autoware 各功能域。</p>
+        </a>
+      </div>
+    </section>
+
+    <section id="engineering">
+      <h2>工程闭环：怎样进入环境、定位问题、部署并形成正式结论</h2>
+      <div class="grid">
+        <a class="link-card" href="engineering-toolkit.html">
+          <span class="tag">工程工具</span><span class="tag">远程操作</span>
+          <h3>远程运维与开发工具</h3>
+          <p>查阅 SSH、SCP、NoMachine、VS Code Remote SSH、Git、Linux 和网络排障。</p>
+        </a>
+        <a class="link-card" href="evidence-first-engineering.html">
+          <span class="tag">工程方法</span><span class="tag">证据</span>
+          <h3>证据优先的工程排障</h3>
+          <p>区分源码事实、部署配置和实时运行状态，把现象、假设、证据和结论分开。</p>
+        </a>
+        <a class="link-card" href="ros2-autoware-debugging.html">
+          <span class="tag">ROS 2</span><span class="tag">Autoware</span>
+          <h3>沿 ROS 2 图谱排查数据链</h3>
+          <p>从进程、节点、话题、QoS、时间戳、TF 到消息语义，证明数据在哪一层中断。</p>
+        </a>
+        <a class="link-card" href="perception-deployment-contracts.html">
+          <span class="tag">感知部署</span><span class="tag">接口契约</span>
+          <h3>训练到部署的契约</h3>
+          <p>对齐数据、坐标、尺寸、标定、类别、精度、前后处理和端到端时延。</p>
+        </a>
+        <a class="link-card" href="validation-closure.html">
+          <span class="tag">验证</span><span class="tag">闭环</span>
+          <h3>从候选结果到正式结论</h3>
+          <p>明确环境、场景、指标、证据、例外和回归条件，让“通过”可以复查和复现。</p>
+        </a>
+      </div>
+    </section>
+
+    <div class="related"><a href="../index.html#learning-path">不确定下一步？返回唯一学习主线 →</a></div>
   </main>
 </body>
 </html>

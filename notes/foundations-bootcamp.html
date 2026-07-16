@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="自动驾驶零基础预备课：计算机与安全边界、Python 数据工具、数学桥梁、时间网络与 ROS 2、机器学习与统计、CAN 数字基础。">
+  <title>零基础预备课 F00–F05｜我的个人知识库</title>
+  <link rel="stylesheet" href="../assets/knowledge.css">
+  <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
+</head>
+<body>
+  <nav class="topbar"><div class="wrap"><a class="back" href="../index.html#learning-path">← 返回零基础学习路线</a></div></nav>
+  <article class="page wrap">
+    <div class="meta">零基础预备课 F00–F05 · 建议 18–24 小时 · 复核于 2026-07-16</div>
+    <h1>进入自动驾驶之前，先补齐共同语言</h1>
+    <p class="lead">自动驾驶工程会同时出现终端、Python、矩阵、时间戳、ROS 2、模型指标和 CAN 报文。本课不追求一次学深，而是建立后续课程真正会用到的最小能力：能读、能算、能写一个小脚本、能区分证据与猜测，也知道什么操作不能擅自做。</p>
+
+    <div class="warning">
+      <p><strong>安全与公开边界：</strong>本页只使用公开概念、文档保留地址和离线数据。练习必须在个人沙箱、教学容器、公开数据集或仿真环境完成。未经明确授权，不连接真实车辆，不发布控制消息，不发送 CAN 帧，不修改运行参数，不重启服务，也不把账号、密钥、内部地址或真实路径写进作业。</p>
+    </div>
+
+    <div class="panel provenance">
+      <p><strong>对象：</strong>没有 Linux、Python、ROS、机器学习或车辆通信经验的自动驾驶实习生。</p>
+      <p><strong>课程边界：</strong>这是后续课程的最低共同基础，不替代系统的编程、数学、网络、机器学习或车辆安全训练。命令、软件版本和接口细节应以当前目标环境及其官方文档为准。</p>
+    </div>
+
+    <div class="toc">
+      <a href="#route">学习路线</a><a href="#diagnostic">课前诊断</a><a href="#f00">F00 计算机与安全</a><a href="#f01">F01 Python 数据工具</a><a href="#f02">F02 数学桥梁</a><a href="#f03">F03 时间、网络与 ROS</a><a href="#f04">F04 机器学习与统计</a><a href="#f05">F05 CAN 数字基础</a><a href="#capstone">综合练习</a><a href="#acceptance">总验收</a><a href="#sources">官方资料</a>
+    </div>
+
+    <section id="route">
+      <h2>学习路线：先守住边界，再建立工具和语言</h2>
+      <div class="flow" role="img" aria-label="零基础预备课从安全边界到综合验收的学习路线">
+        <div class="flow-row">
+          <div class="node accent">F00<br>安全与计算机</div><div class="arrow">→</div>
+          <div class="node">F01<br>Python 与数据</div><div class="arrow">→</div>
+          <div class="node">F02<br>数学桥梁</div><div class="arrow">→</div>
+          <div class="node">F03<br>时间、网络、ROS</div><div class="arrow">→</div>
+          <div class="node">F04<br>模型与统计</div><div class="arrow">→</div>
+          <div class="node accent">F05<br>离线 CAN</div>
+        </div>
+      </div>
+      <p>F00 的安全边界不可跳过。F01 和 F02 可按基础并行学习；F03–F05 依赖前面的命令、数据、单位和二进制概念。完成每节的最小练习并通过验收后再进入下一节。</p>
+      <div class="table-wrap" role="region" aria-label="零基础预备课模块、时间和产物" tabindex="0">
+        <table>
+          <caption>建议时间按完全零基础估算；诊断通过的内容可以缩短，但不能跳过安全验收</caption>
+          <thead><tr><th scope="col">模块</th><th scope="col">建议时间</th><th scope="col">最小产物</th><th scope="col">后续连接</th></tr></thead>
+          <tbody>
+            <tr><td>F00 计算机与安全边界</td><td>2–3 h</td><td>命令拆解与操作分级表</td><td>工程工具、证据优先</td></tr>
+            <tr><td>F01 Python 数据工具</td><td>4–5 h</td><td>可重复运行的数据摘要脚本</td><td>nuScenes、模型部署、数值实验</td></tr>
+            <tr><td>F02 数学桥梁</td><td>4–5 h</td><td>单位、向量、矩阵与差分手算</td><td>坐标变换、车辆模型、曲率</td></tr>
+            <tr><td>F03 时间、网络与 ROS 词汇</td><td>3–4 h</td><td>数据流图和只读检查记录</td><td>车辆网络、ROS 2、Autoware</td></tr>
+            <tr><td>F04 机器学习与统计</td><td>3–4 h</td><td>无泄漏切分与指标卡</td><td>感知、训练、部署、验证</td></tr>
+            <tr><td>F05 CAN 数字基础</td><td>2–3 h</td><td>离线报文解码表</td><td>车辆接口与 CAN 排障</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="diagnostic">
+      <h2>课前诊断：不会并不可怕，猜着做才危险</h2>
+      <p>先独立完成，不搜索答案。每题都要“解释 + 做一个最小例子”，不能只回答“知道”。诊断只决定补课重点，不用于淘汰。</p>
+      <div class="table-wrap" role="region" aria-label="零基础预备课诊断题" tabindex="0">
+        <table>
+          <caption>答不清的题，直接进入对应模块学习</caption>
+          <thead><tr><th scope="col">诊断题</th><th scope="col">达标证据</th><th scope="col">补课位置</th></tr></thead>
+          <tbody>
+            <tr><td>相对路径与绝对路径有什么不同？命令的退出码、标准输出和错误输出分别是什么？</td><td>能拆解一条命令并指出输出流和成功条件</td><td>F00</td></tr>
+            <tr><td>查看状态、修改本地文件、重启服务、发布控制命令分别属于什么风险级别？</td><td>能说明授权、影响范围和回滚条件</td><td>F00</td></tr>
+            <tr><td>怎样用列表、字典、函数和断言完成一次数据过滤？</td><td>脚本可重复运行，异常输入不会被静默吞掉</td><td>F01</td></tr>
+            <tr><td>数组的 <code>shape</code>、<code>dtype</code>、行和列分别表示什么？</td><td>能说出一个点集数组各轴的语义和单位</td><td>F01</td></tr>
+            <tr><td>\(90^\circ\) 等于多少弧度？速度、矩阵乘法和有限差分怎样检查？</td><td>手算单位正确，矩阵维度相容，差分分母不是零</td><td>F02</td></tr>
+            <tr><td>10 Hz 的周期是多少？消息 age、处理时间和端到端延迟一样吗？</td><td>能写出测量边界和时间戳来源</td><td>F03</td></tr>
+            <tr><td>IP、子网、端口、TCP、UDP、带宽和延迟分别解决什么问题？</td><td>能画出两个进程经网络通信的最小图</td><td>F03</td></tr>
+            <tr><td>ROS 2 的进程、节点、话题、消息、QoS 和 TF 是什么关系？</td><td>能区分“存在”“连接”和“内容有效”</td><td>F03</td></tr>
+            <tr><td>训练集、验证集、测试集为什么不能混用？什么是数据泄漏？</td><td>能给相邻时序帧泄漏的例子</td><td>F04</td></tr>
+            <tr><td>均值与 P95、准确率与召回率为什么不能互相替代？</td><td>能根据任务风险选择并解释指标</td><td>F04</td></tr>
+            <tr><td><code>0x1234</code>、两个字节、大小端、有符号数、缩放和偏移是什么关系？</td><td>能从离线字节算出一个物理量</td><td>F05</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="key"><p><strong>诊断规则：</strong>安全题必须全部通过；其他模块任一题答不清，就完成该模块全部最小示例和练习。已经会做的人也要提交可复查产物，不能用“以前学过”代替证据。</p></div>
+    </section>
+
+    <section id="f00">
+      <h2>F00：计算机基础与安全边界</h2>
+      <div class="grid three">
+        <div class="panel"><h3>文件</h3><p>文件有路径、内容、格式、权限和版本。扩展名只是提示，不能证明真实格式；文本、图片、点云和模型文件的读取方式不同。</p></div>
+        <div class="panel"><h3>进程</h3><p>程序是磁盘上的代码，进程是一次正在运行的实例。服务、容器和 ROS 节点最终都由进程承载，但名字和层级不一定一一对应。</p></div>
+        <div class="panel"><h3>主机与环境</h3><p>同一命令在个人电脑、教学容器和目标计算机上可能得到不同结果。先确认主机、目录、版本和环境，再解释输出。</p></div>
+      </div>
+
+      <h3>先会拆一条命令</h3>
+      <pre><code>python3 scripts/check_data.py --input data/sample.csv \
+  &gt; reports/summary.txt 2&gt; reports/error.log</code></pre>
+      <ul>
+        <li><code>python3</code> 是要运行的程序；<code>scripts/check_data.py</code> 是脚本的相对路径。</li>
+        <li><code>--input</code> 是选项，<code>data/sample.csv</code> 是它的参数。</li>
+        <li><code>&gt;</code> 把标准输出写入摘要；<code>2&gt;</code> 把标准错误写入错误日志。</li>
+        <li>退出码 <code>0</code> 通常表示程序按定义成功结束，非零表示失败；但“程序成功退出”仍不等于业务结果正确。</li>
+      </ul>
+      <pre><code>pwd
+hostname
+python3 --version
+git status --short
+echo $?</code></pre>
+      <p>上面都是通用教学命令。输出中若出现用户名、内部主机名或真实路径，提交作业前必须脱敏。</p>
+
+      <h3>把操作按影响分级</h3>
+      <div class="table-wrap" role="region" aria-label="工程操作影响分级" tabindex="0">
+        <table>
+          <caption>“命令看起来简单”不能决定风险，影响对象和权限才决定风险</caption>
+          <thead><tr><th scope="col">级别</th><th scope="col">例子</th><th scope="col">执行条件</th></tr></thead>
+          <tbody>
+            <tr><td>只读观察</td><td>查看文件、版本、进程、节点、话题列表和日志</td><td>仍要确认主机与数据敏感性；保存必要证据</td></tr>
+            <tr><td>本地可逆</td><td>在个人沙箱中新建文件、运行脚本、创建 Git 分支</td><td>范围明确，能用 diff 检查，能删除自己生成的产物</td></tr>
+            <tr><td>共享状态变更</td><td>修改公共配置、重启服务、推送分支、改远程数据</td><td>需要明确授权、影响评估、备份或回滚和验证计划</td></tr>
+            <tr><td>物理世界操作</td><td>发布控制消息、发送 CAN 帧、启动车辆执行器</td><td>只允许在正式安全流程、责任人、受控场地和停止条件下执行；本课禁止</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="warning"><p><strong>凭据红线：</strong>密码、私钥、访问令牌不能进入代码、截图、日志、命令历史或版本库。看到疑似密钥时先停止传播，保留最小必要位置证据并按组织流程处置。</p></div>
+
+      <h3>F00 练习</h3>
+      <ol>
+        <li>拆解前面的 Python 命令，逐项写出程序、脚本、选项、输入、标准输出、标准错误和退出码。</li>
+        <li>给“查看日志、编辑教学 CSV、重启共享服务、向仿真发布消息、向实车发帧”分级，并说明授权与回滚。</li>
+        <li>在个人沙箱记录 <code>pwd</code>、<code>python3 --version</code> 和 <code>git status --short</code>；提交前把个人信息替换为占位符。</li>
+      </ol>
+      <div class="key"><p><strong>F00 验收：</strong>能先回答“在哪台主机、哪个目录、哪个版本、影响谁、能否回滚”；能区分只读、本地可逆、共享变更和物理操作；不会把敏感信息带入公开产物。</p></div>
+    </section>
+
+    <section id="f01">
+      <h2>F01：Python 与数据工具</h2>
+      <p>数据脚本的价值不在“能跑”，而在输入、结构、单位、异常、输出和版本都说得清。先掌握最小 Python，再进入 NumPy 和 pandas。</p>
+
+      <h3>先准备个人练习环境</h3>
+      <p>优先使用导师准备好的教学环境。自行练习时，在个人沙箱创建虚拟环境，把依赖隔离在当前目录；不要使用 <code>sudo pip</code> 改系统 Python。</p>
+      <pre><code>python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install numpy pandas
+python -c "import numpy, pandas; print(numpy.__version__, pandas.__version__)"
+python -m pip freeze &gt; requirements-lock.txt</code></pre>
+      <p>Windows PowerShell 的激活命令是 <code>.\.venv\Scripts\Activate.ps1</code>。每次提交练习时，记录 Python 版本和依赖清单；结束后用 <code>deactivate</code> 退出虚拟环境。</p>
+
+      <div class="table-wrap" role="region" aria-label="Python 数据任务基础对象" tabindex="0">
+        <table>
+          <caption>从普通 Python 对象过渡到表格和多维数组</caption>
+          <thead><tr><th scope="col">对象</th><th scope="col">适合表达</th><th scope="col">必须检查</th></tr></thead>
+          <tbody>
+            <tr><td>标量 <code>float</code>/<code>int</code></td><td>一个时间、速度、计数</td><td>类型、单位、有效范围</td></tr>
+            <tr><td>列表 <code>list</code></td><td>有顺序的一组记录</td><td>长度、空列表、元素类型</td></tr>
+            <tr><td>字典 <code>dict</code></td><td>字段名到值的映射</td><td>必填键、缺失值、命名</td></tr>
+            <tr><td>NumPy <code>ndarray</code></td><td>同类型的多维数值数据</td><td><code>shape</code>、<code>dtype</code>、轴语义、内存与精度</td></tr>
+            <tr><td>pandas <code>DataFrame</code></td><td>有列名的表格和关系数据</td><td>主键、重复行、缺失值、连接分母</td></tr>
+            <tr><td>CSV / JSON / XML</td><td>表格、嵌套记录、结构化文本</td><td>编码、schema、字段类型、版本</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>最小 Python：数据、函数、过滤、异常与断言</h3>
+      <pre><code>records = [
+    {"timestamp_s": 0.0, "speed_mps": 2.0, "valid": True},
+    {"timestamp_s": 0.1, "speed_mps": None, "valid": False},
+    {"timestamp_s": 0.2, "speed_mps": 4.0, "valid": True},
+]
+
+def mean_valid_speed(rows):
+    speeds = [
+        row["speed_mps"]
+        for row in rows
+        if row["valid"] and row["speed_mps"] is not None
+    ]
+    if not speeds:
+        raise ValueError("no valid speed samples")
+    return sum(speeds) / len(speeds)
+
+result_mps = mean_valid_speed(records)
+assert abs(result_mps - 3.0) &lt; 1e-12
+print({"count": len(records), "mean_speed_mps": result_mps})</code></pre>
+      <p>字段名带单位可以减少误用；<code>None</code> 与数值零不是同一件事；断言把预期写成可执行检查。真实任务还应记录输入版本、过滤规则和脚本版本。</p>
+
+      <h3>NumPy：先写出每个轴的语义</h3>
+      <pre><code>import numpy as np
+
+# 三行是三个点，三列依次为 x、y、z，单位为米
+points_m = np.array([
+    [3.0, 4.0, 0.0],
+    [1.0, 0.0, 0.0],
+    [0.0, 2.0, 0.0],
+], dtype=np.float64)
+
+assert points_m.shape == (3, 3)
+distance_xy_m = np.linalg.norm(points_m[:, :2], axis=1)
+assert np.allclose(distance_xy_m, [5.0, 1.0, 2.0])</code></pre>
+      <p><code>(3, 3)</code> 本身没有完整语义：它可能是三个三维点，也可能是一张 3×3 小图。必须同时声明轴、字段、单位、坐标系和时间。</p>
+
+      <h3>pandas：表格连接前先确认主键和分母</h3>
+      <pre><code>import pandas as pd
+
+samples = pd.DataFrame({
+    "sample_id": ["s1", "s2", "s3"],
+    "speed_mps": [2.0, 4.0, None],
+})
+
+assert samples["sample_id"].is_unique
+valid = samples.dropna(subset=["speed_mps"])
+summary = {
+    "all_rows": len(samples),
+    "valid_rows": len(valid),
+    "mean_speed_mps": valid["speed_mps"].mean(),
+}
+print(summary)</code></pre>
+
+      <h3>F01 练习</h3>
+      <ol>
+        <li>给最小 Python 示例增加一个负速度样本，并明确“负数有效”还是“应过滤”的业务规则。</li>
+        <li>把点集改为 <code>float32</code>，打印 <code>shape</code>、<code>dtype</code> 和每个点的平面距离；解释精度改变意味着什么。</li>
+        <li>给表格加入重复的 <code>sample_id</code>，让脚本明确失败，而不是继续算出含糊结果。</li>
+        <li>提交一个 <code>README</code> 片段，写清运行命令、依赖、输入 schema、输出字段、单位和已知边界。</li>
+      </ol>
+      <div class="key"><p><strong>F01 验收：</strong>脚本能从干净环境重复运行；输入 schema、缺失值、重复键、shape、dtype 和单位均有检查；错误会显式失败；输出包含样本数和过滤分母。</p></div>
+    </section>
+
+    <section id="f02">
+      <h2>F02：自动驾驶所需的数学桥梁</h2>
+      <p>公式不是字符拼图。每次计算先问：对象是什么、单位是什么、维度是否相容、符号约定是什么、极端输入会怎样。</p>
+
+      <h3>单位和量纲：先判断式子有没有可能成立</h3>
+      <div class="equation" role="math" aria-label="速度的量纲和千米每小时到米每秒的转换">\[
+        \begin{aligned}
+          v&amp;=\frac{d}{t},\\
+          18\ \mathrm{km/h}
+          &amp;=18\times\frac{1000\ \mathrm m}{3600\ \mathrm s}
+          =5\ \mathrm{m/s}
+        \end{aligned}
+      \]</div>
+      <p>米、秒、弧度、度、像素、帧和计数不能混着算。变量名或表头应带单位；角度传入三角函数前要确认接口要求的是度还是弧度。</p>
+
+      <h3>三角函数和弧度</h3>
+      <div class="equation" role="math" aria-label="角度与弧度转换及单位圆坐标">\[
+        \begin{aligned}
+          \theta_{\mathrm{rad}}&amp;=\theta_{\mathrm{deg}}\frac{\pi}{180},\\
+          90^\circ&amp;=\frac{\pi}{2},\\
+          \mathbf u(\theta)&amp;=(\cos\theta,\sin\theta)
+        \end{aligned}
+      \]</div>
+      <p>弧度把角度与弧长连接起来：半径为 \(R\) 的圆上，弧长 \(s=R\theta\)。这也是后续角速度、车辆转向和曲率公式使用弧度的根。</p>
+
+      <h3>向量和矩阵：维度先于数值</h3>
+      <div class="equation" role="math" aria-label="二维向量的范数与矩阵乘向量">\[
+        \begin{aligned}
+          \mathbf p&amp;=\begin{bmatrix}x\\y\end{bmatrix},\\
+          \lVert\mathbf p\rVert&amp;=\sqrt{x^2+y^2},\\
+          \mathbf A&amp;\in\mathbb R^{m\times n},\quad
+          \mathbf x\in\mathbb R^n,\\
+          \mathbf A\mathbf x&amp;\in\mathbb R^m
+        \end{aligned}
+      \]</div>
+      <p>矩阵乘法不是逐元素相乘；\(\mathbf A\mathbf B\) 只有在左矩阵列数等于右矩阵行数时才有定义。后续坐标变换还会要求明确矩阵把哪个坐标系的量变到哪个坐标系。</p>
+
+      <h3>导数、积分和有限差分</h3>
+      <div class="equation" role="math" aria-label="位置的导数是速度以及前向有限差分">\[
+        \begin{aligned}
+          v(t)&amp;=\frac{\mathrm d x}{\mathrm d t},\\
+          a(t)&amp;=\frac{\mathrm d v}{\mathrm d t},\\
+          v_i&amp;\approx\frac{x_{i+1}-x_i}{t_{i+1}-t_i}
+        \end{aligned}
+      \]</div>
+      <p>导数描述“变化有多快”，积分描述“小增量的累计”。有限差分是离散数据对导数的近似；当 \(t_{i+1}=t_i\)、间隔过小或数据有噪声时，结果会失效或被放大。</p>
+      <div class="equation" role="math" aria-label="速度随时间积分得到位移增量">\[
+        \begin{aligned}
+          x(t_1)-x(t_0)&amp;=\int_{t_0}^{t_1}v(t)\,\mathrm dt,\\
+          x_{k+1}&amp;\approx x_k+v_k\Delta t
+        \end{aligned}
+      \]</div>
+
+      <h3>F02 练习</h3>
+      <ol>
+        <li>把 \(36\ \mathrm{km/h}\) 转成 \(\mathrm{m/s}\)，再计算 2.5 秒行驶距离；每一步保留单位。</li>
+        <li>把 \(30^\circ\)、\(180^\circ\)、\(270^\circ\) 转为弧度，并在单位圆上写出方向。</li>
+        <li>判断 \(2\times3\) 与 \(3\times1\)、\(3\times2\) 与 \(3\times1\) 哪组可乘，并写出结果维度。</li>
+        <li>对位置 \(x=[0,1,3]\ \mathrm m\)、时间 \(t=[0,0.5,1.5]\ \mathrm s\) 做逐段差分；解释为何不能假设等间隔。</li>
+      </ol>
+      <div class="key"><p><strong>F02 验收：</strong>单位换算无丢项；角度和弧度不混用；矩阵维度检查先于计算；能从定义解释差分与积分，并主动检查重复时间、短间隔和噪声。</p></div>
+    </section>
+
+    <section id="f03">
+      <h2>F03：时间、网络与 ROS 2 共同词汇</h2>
+
+      <h3>时间：频率、周期、消息年龄和延迟不是一件事</h3>
+      <div class="equation" role="math" aria-label="频率周期消息年龄和处理耗时">\[
+        \begin{aligned}
+          f&amp;=\frac{1}{T},\\
+          \mathrm{age}&amp;=t_{\mathrm{observe}}-t_{\mathrm{stamp}},\\
+          \Delta t_{\mathrm{process}}&amp;=t_{\mathrm{out}}-t_{\mathrm{in}}
+        \end{aligned}
+      \]</div>
+      <div class="grid">
+        <div class="panel"><h3>时间戳</h3><p>描述数据对应的时刻；必须知道来自传感器、系统、仿真还是回放时钟。</p></div>
+        <div class="panel"><h3>频率与周期</h3><p>10 Hz 表示理想平均每 0.1 s 一次，但不能说明每个间隔都恰好相同。</p></div>
+        <div class="panel"><h3>延迟</h3><p>必须声明从哪里量到哪里；采集到接收、接收到输出、采集到执行是不同边界。</p></div>
+        <div class="panel"><h3>抖动与丢帧</h3><p>平均值正常仍可能出现长尾。工程上常同时看 P50、P95、P99、最大值和缺失序号。</p></div>
+      </div>
+
+      <h3>网络：地址、端口和传输协议各管一层</h3>
+      <div class="table-wrap" role="region" aria-label="网络基础概念" tabindex="0">
+        <table>
+          <caption>示例地址 192.0.2.10 属于 RFC 5737 文档保留网段，不代表真实设备</caption>
+          <thead><tr><th scope="col">概念</th><th scope="col">回答的问题</th><th scope="col">常见误区</th></tr></thead>
+          <tbody>
+            <tr><td>IP 地址</td><td>网络中的哪台接口，例如 <code>192.0.2.10</code></td><td>能 ping 通不等于目标应用正常</td></tr>
+            <tr><td>子网与路由</td><td>目标在本地链路还是要经过网关</td><td>同一交换机不保证配置在同一逻辑网络</td></tr>
+            <tr><td>端口</td><td>主机上的哪个应用端点</td><td>端口号不是进程健康证明</td></tr>
+            <tr><td>TCP</td><td>有序、可靠的字节流</td><td>可靠不等于低延迟，也不代表业务消息完整</td></tr>
+            <tr><td>UDP</td><td>独立数据报，允许应用自行处理丢失和乱序</td><td>收到部分包不等于一帧数据完整</td></tr>
+            <tr><td>带宽</td><td>单位时间可传多少数据</td><td>高带宽不能消除排队、抖动和处理延迟</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>ROS 2：先把层级分开</h3>
+      <div class="flow" role="img" aria-label="ROS 2 从程序到数据消费者的基础层级">
+        <div class="flow-row">
+          <div class="node">包与可执行文件</div><div class="arrow">→</div>
+          <div class="node">进程中的节点</div><div class="arrow">→</div>
+          <div class="node accent">接口与 ROS 图</div><div class="arrow">→</div>
+          <div class="node">带时间和 frame 的消息</div><div class="arrow">→</div>
+          <div class="node">下游功能</div>
+        </div>
+      </div>
+      <div class="table-wrap" role="region" aria-label="ROS 2 基础词汇" tabindex="0">
+        <table>
+          <caption>名字出现只是入口，消息契约和下游行为才决定功能是否成立</caption>
+          <thead><tr><th scope="col">词汇</th><th scope="col">最小解释</th><th scope="col">检查重点</th></tr></thead>
+          <tbody>
+            <tr><td>package / executable</td><td>代码与资源的组织单元 / 可启动程序</td><td>版本、构建来源、入口和参数</td></tr>
+            <tr><td>process / node</td><td>运行实例 / ROS 图中的功能参与者</td><td>一个进程可含多个节点；进程存在不等于节点健康</td></tr>
+            <tr><td>topic / message</td><td>连续数据流的名字 / 每条数据的类型和字段</td><td>发布者、订阅者、类型、频率、内容</td></tr>
+            <tr><td>service</td><td>短时请求—响应</td><td>服务端存在、请求类型、超时和返回状态</td></tr>
+            <tr><td>action</td><td>较长任务的目标—反馈—结果，可取消</td><td>目标状态、反馈、取消与最终结果</td></tr>
+            <tr><td>parameter / launch</td><td>节点配置 / 一组进程和配置的启动编排</td><td>当前生效值，不只看源码默认值</td></tr>
+            <tr><td>QoS</td><td>可靠性、历史、深度、持久性等通信策略</td><td>发布端和订阅端是否兼容</td></tr>
+            <tr><td>TF / frame</td><td>随时间维护坐标系关系 / 消息所属坐标系</td><td>目标时刻能否得到正确方向的变换</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>只读最小检查</h3>
+      <pre><code>ros2 node list
+ros2 topic list -t
+ros2 topic info /example/sensor -v
+ros2 topic hz /example/sensor
+ros2 interface show example_interfaces/msg/Float64</code></pre>
+      <p><code>/example/sensor</code> 是教学占位名称。只有在教学 ROS 环境已经提供该话题时，后三条才会得到有效输出。本课不使用 <code>ros2 topic pub</code>、参数设置或生命周期切换。</p>
+
+      <h3>F03 练习</h3>
+      <ol>
+        <li>计算 20 Hz、5 Hz 的周期；给定三条不均匀时间戳，计算相邻周期和最大间隔。</li>
+        <li>画出“传感器进程经 UDP 发送，驱动节点发布 ROS topic，算法节点订阅”的分层图。</li>
+        <li>在教学环境执行只读命令，分别证明节点存在、端点连接、类型一致和频率非零；不要把它们写成“功能已通过”。</li>
+        <li>解释：为什么消息有正确 <code>frame_id</code>，仍可能因时间不匹配而无法转换。</li>
+      </ol>
+      <div class="key"><p><strong>F03 验收：</strong>时间统计写明时钟来源和测量边界；网络问题按链路、地址/路由、端口/传输和应用分层；ROS 结论能区分进程、节点、图、消息内容、TF 和下游功能。</p></div>
+    </section>
+
+    <section id="f04">
+      <h2>F04：机器学习与统计的最低共同基础</h2>
+      <p>机器学习不是“把数据交给模型”。数据定义、切分、预处理、标签、指标和评测边界共同决定结果代表什么。</p>
+      <div class="table-wrap" role="region" aria-label="机器学习最小概念" tabindex="0">
+        <table>
+          <caption>每个模型结果都应能回到这些对象</caption>
+          <thead><tr><th scope="col">概念</th><th scope="col">作用</th><th scope="col">必须声明</th></tr></thead>
+          <tbody>
+            <tr><td>sample</td><td>一次被学习或评估的观测</td><td>样本单位是帧、场景、目标还是时间窗口</td></tr>
+            <tr><td>feature / input</td><td>模型真正看到的数值</td><td>shape、dtype、范围、单位、颜色/通道、坐标和前处理</td></tr>
+            <tr><td>label / target</td><td>训练或评估使用的目标</td><td>类别空间、忽略规则、派生标签和版本</td></tr>
+            <tr><td>train / validation / test</td><td>拟合 / 选择方案 / 最终独立评估</td><td>切分单位、随机种子、版本和重复主体是否隔离</td></tr>
+            <tr><td>loss / metric</td><td>优化目标 / 对外评价方式</td><td>定义、方向、聚合方式、分母和适用边界</td></tr>
+            <tr><td>inference</td><td>固定参数下从输入得到输出</td><td>模型版本、运行时、前后处理和性能测量边界</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>切分：先隔离相关主体，再谈比例</h3>
+      <div class="flow" role="img" aria-label="训练验证测试集按场景隔离">
+        <div class="flow-row">
+          <div class="node">完整数据与场景 ID</div><div class="arrow">→</div>
+          <div class="node accent">按场景或主体分组</div><div class="arrow">→</div>
+          <div class="node">训练集</div><div class="node">验证集</div><div class="node">测试集</div>
+        </div>
+      </div>
+      <p>相邻时序帧高度相关。先随机打散所有帧再切分，可能让同一场景的近邻画面同时进入训练和测试，得到虚高结果。切分必须适配任务；nuScenes 后续课程会进一步使用 scene-level split。</p>
+      <pre><code>train_scenes = {"scene-a", "scene-b"}
+validation_scenes = {"scene-c"}
+test_scenes = {"scene-d"}
+
+assert train_scenes.isdisjoint(validation_scenes)
+assert train_scenes.isdisjoint(test_scenes)
+assert validation_scenes.isdisjoint(test_scenes)</code></pre>
+
+      <h3>分类指标：先从混淆矩阵定义</h3>
+      <div class="equation" role="math" aria-label="准确率精确率召回率和 F1 定义">\[
+        \begin{aligned}
+          \mathrm{Accuracy}&amp;=\frac{TP+TN}{TP+TN+FP+FN},\\
+          \mathrm{Precision}&amp;=\frac{TP}{TP+FP},\\
+          \mathrm{Recall}&amp;=\frac{TP}{TP+FN}
+        \end{aligned}
+      \]</div>
+      <div class="equation" role="math" aria-label="F1 分数定义">\[
+        F_1=
+        2\frac{\mathrm{Precision}\cdot\mathrm{Recall}}
+        {\mathrm{Precision}+\mathrm{Recall}}
+      \]</div>
+      <p>漏检代价高时通常更关注召回率，误报代价高时通常更关注精确率，但最终指标组合和阈值必须由任务风险定义。检测、分割和轨迹任务还有各自正式协议，不能用简单准确率替代。</p>
+
+      <h3>统计：中心、离散和长尾都要看</h3>
+      <div class="equation" role="math" aria-label="样本均值和总体方差">\[
+        \begin{aligned}
+          \bar{x}&amp;=\frac{1}{n}\sum_{i=1}^{n}x_i,\\
+          \sigma^2&amp;=\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^2
+        \end{aligned}
+      \]</div>
+      <pre><code>import numpy as np
+
+latency_ms = np.array([18.0, 19.0, 20.0, 21.0, 90.0])
+summary = {
+    "count": latency_ms.size,
+    "mean_ms": float(latency_ms.mean()),
+    "p50_ms": float(np.percentile(latency_ms, 50)),
+    "p95_ms": float(np.percentile(latency_ms, 95)),
+    "max_ms": float(latency_ms.max()),
+}
+print(summary)</code></pre>
+      <p>均值会被长尾影响，却不能显示尾部位置；P95 也不能替代最大值或失败计数。性能结论还要写明预热、采样数量、同步方式以及测量起点和终点。</p>
+
+      <h3>F04 练习</h3>
+      <ol>
+        <li>构造同一场景的五个相邻帧，说明按帧随机切分如何泄漏；改成按场景隔离。</li>
+        <li>给定 \(TP=80, FP=20, FN=40, TN=860\)，计算 Accuracy、Precision、Recall 和 \(F_1\)，并解释哪个数字暴露漏检。</li>
+        <li>为一批延迟同时报告 count、mean、P50、P95、P99、max 和超阈值数量；写明测量边界。</li>
+        <li>为一个图像模型写输入合同：颜色顺序、shape、dtype、数值范围、resize、归一化和 batch。</li>
+      </ol>
+      <div class="key"><p><strong>F04 验收：</strong>切分没有主体或时序泄漏；标签空间和过滤规则明确；指标能从定义重算；统计保留样本数与长尾；“模型可运行”不会被写成“结果等价”或“任务通过”。</p></div>
+    </section>
+
+    <section id="f05">
+      <h2>F05：CAN 的二进制与离线解码基础</h2>
+      <p>CAN 帧传输的是位和字节；“车速”“温度”“转角”是协议在这些位上的解释。没有 DBC 或正式通信协议，看到 CAN ID 和十六进制数据不能可靠猜出物理含义。</p>
+
+      <h3>位、字节、十六进制和有符号数</h3>
+      <div class="table-wrap" role="region" aria-label="CAN 数字表示基础" tabindex="0">
+        <table>
+          <caption>十六进制只是二进制的紧凑写法</caption>
+          <thead><tr><th scope="col">概念</th><th scope="col">例子</th><th scope="col">检查项</th></tr></thead>
+          <tbody>
+            <tr><td>bit</td><td><code>0</code> 或 <code>1</code></td><td>起始位、长度和位编号约定</td></tr>
+            <tr><td>byte</td><td>8 bit，范围 <code>0x00</code>–<code>0xFF</code></td><td>payload 长度和索引</td></tr>
+            <tr><td>hex</td><td><code>0x12</code> 表示十进制 18</td><td>不要把显示字符串当物理量</td></tr>
+            <tr><td>endianness</td><td>多字节信号的字节与位顺序</td><td>必须服从协议或 DBC，不能凭主机习惯猜</td></tr>
+            <tr><td>signedness</td><td>无符号或二进制补码有符号</td><td>最高位、位宽和符号扩展</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>若一个 \(n\) bit 原始量按二进制补码解释，最高位为 1 时：</p>
+      <div class="equation" role="math" aria-label="n 位二进制补码转有符号整数">\[
+        x_{\mathrm{signed}}=
+        \begin{cases}
+          x_{\mathrm{raw}}, &amp; x_{\mathrm{raw}}&lt;2^{n-1}\\
+          x_{\mathrm{raw}}-2^n, &amp; x_{\mathrm{raw}}\ge 2^{n-1}
+        \end{cases}
+      \]</div>
+
+      <h3>缩放和偏移：原始整数才变成物理量</h3>
+      <div class="equation" role="math" aria-label="CAN 原始值经缩放和偏移变成物理值">\[
+        x_{\mathrm{physical}}
+        =x_{\mathrm{raw}}\times \mathrm{scale}+\mathrm{offset}
+      \]</div>
+      <p>离线 payload 的前两个字节为 <code>34 12</code>。若协议明确它是 16 bit、小端、无符号，原始值为：</p>
+      <div class="equation" role="math" aria-label="两个字节按小端组合并转换成温度示例">\[
+        \begin{aligned}
+          x_{\mathrm{raw}}&amp;=\mathtt{0x1234}=4660,\\
+          T&amp;=4660\times0.01-40=6.6\ ^\circ\mathrm C
+        \end{aligned}
+      \]</div>
+      <p>若误按大端解释，同样两个字节会得到 <code>0x3412</code>。这说明字节本身不能告诉你端序、单位或语义。</p>
+      <pre><code>payload = bytes([0x34, 0x12, 0x00, 0x00])
+
+raw = int.from_bytes(
+    payload[0:2],
+    byteorder="little",
+    signed=False,
+)
+temperature_c = raw * 0.01 - 40.0
+
+assert raw == 0x1234
+assert abs(temperature_c - 6.6) &lt; 1e-12
+print({"raw": raw, "temperature_c": temperature_c})</code></pre>
+
+      <h3>一帧里还有哪些契约</h3>
+      <div class="grid">
+        <div class="panel"><h3>CAN ID</h3><p>用于总线仲裁和报文识别，不等于单个信号。标准帧与扩展帧的标识符长度不同。</p></div>
+        <div class="panel"><h3>DBC / 协议</h3><p>定义信号起始位、长度、端序、符号、比例、偏移、单位、枚举和发送节点等。</p></div>
+        <div class="panel"><h3>周期与计数器</h3><p>周期报文是否按预期到达；alive counter 可帮助发现重复、丢失或乱序。</p></div>
+        <div class="panel"><h3>校验与状态</h3><p>checksum、有效位、故障码和超时策略属于协议语义，不能只看物理值是否“像真的”。</p></div>
+      </div>
+      <div class="warning"><p><strong>本课只解码，不发送：</strong>练习使用固定字节数组、文本日志或虚拟总线的离线捕获。本页故意不提供发送 CAN 帧的命令。即使在台架或仿真，发送也必须由负责人明确授权并给出 ID 白名单、速率、超时和停止条件。</p></div>
+
+      <h3>F05 练习</h3>
+      <ol>
+        <li>分别按小端和大端解释 <code>34 12</code>，写出两个原始整数并解释为什么必须查协议。</li>
+        <li>把 <code>0xFF9C</code> 按 16 bit 二进制补码转换为有符号整数。</li>
+        <li>用给定的 scale、offset 和 unit 解码三个离线样本，保留 raw 与 physical 两列。</li>
+        <li>为一条虚构信号表补齐 CAN ID、start bit、length、endian、signed、scale、offset、unit、period、counter 和 validity。</li>
+      </ol>
+      <div class="key"><p><strong>F05 验收：</strong>能在纸面和 Python 中复算同一结果；端序、符号、缩放、偏移和单位完全来自协议；保留原始字节；不会根据数值外观猜语义，也不会在未授权环境发送。</p></div>
+    </section>
+
+    <section id="capstone">
+      <h2>综合练习：把六种基础能力接成一次小交付</h2>
+      <p>导师提供两份完全合成的离线输入：一张带 <code>scene_id</code>、时间戳、速度和标签的 CSV，以及一份 CAN 十六进制日志和虚构信号定义。学习者完成以下任务：</p>
+      <ol>
+        <li><strong>范围：</strong>写清输入是合成数据、运行环境是个人沙箱、任务不连接 ROS 网络或真实 CAN。</li>
+        <li><strong>数据：</strong>用 Python 读取并检查列、类型、重复键、缺失值和单位，输出有效行数。</li>
+        <li><strong>数学与时间：</strong>计算逐段 \(\Delta t\)、频率、速度均值和 P95，显式处理重复时间戳。</li>
+        <li><strong>ROS 设计：</strong>把 CSV 中一行抽象成教学消息，声明 topic、message type、timestamp、frame、QoS 和消费者，不实际发布。</li>
+        <li><strong>机器学习：</strong>按 <code>scene_id</code> 切分，证明集合无交集；从给定预测重算 Precision 和 Recall。</li>
+        <li><strong>CAN：</strong>按虚构协议离线解码 raw 与 physical，检查 counter 是否跳变，保留原始帧。</li>
+        <li><strong>交付：</strong>提交运行说明、脚本、最小输出、断言结果、已知限制和一页证据摘要。</li>
+      </ol>
+      <div class="key"><p><strong>综合任务的核心：</strong>最终数字只是产物的一部分。输入版本、schema、命令、环境、过滤规则、单位、失败样本、原始证据和结论边界共同组成一次可复查交付。</p></div>
+    </section>
+
+    <section id="acceptance">
+      <h2>总验收：进入自动驾驶主课前要达到什么程度</h2>
+      <div class="table-wrap" role="region" aria-label="零基础预备课总验收标准" tabindex="0">
+        <table>
+          <caption>所有红线项必须通过；“能解释”需要配一个新例子或运行证据</caption>
+          <thead><tr><th scope="col">能力</th><th scope="col">通过标准</th><th scope="col">红线失败</th></tr></thead>
+          <tbody>
+            <tr><td>安全边界</td><td>先确认环境、权限、影响和回滚；公开产物已脱敏</td><td>擅自操作共享系统或物理接口；传播凭据</td></tr>
+            <tr><td>计算机与证据</td><td>能拆命令、读退出码、区分程序/进程/主机，并保留原始输出</td><td>不确认主机和版本就下结论</td></tr>
+            <tr><td>Python 与数据</td><td>脚本可重复运行，schema、shape、dtype、缺失和重复均有检查</td><td>静默丢数据；统计没有分母或单位</td></tr>
+            <tr><td>数学</td><td>单位、弧度、矩阵维度和差分均能从定义检查</td><td>量纲错误；重复时间仍直接相除</td></tr>
+            <tr><td>时间、网络、ROS</td><td>能按层画图；区分存在、连接、消息有效和下游采用</td><td>topic 存在就宣称功能正常</td></tr>
+            <tr><td>机器学习与统计</td><td>切分无泄漏，指标可重算，长尾和测量边界明确</td><td>测试集参与调参；只报最好数字</td></tr>
+            <tr><td>CAN</td><td>离线解码可复算，所有语义来自正式定义，保留 raw</td><td>猜端序/单位；未授权发送报文</td></tr>
+            <tr><td>交付</td><td>另一人能按说明重跑，并得到相同结论或明确解释差异</td><td>只有截图或最终数字，没有输入、命令和边界</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>若只在个人电脑或教学环境完成，应写“预备课练习通过”或“候选结果”，不能写成目标车辆、正式部署或项目验收通过。</p>
+    </section>
+
+    <section id="sources">
+      <h2>官方资料与继续学习</h2>
+      <p>以下链接用于核对正式定义和继续练习。软件文档会更新，实际项目应先确认所用版本，再选择对应版本的页面。</p>
+      <h3>计算机、Python 与数据</h3>
+      <ul>
+        <li><a href="https://docs.python.org/3/tutorial/">Python 官方教程</a>：语法、数据结构、文件、异常、模块和虚拟环境。</li>
+        <li><a href="https://numpy.org/doc/stable/user/absolute_beginners.html">NumPy：absolute basics for beginners</a> 与 <a href="https://numpy.org/doc/stable/user/quickstart.html">NumPy quickstart</a>：数组、shape、dtype、axis 和向量化。</li>
+        <li><a href="https://pandas.pydata.org/docs/getting_started/intro_tutorials/">pandas 官方入门教程</a>：表格读取、筛选、统计、连接和时间序列。</li>
+        <li><a href="https://git-scm.com/docs/gittutorial">Git 官方入门教程</a>：版本、提交、历史和协作基础。</li>
+        <li><a href="https://datatracker.ietf.org/doc/html/rfc5737">IETF RFC 5737</a>：专供文档和示例使用的 IPv4 地址段。</li>
+      </ul>
+
+      <h3>数学、单位与统计</h3>
+      <ul>
+        <li><a href="https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/">MIT OpenCourseWare 18.06 Linear Algebra</a>：向量、矩阵与线性变换。</li>
+        <li><a href="https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/">MIT OpenCourseWare 18.01SC Single Variable Calculus</a>：导数、积分与数值直觉。</li>
+        <li><a href="https://www.bipm.org/en/publications/si-brochure">BIPM《国际单位制手册》</a>：SI 单位和书写约定。</li>
+      </ul>
+
+      <h3>ROS 2</h3>
+      <ul>
+        <li><a href="https://docs.ros.org/en/jazzy/First-Steps.html">ROS 2 官方 First steps learning path</a>：节点、话题、服务、参数、动作、日志、launch 和 rosbag。</li>
+        <li><a href="https://docs.ros.org/en/jazzy/How-To-Guides/Topics-Services-Actions.html">ROS 2 Interfaces</a>：topic、service 和 action 的使用边界。</li>
+        <li><a href="https://docs.ros.org/en/jazzy/Concepts/Intermediate.html">ROS 2 Intermediate concepts</a>：QoS、统计、执行器、安全与 TF 等概念入口。</li>
+        <li><a href="https://docs.ros.org/en/jazzy/Concepts/Intermediate/About-Tf2.html">ROS 2 tf2 概念</a>：坐标系关系随时间的维护和查询。</li>
+      </ul>
+
+      <h3>机器学习与 CAN</h3>
+      <ul>
+        <li><a href="https://scikit-learn.org/stable/model_selection.html">scikit-learn Model selection and evaluation</a>：交叉验证、指标和评估。</li>
+        <li><a href="https://scikit-learn.org/stable/common_pitfalls.html">scikit-learn Common pitfalls</a>：不一致预处理、数据泄漏和评估误区。</li>
+        <li><a href="https://www.kernel.org/doc/html/latest/networking/can.html">Linux Kernel SocketCAN 文档</a>：Linux CAN 网络栈、套接字接口和协议背景；本课只阅读概念，不执行发送操作。</li>
+      </ul>
+    </section>
+
+    <div class="related"><a href="autonomous-driving-overview.html">下一课：自动驾驶系统总览 →</a></div>
+  </article>
+</body>
+</html>

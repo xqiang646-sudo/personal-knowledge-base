@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{{ description or site.description }}">
+  <title>{{ title or site.name }}｜{{ site.shortName }}</title>
+  <link rel="stylesheet" href="{{ '/assets/knowledge.css' | siteUrl }}">
+  <link rel="stylesheet" href="{{ '/assets/v2.css' | siteUrl }}">
+  {% if math %}<script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>{% endif %}
+</head>
+<body class="{{ bodyClass or 'portal-body' }}">
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  {% include "partials/site-header.njk" %}
+  <main id="main-content">
+    {{ content | safe }}
+  </main>
+  {% include "partials/site-footer.njk" %}
+  <script defer src="{{ '/assets/progress.js' | siteUrl }}"></script>
+</body>
+</html>

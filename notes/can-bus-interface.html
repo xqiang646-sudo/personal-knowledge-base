@@ -5,71 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="简单理解 CAN 总线、RViz、HMI 与 GPU 在自动驾驶系统中的作用。">
   <title>CAN 总线接口功能解析｜我的个人知识库</title>
-  <style>
-    :root {
-      color-scheme: light;
-      --bg: #f6f8fc;
-      --surface: #fff;
-      --text: #182033;
-      --muted: #657087;
-      --brand: #3157d5;
-      --brand-soft: #edf1ff;
-      --line: #e2e7f0;
-      --good: #147a54;
-      font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { margin: 0; background: var(--bg); color: var(--text); line-height: 1.75; }
-    .wrap { width: min(900px, calc(100% - 36px)); margin: 0 auto; }
-    .topbar { padding: 18px 0; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.9); }
-    .back { color: var(--brand); text-decoration: none; font-weight: 650; }
-    article { margin: 36px auto 72px; padding: clamp(24px, 6vw, 56px); background: var(--surface); border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 16px 40px rgba(28, 42, 82, .07); }
-    .meta { color: var(--muted); font-size: 14px; }
-    h1 { margin: 8px 0 12px; font-size: clamp(34px, 7vw, 52px); line-height: 1.18; letter-spacing: -.03em; }
-    .lead { margin: 0 0 30px; color: var(--muted); font-size: 19px; }
-    h2 { margin: 46px 0 14px; padding-top: 6px; font-size: 27px; }
-    h3 { margin: 28px 0 8px; font-size: 20px; }
-    p { margin: 10px 0; }
-    ul, ol { padding-left: 22px; }
-    li + li { margin-top: 6px; }
-    strong { color: #10182a; }
-    .key { margin: 24px 0; padding: 20px 22px; border-left: 4px solid var(--brand); border-radius: 0 12px 12px 0; background: var(--brand-soft); }
-    .key p { margin: 0; }
-    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 18px 0; }
-    .panel { padding: 20px; border: 1px solid var(--line); border-radius: 14px; background: #fbfcff; }
-    .panel h3 { margin-top: 0; }
-    .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; min-width: 620px; }
-    th, td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
-    th { background: #f6f8fc; }
-    code { padding: 2px 6px; border-radius: 5px; background: #eef1f6; font-family: Consolas, monospace; }
-    pre { overflow-x: auto; padding: 18px; border-radius: 12px; background: #111827; color: #e5e7eb; line-height: 1.55; }
-    pre code { padding: 0; background: transparent; }
-    .flow { margin: 24px 0; padding: 24px; border: 1px solid var(--line); border-radius: 16px; background: #f9faff; text-align: center; }
-    .flow-row { display: flex; align-items: stretch; justify-content: center; flex-wrap: wrap; gap: 8px; }
-    .node { display: flex; align-items: center; justify-content: center; min-width: 108px; min-height: 64px; padding: 10px; border: 1px solid #cbd5f8; border-radius: 12px; background: white; font-size: 15px; font-weight: 650; }
-    .node.accent { background: var(--brand); border-color: var(--brand); color: white; }
-    .arrow { display: flex; align-items: center; color: var(--brand); font-size: 24px; font-weight: 800; }
-    .flow-note { margin: 18px 0 0; color: var(--muted); font-size: 14px; }
-    .check li::marker { color: var(--good); }
-    .mini-nav { display: flex; flex-wrap: wrap; gap: 9px; margin: 26px 0 6px; }
-    .mini-nav a { padding: 6px 11px; border-radius: 999px; background: var(--brand-soft); color: var(--brand); text-decoration: none; font-size: 14px; }
-    @media (max-width: 700px) {
-      .grid { grid-template-columns: 1fr; }
-      .flow-row { flex-direction: column; align-items: stretch; }
-      .arrow { justify-content: center; transform: rotate(90deg); }
-    }
-  </style>
+  <link rel="stylesheet" href="../assets/knowledge.css">
 </head>
 <body>
-  <nav class="topbar"><div class="wrap"><a class="back" href="../index.html">← 返回知识库</a></div></nav>
-  <article class="wrap">
+  <nav class="topbar"><div class="wrap"><a class="back" href="../index.html#learning-path">← 返回零基础学习路线</a></div></nav>
+  <article class="page wrap">
     <div class="meta">自动驾驶基础 · 整理于 2026-07-15</div>
     <h1>CAN 总线接口功能解析</h1>
     <p class="lead">理解 CAN 总线的作用，并分清 IPC、RViz、HMI 与 NVIDIA GPU 在自动驾驶系统中的位置。</p>
 
-    <div class="mini-nav">
+    <div class="toc">
       <a href="#overview">系统全景</a>
       <a href="#can">CAN 核心</a>
       <a href="#ui">RViz 与 HMI</a>
@@ -169,6 +114,7 @@ tegrastats</code></pre>
 
     <section id="troubleshooting">
       <h2>CAN 通信异常排查清单</h2>
+      <div class="warning"><p><strong>主线作业只做离线解码：</strong>下面的读取命令也只允许在导师指定的教学虚拟总线或已授权环境执行。本页不提供接口配置、启动或发送命令；真实车辆上的任何 CAN 操作都需要单独授权和安全流程。</p></div>
       <ol class="check">
         <li>确认 CAN_H、CAN_L 没有接反，设备已经共地。</li>
         <li>确认所有设备使用相同波特率。</li>
@@ -178,13 +124,13 @@ tegrastats</code></pre>
         <li>检查错误帧、错误计数以及是否进入 bus-off。</li>
         <li>最后核对 CAN ID、DBC、发送周期、计数器和校验规则。</li>
       </ol>
-      <pre><code>sudo ip link set can0 type can bitrate 500000
-sudo ip link set can0 up
-candump can0
-ip -details -statistics link show can0</code></pre>
+      <pre><code>ip -details -statistics link show can0
+timeout 5 candump can0</code></pre>
     </section>
 
     <div class="key"><p><strong>最终总结：</strong>CAN 让控制器可靠通信；GPU 处理大规模感知计算；CPU 完成系统调度与决策；RViz 用于调试，HMI 用于操作。</p></div>
+
+    <div class="related"><a href="perception-deployment-contracts.html">下一课：训练到部署的契约 →</a></div>
   </article>
 </body>
 </html>

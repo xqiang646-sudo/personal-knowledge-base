@@ -1,0 +1,20 @@
+{
+  "name": "personal-knowledge-base",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "面向零基础实习生的数据、数学、深度学习与自动驾驶教学系统",
+  "scripts": {
+    "dev": "eleventy --serve",
+    "build": "eleventy && node scripts/prepare-search.mjs && pagefind --site _site",
+    "validate:content": "node scripts/validate-content.mjs",
+    "validate:links": "node scripts/validate-links.mjs _site",
+    "check": "npm run validate:content && npm run build && npm run validate:links"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "3.1.6",
+    "markdown-it": "14.3.0",
+    "markdown-it-anchor": "9.2.1",
+    "pagefind": "1.5.2"
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "version": 2,
+  "updated": "2026-07-16",
+  "stages": [
+    {"id":"p0","code":"P0","title":"起点诊断与数字工具","description":"确认数学和计算机基础，建立安全、可复现的数据工作方式。","effort":"27–38 小时","gate":"能在沙箱中运行 Python 数据脚本，说明输入、输出、环境和失败边界。"},
+    {"id":"m1","code":"M1","title":"数学核心","description":"用线性代数、微积分和概率论支撑坐标、轨迹、数据质量与深度学习。","effort":"36–44 小时","gate":"每个数学对象都能手算、编码验证，并映射到一个自动驾驶任务。"},
+    {"id":"a1","code":"A1","title":"自动驾驶数据主线","description":"理解系统、传感器、坐标和 nuScenes 数据图，完成可追溯的数据任务。","effort":"38–54 小时","gate":"提交包含 inventory、scene split、QC、可视化和 dataset card 的 mini 数据包。"},
+    {"id":"dl","code":"DL","title":"深度学习与计算机视觉","description":"沿 D2L 的 PyTorch 路线学习训练闭环、CNN、ResNet 和视觉数据任务。","effort":"45–62 小时","gate":"独立复现小型视觉实验，解释训练曲线、指标、失败样本和数据边界。"},
+    {"id":"e1","code":"E1","title":"ROS 2 与 Autoware 拓展","description":"从运行图和消息契约理解规划控制，并完成只读断链分析。","effort":"14–18 小时","gate":"证据能指向具体发布者、消息契约或消费者。"},
+    {"id":"e2","code":"E2","title":"车辆几何与控制拓展","description":"从曲率推导自行车和阿克曼模型，再进入轨迹仿真与离线 CAN。","effort":"18–26 小时","gate":"能说明建模假设、数值误差和模型失效条件。"},
+    {"id":"p4","code":"P4","title":"工程交付与验证","description":"把数据、模型、部署契约、指标和证据组成可复现交付。","effort":"10–16 小时","gate":"另一位工程师可以按说明复现结果，并看到限制与失败样本。"}
+  ],
+  "courses": [
+    {
+      "id":"math-diagnostic","title":"数学入口诊断","description":"检查方程、函数、指数对数、三角函数、弧度和数学符号，不会的内容按需补齐。","stage":"p0","order":1,"effort":"1–2 小时","track":"核心必修","status":"pilot","url":"/learn/math/diagnostic.html","contentFile":"src/courses/math/math-diagnostic.md","prerequisites":[],"deliverable":"数学语言诊断 Notebook 与个人补课清单","topics":["数学","诊断","Python"],"mentorModules":["基础摸底"]
+    },
+    {
+      "id":"foundations-bootcamp","title":"零基础预备课（现有内容）","description":"计算机、Python、数学、时间、网络、ROS 词汇和数据基础的综合预备课。","stage":"p0","order":2,"effort":"18–24 小时","track":"迁移中","status":"legacy","url":"/notes/foundations-bootcamp.html","prerequisites":["math-diagnostic"],"deliverable":"基础诊断表与最小练习","topics":["工具","Python","数学"],"mentorModules":["基础摸底"]
+    },
+    {
+      "id":"engineering-toolkit","title":"远程运维与开发工具","description":"SSH、Git、目录、网络、日志和服务的安全使用。","stage":"p0","order":3,"effort":"4–6 小时","track":"核心必修","status":"legacy","url":"/notes/engineering-toolkit.html","prerequisites":[],"deliverable":"沙箱操作记录与主机边界说明","topics":["工具","Linux","Git"],"mentorModules":["M01"]
+    },
+    {
+      "id":"evidence-first-engineering","title":"证据优先的工程排障","description":"区分源码、部署、运行和验收事实，形成可复查的证据卡。","stage":"p0","order":4,"effort":"4–6 小时","track":"核心必修","status":"legacy","url":"/notes/evidence-first-engineering.html","prerequisites":["engineering-toolkit"],"deliverable":"一张可复查证据卡","topics":["证据","排障","工程方法"],"mentorModules":["M01"]
+    },
+    {
+      "id":"linear-algebra-coordinate","title":"线性代数：从向量到坐标变换","description":"掌握向量、矩阵、张量、基、投影、旋转、平移和齐次变换。","stage":"m1","order":1,"effort":"10–12 小时","track":"核心必修","status":"pilot","url":"/learn/math/linear-algebra-coordinate.html","contentFile":"src/courses/math/linear-algebra-coordinate.md","prerequisites":["math-diagnostic"],"deliverable":"坐标手算、NumPy 变换函数与往返测试","topics":["数学","线性代数","坐标系"],"mentorModules":["M06"]
+    },
+    {
+      "id":"calculus-curvature","title":"微积分：从变化率到曲率","description":"从导数、参数曲线、梯度和积分进入曲率、状态方程与自动微分。","stage":"m1","order":2,"effort":"14–17 小时","track":"核心必修","status":"pilot","url":"/learn/math/calculus-curvature.html","contentFile":"src/courses/math/calculus-curvature.md","prerequisites":["math-diagnostic","linear-algebra-coordinate"],"deliverable":"解析导数、有限差分、离散曲率与 autograd 对照","topics":["数学","微积分","曲率"],"mentorModules":["M08"]
+    },
+    {
+      "id":"probability-scene-split","title":"概率论：从随机性到场景切分","description":"掌握条件概率、期望方差、抽样、数据偏差、似然与交叉熵。","stage":"m1","order":3,"effort":"12–15 小时","track":"核心必修","status":"pilot","url":"/learn/math/probability-scene-split.html","contentFile":"src/courses/math/probability-scene-split.md","prerequisites":["math-diagnostic"],"deliverable":"场景级切分、泄漏检查与数据质量报告","topics":["数学","概率论","数据质量"],"mentorModules":["M05"]
+    },
+    {
+      "id":"autonomous-driving-overview","title":"自动驾驶系统总览","description":"从测量、估计、决策和执行理解自动驾驶闭环。","stage":"a1","order":1,"effort":"2–3 小时","track":"核心必修","status":"legacy","url":"/notes/autonomous-driving-overview.html","prerequisites":["evidence-first-engineering"],"deliverable":"系统闭环图","topics":["自动驾驶","系统"],"mentorModules":["系统总览"]
+    },
+    {
+      "id":"vehicle-hardware-network","title":"车辆硬件与车载网络","description":"认识传感器、组合导航、IPC、VCU、交换机和常见接口。","stage":"a1","order":2,"effort":"2–3 小时","track":"核心必修","status":"legacy","url":"/notes/vehicle-hardware-network.html","prerequisites":["autonomous-driving-overview"],"deliverable":"硬件角色与数据链图","topics":["硬件","传感器","网络"],"mentorModules":["系统总览"]
+    },
+    {
+      "id":"coordinate-transformations","title":"从线性代数到坐标系转换","description":"参考《视觉 SLAM 十四讲》推导刚体变换和多传感器坐标链。","stage":"a1","order":3,"effort":"10–14 小时","track":"核心必修","status":"legacy","url":"/notes/coordinate-transformations.html","prerequisites":["linear-algebra-coordinate"],"deliverable":"变换脚本与 sensor→ego→global 往返验证","topics":["坐标系","几何","SLAM"],"mentorModules":["M06"]
+    },
+    {
+      "id":"perception-maps","title":"感知算法与地图基础","description":"认识点云、地图、检测、融合、跟踪、预测与训练推理。","stage":"a1","order":4,"effort":"4–6 小时","track":"数据主线","status":"legacy","url":"/notes/perception-maps.html","prerequisites":["autonomous-driving-overview"],"deliverable":"感知输入—处理—输出契约图","topics":["感知","地图","数据"],"mentorModules":["感知基础"]
+    },
+    {
+      "id":"nuscenes-dataset","title":"nuScenes 数据集与数据任务","description":"完成数据盘点、索引、QC、scene split、标签合同、统计和可视化。","stage":"a1","order":5,"effort":"20–28 小时","track":"数据主线","status":"legacy","url":"/notes/nuscenes-dataset.html","prerequisites":["coordinate-transformations","probability-scene-split","perception-maps"],"deliverable":"inventory、manifest、QC 与 dataset card","topics":["nuScenes","数据","数据质量"],"mentorModules":["M05"]
+    },
+    {
+      "id":"deep-learning-training-loop","title":"深度学习：第一个完整训练闭环","description":"从张量、线性模型、损失、梯度和优化器建立 PyTorch 训练闭环。","stage":"dl","order":1,"effort":"8–10 小时","track":"深度学习必修","status":"pilot","url":"/learn/deep-learning/training-loop.html","contentFile":"src/courses/deep-learning/training-loop.md","prerequisites":["linear-algebra-coordinate","calculus-curvature","probability-scene-split"],"deliverable":"线性回归和 Softmax 训练脚本、曲线与失败分析","topics":["深度学习","PyTorch","训练"],"mentorModules":["深度学习基础"]
+    },
+    {
+      "id":"dl-mlp-generalization","title":"MLP、泛化与正则化","description":"多层感知机、激活函数、过拟合、权重衰减、Dropout 和分布偏移。","stage":"dl","order":2,"effort":"8–10 小时","track":"深度学习必修","status":"planned","url":null,"prerequisites":["deep-learning-training-loop"],"deliverable":"小数据过拟合与正则化对照实验","topics":["深度学习","MLP","泛化"],"mentorModules":["深度学习基础"]
+    },
+    {
+      "id":"dl-cnn-resnet","title":"CNN、批量归一化与 ResNet","description":"卷积、padding、stride、channel、pooling、BatchNorm 和残差连接。","stage":"dl","order":3,"effort":"12–16 小时","track":"深度学习必修","status":"planned","url":null,"prerequisites":["dl-mlp-generalization"],"deliverable":"图像分类器、checkpoint 与 CPU/GPU 对照","topics":["深度学习","CNN","ResNet"],"mentorModules":["计算机视觉"]
+    },
+    {
+      "id":"dl-vision-data","title":"视觉数据、检测与分割基础","description":"图像增广、微调、边界框、IoU、NMS、检测和分割数据集。","stage":"dl","order":4,"effort":"8–12 小时","track":"深度学习必修","status":"planned","url":null,"prerequisites":["dl-cnn-resnet","nuscenes-dataset"],"deliverable":"视觉标注和增广质量检查实验","topics":["计算机视觉","目标检测","数据"],"mentorModules":["计算机视觉"]
+    },
+    {
+      "id":"dl-nuscenes-capstone","title":"nuScenes-mini 视觉结课项目","description":"把场景切分、坐标投影、轻量微调、指标和失败样本连接起来。","stage":"dl","order":5,"effort":"8–12 小时","track":"深度学习必修","status":"planned","url":null,"prerequisites":["dl-vision-data"],"deliverable":"可复现的小型视觉数据项目","topics":["nuScenes","计算机视觉","结课项目"],"mentorModules":["综合验收"]
+    },
+    {
+      "id":"gpu-workflow","title":"GPU 工作流程图","description":"理解 CPU 预处理、显存、并行计算、模型推理和感知输出的分工。","stage":"dl","order":6,"effort":"1–2 小时","track":"拓展","status":"legacy","url":"/notes/gpu-workflow.html","prerequisites":["deep-learning-training-loop"],"deliverable":"CPU/GPU 分工说明","topics":["GPU","部署","深度学习"],"mentorModules":["M03"]
+    },
+    {
+      "id":"planning-autoware","title":"规划控制与 Autoware","description":"分清 route、behavior、path、trajectory、control 和主要功能域。","stage":"e1","order":1,"effort":"6–8 小时","track":"方向拓展","status":"legacy","url":"/notes/planning-autoware.html","prerequisites":["autonomous-driving-overview"],"deliverable":"规划控制分层图与消息语义表","topics":["Autoware","规划","控制"],"mentorModules":["M02"]
+    },
+    {
+      "id":"ros2-autoware-debugging","title":"沿 ROS 2 图谱排查数据链","description":"沿发布者、Topic、QoS、类型和消费者证明数据在哪一段失效。","stage":"e1","order":2,"effort":"8–10 小时","track":"方向拓展","status":"legacy","url":"/notes/ros2-autoware-debugging.html","prerequisites":["planning-autoware","evidence-first-engineering"],"deliverable":"只读断链报告","topics":["ROS 2","Autoware","排障"],"mentorModules":["M02"]
+    },
+    {
+      "id":"curvature-calculation","title":"曲率计算与数值工程","description":"从解析曲线进入三点法、离散轨迹、符号、噪声与边界。","stage":"e2","order":1,"effort":"6–8 小时","track":"方向拓展","status":"legacy","url":"/notes/curvature-calculation.html","prerequisites":["calculus-curvature"],"deliverable":"多种曲率算法和误差对比","topics":["曲率","轨迹","数值计算"],"mentorModules":["M08"]
+    },
+    {
+      "id":"ackermann-bicycle-model","title":"自行车与阿克曼模型推导","description":"从无侧滑假设推导几何自行车、阿克曼关系与状态方程。","stage":"e2","order":2,"effort":"8–10 小时","track":"方向拓展","status":"legacy","url":"/notes/ackermann-bicycle-model.html","prerequisites":["curvature-calculation","coordinate-transformations"],"deliverable":"轨迹仿真与边界分析","topics":["车辆模型","阿克曼","自行车模型"],"mentorModules":["M07"]
+    },
+    {
+      "id":"can-bus-interface","title":"CAN 总线与接口边界","description":"理解帧、DBC、信号编码、端序、缩放和安全操作边界。","stage":"e2","order":3,"effort":"4–8 小时","track":"方向拓展","status":"legacy","url":"/notes/can-bus-interface.html","prerequisites":["ackermann-bicycle-model"],"deliverable":"离线报文解码和边界说明","topics":["CAN","车辆","接口"],"mentorModules":["车辆接口"]
+    },
+    {
+      "id":"perception-deployment-contracts","title":"感知部署契约","description":"把训练输入输出、运行时预处理、模型文件和部署配置对齐。","stage":"p4","order":1,"effort":"4–6 小时","track":"工程交付","status":"legacy","url":"/notes/perception-deployment-contracts.html","prerequisites":["nuscenes-dataset","deep-learning-training-loop"],"deliverable":"golden samples 与部署 manifest","topics":["部署","感知","数据契约"],"mentorModules":["M03"]
+    },
+    {
+      "id":"validation-closure","title":"验证闭环与工程交付","description":"统一指标口径、失败样本、环境边界和可复现验收。","stage":"p4","order":2,"effort":"6–10 小时","track":"工程交付","status":"legacy","url":"/notes/validation-closure.html","prerequisites":["perception-deployment-contracts"],"deliverable":"完整的证据化结业交付","topics":["验证","指标","工程交付"],"mentorModules":["M04"]
+    }
+  ]
+}
