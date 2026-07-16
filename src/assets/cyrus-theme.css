@@ -1,0 +1,783 @@
+/*
+ * Cyrus theme layer
+ * -----------------
+ * Keeps the textbook layout and interaction rules in knowledge.css / v2.css,
+ * while mapping their visual language to Cyrus Learning Manager:
+ * editorial black and white, cool paper grid, and restrained liquid glass.
+ */
+
+body[data-theme="cyrus"] {
+  color-scheme: light;
+  --ink: #08090b;
+  --ink-soft: #24272d;
+  --paper: #f4f6f9;
+  --paper-soft: #ffffff;
+  --paper-tint: #e9edf3;
+  --bg: var(--paper);
+  --surface: var(--paper-soft);
+  --surface-muted: rgba(247, 249, 252, 0.78);
+  --text: var(--ink);
+  --muted: #656b76;
+  --brand: #111111;
+  --brand-dark: #000000;
+  --brand-strong: #24272d;
+  --brand-soft: #e9edf3;
+  --accent: #5a5a5a;
+  --accent-soft: #eef1f5;
+  --line: rgba(10, 12, 16, 0.12);
+  --line-strong: rgba(10, 12, 16, 0.26);
+  --good: #24543f;
+  --good-soft: #edf8f3;
+  --warn: #744700;
+  --warn-soft: #fff6e7;
+  --danger: #5f1712;
+  --danger-soft: #fff0ef;
+  --sky-soft: #edf0f4;
+  --mint-soft: var(--good-soft);
+  --amber-soft: var(--warn-soft);
+  --indigo-950: #08090b;
+  --indigo-800: #24272d;
+  --indigo-600: #5a5a5a;
+  --glass-edge: rgba(255, 255, 255, 0.82);
+  --glass-specular: rgba(255, 255, 255, 0.9);
+  --glass-depth-shadow: rgba(13, 18, 28, 0.2);
+  --glass-inner-shadow: rgba(8, 9, 11, 0.09);
+  --glass-refraction-map:
+    radial-gradient(120% 160% at 6% 0%, rgba(255, 255, 255, 0.86), transparent 34%),
+    radial-gradient(95% 140% at 96% 8%, rgba(127, 183, 255, 0.16), transparent 42%),
+    linear-gradient(118deg, rgba(255, 255, 255, 0.5), transparent 34%, rgba(255, 255, 255, 0.16) 64%, transparent);
+  --glass-panel:
+    var(--glass-refraction-map),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.76), rgba(247, 249, 252, 0.38) 52%, rgba(255, 255, 255, 0.58)),
+    rgba(255, 255, 255, 0.38);
+  --glass-control:
+    var(--glass-refraction-map),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.88), rgba(237, 241, 247, 0.54)),
+    rgba(255, 255, 255, 0.48);
+  --reading-surface:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(250, 251, 253, 0.94)),
+    #ffffff;
+  --shadow:
+    0 24px 64px rgba(13, 18, 28, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 -1px 0 rgba(8, 9, 11, 0.06);
+  --shadow-soft:
+    0 18px 48px rgba(17, 22, 31, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --font-xingkai-cn: "Xingkai SC", "STXingkai", "Kaiti SC", "STKaiti", "KaiTi", "KaiTi_GB2312", "Songti SC", "STSong", serif;
+  --font-ui: "Times New Roman", Times, var(--font-xingkai-cn);
+  --font-heading: "Times New Roman", Times, var(--font-xingkai-cn);
+  --font-reading: "Times New Roman", Times, "Songti SC", "STSong", serif;
+  --font-code: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  margin: 0;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(232, 236, 244, 0.62) 46%, rgba(255, 255, 255, 0.84)),
+    repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.22) 0 1px, transparent 1px 22px),
+    linear-gradient(90deg, rgba(8, 9, 11, 0.036) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(8, 9, 11, 0.032) 1px, transparent 1px),
+    var(--paper);
+  background-attachment: fixed;
+  background-size: auto, auto, 44px 44px, 44px 44px, auto;
+  color: var(--ink);
+  font-family: var(--font-reading);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+body[data-theme="cyrus"] :where(h1, h2, h3, h4, .site-brand) {
+  color: var(--ink);
+  font-family: var(--font-heading);
+}
+
+body[data-theme="cyrus"] :where(
+  .v2-header,
+  .v2-nav,
+  .eyebrow,
+  .section-kicker,
+  .tag,
+  .course-status,
+  .course-order,
+  .stage-number,
+  .book-tree,
+  .page-outline,
+  .button,
+  button,
+  input,
+  select,
+  textarea
+) {
+  font-family: var(--font-ui);
+}
+
+body[data-theme="cyrus"] :where(code, pre, kbd, samp) {
+  font-family: var(--font-code);
+}
+
+/* Keyboard focus remains visible on light glass, dark actions, and diagrams. */
+body[data-theme="cyrus"] :where(
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  summary,
+  [tabindex]
+):focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+  box-shadow:
+    0 0 0 5px rgba(255, 255, 255, 0.96),
+    0 0 0 7px rgba(8, 9, 11, 0.34);
+}
+
+/* Header: a fixed liquid-glass navigation rail, matching Cyrus tabs. */
+body[data-theme="cyrus"] .v2-header {
+  border-bottom: 1px solid rgba(8, 9, 11, 0.14);
+  background:
+    var(--glass-refraction-map),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.86), rgba(245, 248, 252, 0.62)),
+    rgba(255, 255, 255, 0.66);
+  box-shadow:
+    0 18px 44px rgba(17, 22, 31, 0.1),
+    inset 0 1px 0 var(--glass-specular);
+  color: var(--ink);
+  -webkit-backdrop-filter: blur(30px) saturate(175%);
+  backdrop-filter: blur(30px) saturate(175%);
+}
+
+body[data-theme="cyrus"] .v2-header-inner {
+  min-height: 72px;
+}
+
+body[data-theme="cyrus"] .v2-header .site-brand {
+  color: var(--ink);
+  font-size: 1.08rem;
+  font-weight: 900;
+  letter-spacing: 0.01em;
+}
+
+body[data-theme="cyrus"] .v2-nav {
+  gap: 4px;
+  padding: 5px;
+  border: 1px solid var(--glass-edge);
+  border-radius: 999px;
+  background: var(--glass-panel);
+  box-shadow:
+    0 14px 36px rgba(19, 24, 33, 0.1),
+    inset 0 1px 0 var(--glass-specular);
+  -webkit-backdrop-filter: blur(24px) saturate(165%);
+  backdrop-filter: blur(24px) saturate(165%);
+}
+
+body[data-theme="cyrus"] .v2-nav a {
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: rgba(8, 9, 11, 0.72);
+  font-weight: 700;
+  transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+body[data-theme="cyrus"] .v2-nav a:hover {
+  background: rgba(255, 255, 255, 0.5);
+  color: var(--ink);
+  transform: translateY(-1px);
+}
+
+body[data-theme="cyrus"] .v2-nav a[aria-current="page"] {
+  border-color: rgba(255, 255, 255, 0.9);
+  background: var(--glass-control);
+  box-shadow:
+    0 8px 22px rgba(18, 22, 30, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    inset 0 -1px 0 rgba(8, 9, 11, 0.06);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+/* Shared Cyrus surfaces. Reading surfaces stay nearly opaque for long lessons. */
+body[data-theme="cyrus"] :where(
+  .panel,
+  .link-card,
+  .learning-loop li,
+  .course-card,
+  .hero-card,
+  .stage-nav,
+  .search-box,
+  .reader-disclosure-body,
+  .page-outline,
+  .course-learning-cycle,
+  .course-meta > div,
+  .course-next a,
+  .lesson-diagram,
+  .guide-finish,
+  .book-progress
+) {
+  border-color: var(--glass-edge);
+  border-radius: 8px;
+  background: var(--glass-panel);
+  box-shadow: var(--shadow-soft);
+  -webkit-backdrop-filter: blur(24px) saturate(165%);
+  backdrop-filter: blur(24px) saturate(165%);
+}
+
+body[data-theme="cyrus"] :where(.course-content, .guide-content, .page) {
+  border: 1px solid var(--glass-edge);
+  border-radius: 8px;
+  background: var(--reading-surface);
+  box-shadow: var(--shadow);
+}
+
+body[data-theme="cyrus"] :where(.course-card, .link-card, .course-next a, .button) {
+  transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+body[data-theme="cyrus"] :where(.course-card, .link-card, .course-next a):hover {
+  border-color: var(--line-strong);
+  box-shadow:
+    0 22px 54px rgba(17, 22, 31, 0.14),
+    inset 0 1px 0 var(--glass-specular);
+  transform: translateY(-1px);
+}
+
+/* Home cover: editorial glass instead of the former blue marketing gradient. */
+body[data-theme="cyrus"] .v2-hero {
+  padding-top: clamp(28px, 5vw, 58px);
+  background: transparent;
+  color: var(--ink);
+}
+
+body[data-theme="cyrus"] .v2-hero-grid {
+  overflow: hidden;
+  padding: clamp(30px, 5vw, 56px);
+  border: 1px solid var(--glass-edge);
+  border-radius: 8px;
+  background:
+    var(--glass-refraction-map),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.84), rgba(245, 248, 252, 0.48) 54%, rgba(255, 255, 255, 0.68)),
+    rgba(255, 255, 255, 0.46);
+  box-shadow:
+    0 34px 90px var(--glass-depth-shadow),
+    inset 0 1px 0 var(--glass-specular),
+    inset 0 -1px 0 var(--glass-inner-shadow);
+  -webkit-backdrop-filter: blur(36px) saturate(180%);
+  backdrop-filter: blur(36px) saturate(180%);
+}
+
+body[data-theme="cyrus"] .v2-hero h1 {
+  color: var(--ink);
+  font-size: clamp(3rem, 6.5vw, 4.75rem);
+  font-weight: 900;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+body[data-theme="cyrus"] :where(.v2-hero .eyebrow, .section-kicker) {
+  color: var(--brand);
+}
+
+body[data-theme="cyrus"] .hero-intro,
+body[data-theme="cyrus"] .progress-overview > p {
+  color: var(--muted);
+}
+
+body[data-theme="cyrus"] .v2-hero .hero-card {
+  background: var(--glass-panel);
+  color: var(--ink);
+}
+
+body[data-theme="cyrus"] :where(.hero-card-label, .v2-stats span) {
+  color: var(--muted);
+}
+
+body[data-theme="cyrus"] .progress-track {
+  background: rgba(8, 9, 11, 0.1);
+}
+
+body[data-theme="cyrus"] .progress-track span {
+  background: var(--ink);
+}
+
+body[data-theme="cyrus"] .continue-link {
+  color: var(--ink);
+}
+
+body[data-theme="cyrus"] .v2-stats {
+  overflow: hidden;
+  margin-top: 14px;
+  border: 1px solid var(--glass-edge);
+  border-radius: 8px;
+  background: var(--glass-panel);
+  box-shadow: var(--shadow-soft);
+  color: var(--ink);
+  -webkit-backdrop-filter: blur(24px) saturate(165%);
+  backdrop-filter: blur(24px) saturate(165%);
+}
+
+body[data-theme="cyrus"] .v2-stats > div {
+  border-right-color: var(--line);
+}
+
+body[data-theme="cyrus"] .button {
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  border-radius: 8px;
+  background: var(--glass-control);
+  box-shadow:
+    0 12px 30px rgba(18, 22, 30, 0.12),
+    inset 0 1px 0 var(--glass-specular);
+  color: var(--ink);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  backdrop-filter: blur(20px) saturate(160%);
+}
+
+body[data-theme="cyrus"] .button:hover {
+  border-color: var(--line-strong);
+  transform: translateY(-1px);
+}
+
+body[data-theme="cyrus"] :where(.v2-hero .hero-actions .button:first-child, .button-primary, .button-solid) {
+  border-color: rgba(255, 255, 255, 0.24);
+  background:
+    linear-gradient(145deg, rgba(11, 12, 15, 0.94), rgba(42, 45, 52, 0.84)),
+    #08090b;
+  color: #ffffff;
+}
+
+body[data-theme="cyrus"] .button-secondary {
+  border-color: var(--glass-edge);
+  background: var(--glass-control);
+  color: var(--ink);
+}
+
+/* Course directory and status semantics. */
+body[data-theme="cyrus"] .stage-number {
+  background: var(--paper-tint);
+  color: var(--ink-soft);
+}
+
+body[data-theme="cyrus"] .stage-gate {
+  border-left-color: var(--good);
+  background: var(--good-soft);
+  color: #315a4a;
+}
+
+body[data-theme="cyrus"] .course-order {
+  border-radius: 6px;
+  background: var(--ink);
+  color: #ffffff;
+}
+
+body[data-theme="cyrus"] .course-result {
+  color: var(--ink-soft);
+}
+
+body[data-theme="cyrus"] :where(.tag, .tag-legacy, .tag-planned) {
+  background: var(--paper-tint);
+  color: var(--ink-soft);
+}
+
+body[data-theme="cyrus"] .tag-live {
+  background: var(--good-soft);
+  color: var(--good);
+}
+
+body[data-theme="cyrus"] .v2-course-card.is-planned {
+  border-color: var(--line-strong);
+  background: rgba(244, 246, 249, 0.68);
+  box-shadow: none;
+}
+
+body[data-theme="cyrus"] .v2-course-card.is-planned :where(h4, p) {
+  color: var(--muted);
+}
+
+body[data-theme="cyrus"] .course-status {
+  background: var(--paper-tint);
+  color: var(--ink-soft);
+}
+
+body[data-theme="cyrus"] .course-status[data-state="in-progress"] {
+  border: 1px solid rgba(116, 71, 0, 0.2);
+  background: var(--warn-soft);
+  color: var(--warn);
+}
+
+body[data-theme="cyrus"] .course-status[data-state="artifact-ready"] {
+  background: var(--good-soft);
+  color: var(--good);
+}
+
+/* Reader sidebars retain the D2L structure and use Cyrus glass material. */
+body[data-theme="cyrus"] :where(.reader-book-sidebar, .reader-page-sidebar) {
+  font-family: var(--font-ui);
+}
+
+body[data-theme="cyrus"] .reader-book-sidebar .reader-disclosure-body {
+  padding: 14px;
+}
+
+body[data-theme="cyrus"] .reader-page-sidebar .page-outline {
+  padding: 14px;
+  border: 1px solid var(--glass-edge);
+}
+
+body[data-theme="cyrus"] :where(.book-home, .page-outline-title) {
+  color: var(--ink);
+}
+
+body[data-theme="cyrus"] :where(.book-guide:hover, .book-guide.is-active, .book-chapter li > a:hover, .book-chapter li > a.is-active) {
+  background: rgba(233, 237, 243, 0.82);
+  color: var(--ink);
+}
+
+body[data-theme="cyrus"] .book-chapter li > a.is-active {
+  box-shadow: inset 3px 0 var(--ink);
+}
+
+body[data-theme="cyrus"] :where(.book-guide .book-index, .book-chapter > summary span, .book-chapter.is-current > summary strong) {
+  color: var(--ink);
+}
+
+body[data-theme="cyrus"] :where(.book-chapter > summary, .book-chapter li > a) {
+  color: var(--ink-soft);
+}
+
+body[data-theme="cyrus"] :where(.book-course-number, .page-outline a) {
+  color: var(--muted);
+}
+
+body[data-theme="cyrus"] :where(.book-course-state.state-legacy, .book-course-state.state-planned) {
+  background: var(--paper-tint);
+  color: var(--muted);
+}
+
+body[data-theme="cyrus"] .book-course-state.state-pilot {
+  background: var(--good-soft);
+  color: var(--good);
+}
+
+body[data-theme="cyrus"] .book-progress {
+  border-color: var(--glass-edge);
+}
+
+body[data-theme="cyrus"] .book-progress :where(label, p) {
+  color: var(--ink-soft);
+}
+
+body[data-theme="cyrus"] .book-progress select {
+  border-color: var(--line-strong);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--ink);
+}
+
+body[data-theme="cyrus"] .page-outline a.is-current {
+  border-left-color: var(--ink);
+  background: linear-gradient(90deg, rgba(233, 237, 243, 0.95), transparent);
+  color: var(--ink);
+}
+
+body[data-theme="cyrus"] .page-outline a:hover {
+  color: var(--ink);
+}
+
+body[data-theme="cyrus"] .reader-disclosure > summary {
+  border-color: var(--glass-edge);
+  border-radius: 8px;
+  background: var(--glass-control);
+  color: var(--ink);
+  box-shadow: var(--shadow-soft);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  backdrop-filter: blur(20px) saturate(160%);
+}
+
+/* Lesson hierarchy and cognition loop. */
+body[data-theme="cyrus"] :where(.course-heading, .guide-heading) {
+  border-bottom-color: var(--line);
+}
+
+body[data-theme="cyrus"] .course-heading :where(.course-breadcrumb, .course-breadcrumb a) {
+  color: var(--muted);
+}
+
+body[data-theme="cyrus"] :where(.course-heading h1, .guide-heading h1) {
+  font-size: clamp(2.55rem, 5vw, 4.25rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+body[data-theme="cyrus"] .course-meta > div {
+  background: rgba(247, 249, 252, 0.72);
+}
+
+body[data-theme="cyrus"] .course-outcome {
+  border-left-color: var(--good);
+  background: var(--good-soft);
+}
+
+body[data-theme="cyrus"] .course-learning-cycle {
+  border-color: var(--glass-edge);
+  background: var(--glass-panel);
+}
+
+body[data-theme="cyrus"] .learning-cycle-heading p:last-child {
+  color: var(--muted);
+}
+
+body[data-theme="cyrus"] .cognition-strip li {
+  border-color: rgba(8, 9, 11, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+body[data-theme="cyrus"] .cognition-strip li > span {
+  background: var(--ink);
+  color: #ffffff;
+}
+
+body[data-theme="cyrus"] :where(.course-content blockquote, .guide-content blockquote) {
+  border-left-color: var(--ink);
+  background: var(--paper-tint);
+}
+
+body[data-theme="cyrus"] .guide-heading {
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 8px;
+  background:
+    radial-gradient(120% 130% at 6% 0%, rgba(255, 255, 255, 0.16), transparent 32%),
+    linear-gradient(145deg, rgba(8, 9, 11, 0.96), rgba(42, 45, 52, 0.9)),
+    #08090b;
+  box-shadow:
+    0 28px 68px rgba(8, 9, 11, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+}
+
+body[data-theme="cyrus"] .guide-heading :where(h1, .eyebrow, .lead) {
+  color: #ffffff;
+}
+
+body[data-theme="cyrus"] .guide-heading .lead {
+  opacity: 0.78;
+}
+
+body[data-theme="cyrus"] .guide-heading .button-primary {
+  border-color: rgba(255, 255, 255, 0.8);
+  background: var(--glass-control);
+  color: var(--ink);
+}
+
+body[data-theme="cyrus"] .guide-heading .button-quiet {
+  border-color: rgba(255, 255, 255, 0.34);
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+body[data-theme="cyrus"] .guide-finish {
+  background: var(--good-soft);
+}
+
+/* Math, code, tables, and diagrams prioritize legibility over translucency. */
+body[data-theme="cyrus"] code {
+  background: var(--paper-tint);
+  color: var(--ink);
+}
+
+body[data-theme="cyrus"] pre {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  background: #111214;
+  color: #f4f6f9;
+  box-shadow: 0 18px 42px rgba(8, 9, 11, 0.16);
+}
+
+body[data-theme="cyrus"] pre code {
+  background: transparent;
+  color: inherit;
+}
+
+body[data-theme="cyrus"] :where(.equation, .lesson-diagram, .flow) {
+  border-color: var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.94);
+}
+
+body[data-theme="cyrus"] .lesson-diagram {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.94);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+body[data-theme="cyrus"] th {
+  background: var(--paper-tint);
+}
+
+body[data-theme="cyrus"] :where(th, td) {
+  border-bottom-color: var(--line);
+}
+
+body[data-theme="cyrus"] .node {
+  border-color: var(--line-strong);
+  border-radius: 8px;
+}
+
+body[data-theme="cyrus"] .node.accent {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: #ffffff;
+}
+
+body[data-theme="cyrus"] :where(.key, .warning) {
+  border-radius: 0 8px 8px 0;
+}
+
+body[data-theme="cyrus"] .key {
+  border-left-color: var(--ink);
+  background: var(--paper-tint);
+}
+
+body[data-theme="cyrus"] .warning {
+  border-left-color: var(--warn);
+  background: var(--warn-soft);
+}
+
+/* Footer and closing call-to-action use the deep Cyrus completion state. */
+body[data-theme="cyrus"] .portal-cta {
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  border-radius: 8px;
+  background:
+    radial-gradient(110% 150% at 6% 0%, rgba(255, 255, 255, 0.15), transparent 34%),
+    linear-gradient(145deg, rgba(8, 9, 11, 0.96), rgba(42, 45, 52, 0.9)),
+    #08090b;
+  box-shadow: var(--shadow);
+}
+
+body[data-theme="cyrus"] .portal-cta :where(h2, .section-kicker) {
+  color: #ffffff;
+}
+
+body[data-theme="cyrus"] .portal-cta p {
+  color: rgba(255, 255, 255, 0.76);
+}
+
+body[data-theme="cyrus"] .site-footer {
+  color: var(--muted);
+}
+
+body[data-theme="cyrus"] .button-danger {
+  border-color: rgba(95, 23, 18, 0.28);
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+@supports not ((-webkit-backdrop-filter: blur(2px)) or (backdrop-filter: blur(2px))) {
+  body[data-theme="cyrus"] :where(
+    .v2-header,
+    .v2-nav,
+    .v2-hero-grid,
+    .v2-stats,
+    .panel,
+    .link-card,
+    .learning-loop li,
+    .course-card,
+    .hero-card,
+    .stage-nav,
+    .reader-disclosure-body,
+    .page-outline,
+    .course-learning-cycle
+  ) {
+    background: rgba(255, 255, 255, 0.96);
+  }
+}
+
+@media (max-width: 1240px) {
+  body[data-theme="cyrus"] .page-disclosure[open] > summary {
+    border-radius: 8px 8px 0 0;
+  }
+
+  body[data-theme="cyrus"] .reader-page-sidebar .page-outline {
+    border-top: 0;
+    border-radius: 0 0 8px 8px;
+    box-shadow: none;
+  }
+}
+
+@media (max-width: 860px) {
+  body[data-theme="cyrus"] .reader-disclosure > summary {
+    border-radius: 8px;
+  }
+
+  body[data-theme="cyrus"] .reader-disclosure[open] > summary {
+    border-radius: 8px 8px 0 0;
+  }
+
+  body[data-theme="cyrus"] .book-disclosure > .reader-disclosure-body,
+  body[data-theme="cyrus"] .reader-page-sidebar .page-outline {
+    border-radius: 0 0 8px 8px;
+    box-shadow: none;
+  }
+}
+
+@media (max-width: 760px) {
+  body[data-theme="cyrus"] {
+    background-size: auto, auto, 34px 34px, 34px 34px, auto;
+  }
+
+  body[data-theme="cyrus"] .v2-header-inner {
+    gap: 8px;
+  }
+
+  body[data-theme="cyrus"] .v2-nav {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    border-radius: 8px;
+    scrollbar-width: none;
+  }
+
+  body[data-theme="cyrus"] .v2-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  body[data-theme="cyrus"] .v2-nav a {
+    flex: 0 0 auto;
+  }
+
+  body[data-theme="cyrus"] .v2-hero-grid {
+    padding: 28px 22px;
+  }
+
+  body[data-theme="cyrus"] .v2-stats > div:nth-child(-n + 2) {
+    border-bottom-color: var(--line);
+  }
+}
+
+@media (max-width: 520px) {
+  body[data-theme="cyrus"] .v2-hero h1 {
+    font-size: clamp(2.65rem, 13vw, 3.65rem);
+  }
+
+  body[data-theme="cyrus"] :where(.course-heading h1, .guide-heading h1) {
+    font-size: clamp(2.25rem, 11vw, 3.2rem);
+  }
+
+  body[data-theme="cyrus"] :where(.course-content, .guide-content) {
+    border-right: 0;
+    border-left: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-theme="cyrus"] :where(.v2-nav a, .course-card, .link-card, .course-next a, .button) {
+    transition: none;
+  }
+
+  body[data-theme="cyrus"] :where(.v2-nav a, .course-card, .link-card, .course-next a, .button):hover {
+    transform: none;
+  }
+}

@@ -3,3 +3,5 @@ _site/
 .DS_Store
 .cache/
 *.log
+.playwright-cli/
+output/playwright/

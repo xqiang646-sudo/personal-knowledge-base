@@ -5,8 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="{{ description or site.description }}">
   <title>{{ title or site.name }}｜{{ site.shortName }}</title>
+  <link rel="icon" href="{{ '/assets/favicon.svg' | siteUrl }}" type="image/svg+xml">
   <link rel="stylesheet" href="{{ '/assets/knowledge.css' | siteUrl }}">
   <link rel="stylesheet" href="{{ '/assets/v2.css' | siteUrl }}">
+  <link rel="stylesheet" href="{{ '/assets/cyrus-theme.css' | siteUrl }}">
   {% if math %}<script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>{% endif %}
   {% if diagrams %}
   <script type="module">
@@ -16,26 +18,27 @@
       securityLevel: "strict",
       theme: "base",
       themeVariables: {
-        primaryColor: "#edf1ff",
-        primaryTextColor: "#172033",
-        primaryBorderColor: "#3157d5",
-        secondaryColor: "#eaf8f2",
-        tertiaryColor: "#fff4df",
-        lineColor: "#657087",
-        fontFamily: "Inter, PingFang SC, Microsoft YaHei, sans-serif"
+        primaryColor: "#ffffff",
+        primaryTextColor: "#08090b",
+        primaryBorderColor: "#111111",
+        secondaryColor: "#e9edf3",
+        tertiaryColor: "#f4f6f9",
+        lineColor: "#656b76",
+        fontFamily: "Times New Roman, Songti SC, STSong, serif"
       },
       flowchart: { htmlLabels: false, curve: "basis", useMaxWidth: false }
     });
   </script>
   {% endif %}
 </head>
-<body class="{{ bodyClass or 'portal-body' }}">
+<body class="{{ bodyClass or 'portal-body' }}" data-theme="cyrus">
   <a class="skip-link" href="#main-content">跳到主要内容</a>
   {% include "partials/site-header.njk" %}
-  <main id="main-content">
+  <main id="main-content" tabindex="-1">
     {{ content | safe }}
   </main>
   {% include "partials/site-footer.njk" %}
   <script defer src="{{ '/assets/progress.js' | siteUrl }}"></script>
+  {% if courseId or reader %}<script defer src="{{ '/assets/reader.js' | siteUrl }}"></script>{% endif %}
 </body>
 </html>

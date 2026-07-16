@@ -1,0 +1,59 @@
+<aside class="reader-book-sidebar" aria-label="教材目录" data-pagefind-ignore>
+  <details class="reader-disclosure book-disclosure" data-responsive-disclosure data-collapse-at="860" open>
+    <summary>
+      <span>教材目录</span>
+      {% if currentCourse %}<strong>{{ stage.code }}.{{ currentCourse.order }}</strong>{% else %}<strong>7 阶段</strong>{% endif %}
+    </summary>
+    <div class="reader-disclosure-body">
+      <div class="book-heading">
+        <a class="book-home" href="{{ '/' | siteUrl }}">自动驾驶学习系统</a>
+        <p>按章节学习，也按真实任务取用。</p>
+      </div>
+
+      <nav class="book-tree" aria-label="教材章节目录">
+        <a class="book-guide{% if guidePage %} is-active{% endif %}" href="{{ '/guide.html' | siteUrl }}"{% if guidePage %} aria-current="page"{% endif %}>
+          <span class="book-index">指南</span>
+          <span><strong>学习指南</strong><small>先学会怎样完成一课</small></span>
+        </a>
+
+        {% for treeStage in curriculum.stages %}
+        {% set stageCourses = curriculum.courses | coursesForStage(treeStage.id) %}
+        <details class="book-chapter{% if currentCourse and currentCourse.stage == treeStage.id %} is-current{% endif %}"{% if currentCourse and currentCourse.stage == treeStage.id %} open{% elif guidePage and loop.first %} open{% endif %}>
+          <summary><span>{{ treeStage.code }}</span><strong>{{ treeStage.title }}</strong></summary>
+          <ol>
+            {% for item in stageCourses %}
+            <li>
+              {% if item.url %}
+              <a href="{{ item.url | siteUrl }}"{% if currentCourse and item.id == currentCourse.id %} class="is-active" aria-current="page"{% endif %}>
+                <span class="book-course-number">{{ treeStage.code }}.{{ item.order }}</span>
+                <span class="book-course-title">{{ item.title }}</span>
+                <small class="book-course-state state-{{ item.status }}">{% if item.status == "pilot" %}试点{% else %}现有{% endif %}</small>
+              </a>
+              {% else %}
+              <span class="book-course-planned" aria-label="{{ item.title }}，待建设">
+                <span class="book-course-number">{{ treeStage.code }}.{{ item.order }}</span>
+                <span class="book-course-title">{{ item.title }}</span>
+                <small class="book-course-state state-planned">待建</small>
+              </span>
+              {% endif %}
+            </li>
+            {% endfor %}
+          </ol>
+        </details>
+        {% endfor %}
+      </nav>
+
+      {% if currentCourse %}
+      <div class="book-progress">
+        <label for="progress-{{ currentCourse.id }}">本课学习状态</label>
+        <select id="progress-{{ currentCourse.id }}" data-progress-select data-course-id="{{ currentCourse.id }}">
+          <option value="not-started">未开始</option>
+          <option value="in-progress">学习中</option>
+          <option value="artifact-ready">产物已就绪</option>
+        </select>
+        <p>只保存在当前浏览器；“产物已就绪”仍需导师验收。</p>
+      </div>
+      {% endif %}
+    </div>
+  </details>
+</aside>
