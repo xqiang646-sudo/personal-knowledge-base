@@ -43,5 +43,6 @@
   {% include "partials/site-footer.njk" %}
   <script defer src="{{ '/assets/progress.js' | siteUrl }}"></script>
   {% if courseId or reader %}<script defer src="{{ '/assets/reader.js' | siteUrl }}"></script>{% endif %}
+  {% if learningUpdatePage %}<script type="module" src="{{ '/assets/learning-update.js' | siteUrl }}"></script>{% endif %}
 </body>
 </html>

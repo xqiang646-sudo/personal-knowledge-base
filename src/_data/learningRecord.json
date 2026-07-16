@@ -1,0 +1,258 @@
+{
+  "schemaVersion": 1,
+  "maxEntries": 500,
+  "maxImportBytes": 32000000,
+  "storageKey": "personal-knowledge-base.learning-records.v1",
+  "progressStorageKey": "personal-knowledge-base.progress.v2",
+  "recordTypes": [
+    {
+      "id": "learning-session",
+      "label": "记下我的理解",
+      "description": "记录我原来怎么想、什么结果改变了认识，以及下一次只做哪一小步。"
+    },
+    {
+      "id": "knowledge-contribution",
+      "label": "告诉知识库哪里难懂",
+      "description": "把难懂的原句、原因和补充建议整理成私人草稿，再交给学习助手处理。"
+    }
+  ],
+  "statuses": [
+    { "id": "starting", "label": "我刚开始想" },
+    { "id": "stuck", "label": "我卡在一个具体地方" },
+    { "id": "experiment-done", "label": "我完成了最小验证" },
+    { "id": "transfer-ready", "label": "我换个条件也能做" }
+  ],
+  "groups": [
+    {
+      "id": "start",
+      "title": "1. 先把问题说清楚",
+      "description": "只写两句话也可以：我想弄懂什么，我现在怎么猜。",
+      "open": true,
+      "types": ["learning-session", "knowledge-contribution"],
+      "fields": [
+        {
+          "id": "question",
+          "label": "今天只想弄懂什么？",
+          "placeholder": "例如：为什么同一个点换了坐标系以后，数字变了，但实际位置没有变？",
+          "kind": "textarea",
+          "rows": 3,
+          "maxLength": 1200,
+          "required": true
+        },
+        {
+          "id": "startingModel",
+          "label": "看答案前，我是怎么想的？",
+          "placeholder": "我现在猜……，因为……。不知道也可以直接写“不知道”。",
+          "kind": "textarea",
+          "rows": 3,
+          "maxLength": 2400
+        },
+        {
+          "id": "stuckAt",
+          "label": "哪个词、符号或步骤让我停住了？",
+          "placeholder": "尽量指到一个具体词、一行公式、一个图或一段代码。",
+          "kind": "textarea",
+          "rows": 2,
+          "maxLength": 1600
+        }
+      ]
+    },
+    {
+      "id": "primitives",
+      "title": "2. 从最少的事实重新搭起来",
+      "description": "先放下背过的结论，只使用能观察、计算或验证的事实。",
+      "open": true,
+      "types": ["learning-session"],
+      "fields": [
+        {
+          "id": "facts",
+          "label": "我现在能确认的事实是什么？",
+          "placeholder": "每行写一个事实。不要把猜测混进来。",
+          "kind": "textarea",
+          "rows": 4,
+          "maxLength": 4000
+        },
+        {
+          "id": "contract",
+          "label": "输入、输出、单位、形状和坐标方向分别是什么？",
+          "placeholder": "不相关的项目可以留空；相关时一定写清楚。",
+          "kind": "textarea",
+          "rows": 4,
+          "maxLength": 4000
+        },
+        {
+          "id": "assumptions",
+          "label": "这次暂时采用了哪些假设？",
+          "placeholder": "例如：忽略侧滑、角度使用弧度、同一 scene 不跨集合。",
+          "kind": "textarea",
+          "rows": 3,
+          "maxLength": 3000
+        },
+        {
+          "id": "derivationSummary",
+          "label": "从事实到结论，中间经过了哪几步？",
+          "placeholder": "用自己的话逐步写；公式可以使用 LaTeX。",
+          "kind": "textarea",
+          "rows": 6,
+          "maxLength": 8000
+        }
+      ]
+    },
+    {
+      "id": "experiment",
+      "title": "3. 用一个最小例子检查认识",
+      "description": "先预测，再观察；结果不同，正好说明认识需要更新。",
+      "open": false,
+      "types": ["learning-session"],
+      "fields": [
+        {
+          "id": "minimalExperiment",
+          "label": "我使用了什么最小输入，做了什么？",
+          "placeholder": "例如：一个点、三个轨迹点、两个 scene 或一个 batch。",
+          "kind": "textarea",
+          "rows": 4,
+          "maxLength": 4000
+        },
+        {
+          "id": "expected",
+          "label": "动手前，我预计会看到什么？",
+          "placeholder": "先写预测，不要在看到结果后倒推。",
+          "kind": "textarea",
+          "rows": 3,
+          "maxLength": 2400
+        },
+        {
+          "id": "observed",
+          "label": "实际看到了什么？",
+          "placeholder": "写数字、趋势、报错或可复查的观察，不只写“成功了”。",
+          "kind": "textarea",
+          "rows": 4,
+          "maxLength": 4000
+        },
+        {
+          "id": "counterexample",
+          "label": "我故意改错了什么，错误怎样出现？",
+          "placeholder": "只改一个条件，并说明为什么结果可能仍然看起来合理。",
+          "kind": "textarea",
+          "rows": 4,
+          "maxLength": 4000
+        }
+      ]
+    },
+    {
+      "id": "update",
+      "title": "4. 把认识更新留下来",
+      "description": "今天先停在这里也可以。卡点和下一小步都是有效结果。",
+      "open": false,
+      "types": ["learning-session"],
+      "fields": [
+        {
+          "id": "revisedModel",
+          "label": "我的认识发生了什么变化？",
+          "placeholder": "原来我认为……；现在我认为……；改变我想法的结果是……。",
+          "kind": "textarea",
+          "rows": 4,
+          "maxLength": 4000
+        },
+        {
+          "id": "transfer",
+          "label": "换一个数字或场景，我还能怎样再做一次？",
+          "placeholder": "只改变一个条件，写下结果和边界。",
+          "kind": "textarea",
+          "rows": 4,
+          "maxLength": 4000
+        },
+        {
+          "id": "evidenceRef",
+          "label": "什么安全结果能让我以后复查？",
+          "placeholder": "只写脱敏的文件名、命令、公开链接或结果摘要；不要粘贴 Token、IP、内部路径、车辆标识或原始日志。",
+          "kind": "textarea",
+          "rows": 3,
+          "maxLength": 3000
+        },
+        {
+          "id": "nextAction",
+          "label": "下一次只继续哪一小步？",
+          "placeholder": "最好能在 30–90 分钟内完成。",
+          "kind": "textarea",
+          "rows": 2,
+          "maxLength": 1600
+        },
+        {
+          "id": "mentorQuestion",
+          "label": "如果只问导师一句话，我会问什么？",
+          "placeholder": "把“我不会”缩小成一个可以回答的问题。",
+          "kind": "textarea",
+          "rows": 2,
+          "maxLength": 1600
+        }
+      ]
+    },
+    {
+      "id": "contribution",
+      "title": "2. 生成知识补充建议",
+      "description": "这是私人草稿，不会直接修改公开页面，也不会自动推送到 GitHub。",
+      "open": true,
+      "types": ["knowledge-contribution"],
+      "fields": [
+        {
+          "id": "sectionId",
+          "label": "我正在看的页面或小节是哪里？",
+          "placeholder": "写页面标题、小节标题或站内链接。",
+          "kind": "textarea",
+          "rows": 2,
+          "maxLength": 1600,
+          "required": true
+        },
+        {
+          "id": "learnerProblem",
+          "label": "为什么这里让我没看懂？",
+          "placeholder": "例如：少了生活例子、符号没定义、图和文字对不上。",
+          "kind": "textarea",
+          "rows": 4,
+          "maxLength": 4000,
+          "required": true
+        },
+        {
+          "id": "contributionType",
+          "label": "我希望补充什么？",
+          "kind": "select",
+          "maxLength": 32,
+          "options": [
+            { "id": "clarity", "label": "换一种更清楚的说法" },
+            { "id": "example", "label": "补一个生活或工程例子" },
+            { "id": "visual", "label": "补一张真正有用的图" },
+            { "id": "derivation", "label": "把公式再拆细一点" },
+            { "id": "exercise", "label": "补一个最小练习或常见错误" },
+            { "id": "correction", "label": "提出可能的错误或修正" },
+            { "id": "source", "label": "补一个公开来源" }
+          ]
+        },
+        {
+          "id": "proposedChange",
+          "label": "如果换成我的话，我会怎样解释？",
+          "placeholder": "先用自己的话写草稿，不需要像正式教材。",
+          "kind": "textarea",
+          "rows": 6,
+          "maxLength": 8000
+        },
+        {
+          "id": "reason",
+          "label": "为什么这个补充会帮助下一个初学者？",
+          "placeholder": "说明它解决的是哪个具体卡点。",
+          "kind": "textarea",
+          "rows": 3,
+          "maxLength": 3000
+        },
+        {
+          "id": "safeEvidenceRef",
+          "label": "有哪些公开或仓库内证据可以复查？",
+          "placeholder": "不要放私人学习记录、内部项目结论或敏感信息。",
+          "kind": "textarea",
+          "rows": 3,
+          "maxLength": 3000
+        }
+      ]
+    }
+  ]
+}

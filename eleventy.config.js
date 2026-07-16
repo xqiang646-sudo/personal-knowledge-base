@@ -155,6 +155,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addWatchTarget("src/assets");
 
   eleventyConfig.addFilter("siteUrl", normalizedUrl);
+  eleventyConfig.addFilter("json", (value) => JSON.stringify(value).replace(/</g, "\\u003c"));
   eleventyConfig.addFilter("courseById", (courses, id) =>
     courses.find((course) => course.id === id));
   eleventyConfig.addFilter("stageById", (stages, id) =>

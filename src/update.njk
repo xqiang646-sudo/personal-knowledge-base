@@ -1,0 +1,150 @@
+---
+layout: layouts/base.njk
+title: 我的学习卡
+description: 把今天弄懂的一件事、真实卡点和下一小步留在自己的设备上，并交给第一性原理学习助手继续带你。
+permalink: /update.html
+bodyClass: portal-body
+learningUpdatePage: true
+---
+<div class="portal-wrap learning-update-page" data-pagefind-body>
+  <header class="learning-update-heading">
+    <p class="section-kicker">记录这次学习</p>
+    <h1>把今天弄懂的一件事留下来</h1>
+    <p class="lead">这里不是日报、考试或打卡。它只帮未来的你记住：我原来怎么想，哪个事实改变了认识。只写两句话，也是一张有效的学习卡。</p>
+    <div class="privacy-note" role="note">
+      <strong>先知道数据放在哪里：</strong>
+      内容只保存在当前浏览器，未加密、不会自动上传，导师也看不到。清理浏览器会丢失，请定期导出；不要填写密码、Token、IP、内部路径、车辆标识或敏感日志。
+    </div>
+    <div class="storage-recovery-note" role="alert" data-storage-recovery hidden>
+      <div><strong>检测到旧学习卡数据无法读取。</strong><p>页面已经暂停编辑和保存，避免用空记录覆盖原内容。请先下载原始恢复文件；确认保存好以后，才清空损坏数据并重新开始。</p></div>
+      <div class="tool-actions"><button class="button button-outline" type="button" data-download-recovery>下载原始恢复文件</button><button class="button button-danger" type="button" data-reset-corrupt-storage>我已备份，清空损坏数据</button></div>
+    </div>
+  </header>
+
+  <ol class="first-principles-path" aria-label="第一性原理学习卡流程">
+    <li><span>1</span><strong>说清问题</strong><small>今天只问一件事</small></li>
+    <li><span>2</span><strong>写下原来的想法</strong><small>猜错也是有效起点</small></li>
+    <li><span>3</span><strong>只留可确认事实</strong><small>输入、输出、单位、方向</small></li>
+    <li><span>4</span><strong>建立直觉再推导</strong><small>每个符号都有来处</small></li>
+    <li><span>5</span><strong>做最小验证</strong><small>先预测，再观察</small></li>
+    <li><span>6</span><strong>故意改错一次</strong><small>看看假设在哪里断掉</small></li>
+    <li><span>7</span><strong>换一个条件再做</strong><small>用自己的话讲回来</small></li>
+  </ol>
+
+  <div class="learning-update-workspace">
+    <section class="learning-update-card" aria-labelledby="learning-card-form-title">
+      <div class="learning-update-card-heading">
+        <div>
+          <p class="section-kicker">当前草稿</p>
+          <h2 id="learning-card-form-title">先写你真正卡住的地方</h2>
+        </div>
+        <button class="button button-outline" type="button" data-new-record>新建一张卡</button>
+      </div>
+
+      <form class="learning-record-form" data-learning-record-form novalidate>
+        <input type="hidden" name="recordId" data-record-id>
+
+        <fieldset class="record-type-fieldset">
+          <legend>这次想做什么？</legend>
+          <div class="record-type-grid">
+            {% for item in learningRecord.recordTypes %}
+            <label class="record-type-choice">
+              <input type="radio" name="recordType" value="{{ item.id }}"{% if loop.first %} checked{% endif %}>
+              <span><strong>{{ item.label }}</strong><small>{{ item.description }}</small></span>
+            </label>
+            {% endfor %}
+          </div>
+        </fieldset>
+
+        <div class="learning-meta-grid">
+          <label class="learning-field">
+            <span>正在学习哪门课？ <em>必填</em></span>
+            <select name="courseId" required data-course-select>
+              <option value="">请选择课程</option>
+              {% for course in curriculum.courses %}
+              {% if course.url %}{% set courseStage = curriculum.stages | stageById(course.stage) %}<option value="{{ course.id }}" data-course-url="{{ course.url | siteUrl }}">{{ courseStage.code }} · {{ course.title }}</option>{% endif %}
+              {% endfor %}
+            </select>
+          </label>
+          <label class="learning-field">
+            <span>学习日期</span>
+            <input type="date" name="sessionDate" required data-session-date>
+          </label>
+          <label class="learning-field" data-record-types="learning-session">
+            <span>我现在停在哪一步？</span>
+            <select name="selfStatus" aria-describedby="learning-status-help" data-self-status>
+              {% for status in learningRecord.statuses %}<option value="{{ status.id }}">{{ status.label }}</option>{% endfor %}
+            </select>
+            <small class="learning-field-help" id="learning-status-help">选择“换个条件也能做”前，需要写下独立结果、可复查证据，以及故意改错后看到的失败边界。</small>
+          </label>
+        </div>
+
+        {% for group in learningRecord.groups %}
+        <details class="learning-form-section" data-record-types="{{ group.types | join(' ') }}"{% if group.open %} open{% endif %}>
+          <summary><span>{{ group.title }}</span><small>{{ group.description }}</small></summary>
+          <div class="learning-form-section-body">
+            {% for field in group.fields %}
+            <label class="learning-field" for="learning-field-{{ field.id }}">
+              <span>{{ field.label }}{% if field.required %} <em>必填</em>{% endif %}</span>
+              {% if field.kind == 'select' %}
+              <select id="learning-field-{{ field.id }}" data-field-id="{{ field.id }}"{% if field.required %} required{% endif %}>
+                {% for option in field.options %}<option value="{{ option.id }}">{{ option.label }}</option>{% endfor %}
+              </select>
+              {% else %}
+              <textarea id="learning-field-{{ field.id }}" data-field-id="{{ field.id }}" rows="{{ field.rows or 4 }}" maxlength="{{ field.maxLength or 8000 }}" placeholder="{{ field.placeholder }}"{% if field.required %} required{% endif %}></textarea>
+              {% endif %}
+            </label>
+            {% endfor %}
+          </div>
+        </details>
+        {% endfor %}
+
+        <div class="learning-record-actions">
+          <button class="button button-solid" type="submit">保存到这台设备</button>
+          <button class="button button-outline" type="button" data-copy-markdown>复制 Markdown</button>
+          <button class="button button-outline" type="button" data-download-markdown>下载当前卡片</button>
+        </div>
+        <p class="tool-message" data-learning-message aria-live="polite"></p>
+      </form>
+
+      <details class="manual-copy-panel" data-manual-copy-panel>
+        <summary>查看刚才生成的文字</summary>
+        <label class="learning-field" for="manual-copy-output"><span>复制失败时，可以在这里手动复制</span><textarea id="manual-copy-output" readonly rows="12" data-manual-copy-output></textarea></label>
+      </details>
+    </section>
+
+    <aside class="learning-history-panel" aria-labelledby="learning-history-title">
+      <p class="section-kicker">这台设备上的草稿</p>
+      <h2 id="learning-history-title">我的学习卡</h2>
+      <p class="learning-history-intro">点“继续填写”可以更新同一张卡，不会重复创建。</p>
+      <div class="learning-history-list" data-learning-history-list></div>
+      <div class="learning-history-empty" data-learning-history-empty>
+        <p>这里还没有记录，也完全没关系。</p>
+        <p><strong>先写两句话：</strong><br>“我今天想弄懂 ______。”<br>“我现在猜 ______，因为 ______。”</p>
+      </div>
+    </aside>
+  </div>
+
+  <section class="skill-workflow-card" aria-labelledby="skill-workflow-title">
+    <div>
+      <p class="section-kicker">第一性原理学习助手</p>
+      <h2 id="skill-workflow-title">让她先问你怎么想，再陪你一步步推导</h2>
+      <p>在这个仓库里打开 Codex，使用 <code>$first-principles-learning</code>。它会从现象、事实、单位、形状、坐标系和假设开始；先做最小例子，再故意改错，最后让你换一个条件独立完成。</p>
+      <p>下面的按钮只复制当前学习卡和安全提示，不会上传任何内容。</p>
+    </div>
+    <div class="skill-workflow-actions">
+      <button class="button button-solid" type="button" data-copy-skill-prompt>复制给第一性原理学习助手</button>
+      <a class="button button-outline" href="{{ site.repository }}/blob/main/.agents/skills/first-principles-learning/SKILL.md">查看 Skill 说明</a>
+    </div>
+  </section>
+
+  <section class="learning-backup-card" aria-labelledby="learning-backup-title" data-pagefind-ignore>
+    <div><p class="section-kicker">换设备前先备份</p><h2 id="learning-backup-title">导出和恢复全部学习卡</h2><p>JSON 用于备份和恢复；Markdown 用于阅读、发给导师或交给学习助手。导入只采用同一张卡里更新时间较新的版本，不会自动公开。导出的 Markdown 是未受信任草稿，必须经导师和安全检查，不能直接粘贴到公开课程。</p></div>
+    <div class="tool-actions">
+      <button class="button button-outline" type="button" data-export-learning-json>导出全部 JSON</button>
+      <label class="button button-outline learning-backup-import">导入并合并 JSON<input type="file" accept="application/json" aria-label="选择学习卡 JSON 备份并合并" data-import-learning-json></label>
+    </div>
+  </section>
+</div>
+
+<script id="learning-record-schema" type="application/json">{{ learningRecord | json | safe }}</script>

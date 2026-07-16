@@ -1,16 +1,17 @@
 <section class="course-learning-cycle" aria-labelledby="course-learning-cycle-title">
   <div class="learning-cycle-heading">
     <p class="section-kicker">这节课怎么读</p>
-    <h2 id="course-learning-cycle-title">不用一次看懂，跟着六个小动作走</h2>
+    <h2 id="course-learning-cycle-title">不用一次看懂，跟着七个小动作走</h2>
     <p>遇到陌生词先往下看例子，不必立刻背定义。你可以猜错、算错、代码报错；重要的是知道自己在哪一步卡住。</p>
   </div>
   <ol class="cognition-strip">
-    <li><span>1</span><strong>说人话</strong><small>这课到底在解决什么</small></li>
+    <li><span>1</span><strong>说清问题</strong><small>今天只弄懂一件事</small></li>
     <li><span>2</span><strong>先猜</strong><small>不用怕错，写下理由</small></li>
-    <li><span>3</span><strong>看图</strong><small>先看方向和变化趋势</small></li>
-    <li><span>4</span><strong>手算</strong><small>只算一个最小例子</small></li>
-    <li><span>5</span><strong>跑代码</strong><small>让结果和手算对上</small></li>
-    <li><span>6</span><strong>改错讲回</strong><small>换个条件，用自己的话说</small></li>
+    <li><span>3</span><strong>建直觉</strong><small>先看方向和变化趋势</small></li>
+    <li><span>4</span><strong>拆公式</strong><small>每个符号都换成人话</small></li>
+    <li><span>5</span><strong>动手验证</strong><small>先手算，再让代码对上</small></li>
+    <li><span>6</span><strong>故意改错</strong><small>只破坏一个条件</small></li>
+    <li><span>7</span><strong>换条件讲回</strong><small>独立再做一次并记录</small></li>
   </ol>
-  <a class="learning-cycle-link" href="{{ '/guide.html' | siteUrl }}">还是不知道怎么学？看一个完整示范 →</a>
+  <div class="learning-cycle-actions"><a class="learning-cycle-link" href="{{ '/guide.html' | siteUrl }}">还是不知道怎么学？看一个完整示范 →</a>{% if currentCourse %}<a class="learning-cycle-link" href="{{ '/update.html?new=1&course=' | siteUrl }}{{ currentCourse.id }}">开始这节课的学习卡 →</a>{% endif %}</div>
 </section>

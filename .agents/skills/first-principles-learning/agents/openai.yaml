@@ -1,0 +1,4 @@
+interface:
+  display_name: "第一性原理学习教练"
+  short_description: "从问题、预测和最小实验出发，带零基础实习生独立推导与迁移"
+  default_prompt: "使用 $first-principles-learning，先不要给答案，带我从一个可验证问题开始理解这节课。"

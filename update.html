@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="把今天弄懂的一件事、真实卡点和下一小步留在自己的设备上，并交给第一性原理学习助手继续带你。">
+  <title>我的学习卡｜个人知识库</title>
+  <link rel="icon" href="/personal-knowledge-base/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/personal-knowledge-base/assets/knowledge.css">
+  <link rel="stylesheet" href="/personal-knowledge-base/assets/v2.css">
+  <link rel="stylesheet" href="/personal-knowledge-base/assets/cyrus-theme.css">
+
+
+</head>
+<body class="portal-body" data-theme="cyrus">
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <header class="v2-header" data-pagefind-ignore>
+  <div class="portal-wrap v2-header-inner">
+    <a class="site-brand" href="/personal-knowledge-base/">个人知识库</a>
+    <nav class="v2-nav" aria-label="知识库主导航">
+      <a href="/personal-knowledge-base/">首页</a>
+      <a href="/personal-knowledge-base/guide.html">今天学什么</a>
+      <a href="/personal-knowledge-base/#learning-path">全部课程</a>
+      <a href="/personal-knowledge-base/update.html" aria-current="page">学习卡</a>
+      <a href="/personal-knowledge-base/guide.html#stuck">我卡住了</a>
+      <a href="/personal-knowledge-base/search.html">搜索</a>
+    </nav>
+  </div>
+</header>
+
+  <main id="main-content" tabindex="-1">
+    <div class="portal-wrap learning-update-page" data-pagefind-body>
+  <header class="learning-update-heading">
+    <p class="section-kicker">记录这次学习</p>
+    <h1>把今天弄懂的一件事留下来</h1>
+    <p class="lead">这里不是日报、考试或打卡。它只帮未来的你记住：我原来怎么想，哪个事实改变了认识。只写两句话，也是一张有效的学习卡。</p>
+    <div class="privacy-note" role="note">
+      <strong>先知道数据放在哪里：</strong>
+      内容只保存在当前浏览器，未加密、不会自动上传，导师也看不到。清理浏览器会丢失，请定期导出；不要填写密码、Token、IP、内部路径、车辆标识或敏感日志。
+    </div>
+    <div class="storage-recovery-note" role="alert" data-storage-recovery hidden>
+      <div><strong>检测到旧学习卡数据无法读取。</strong><p>页面已经暂停编辑和保存，避免用空记录覆盖原内容。请先下载原始恢复文件；确认保存好以后，才清空损坏数据并重新开始。</p></div>
+      <div class="tool-actions"><button class="button button-outline" type="button" data-download-recovery>下载原始恢复文件</button><button class="button button-danger" type="button" data-reset-corrupt-storage>我已备份，清空损坏数据</button></div>
+    </div>
+  </header>
+
+  <ol class="first-principles-path" aria-label="第一性原理学习卡流程">
+    <li><span>1</span><strong>说清问题</strong><small>今天只问一件事</small></li>
+    <li><span>2</span><strong>写下原来的想法</strong><small>猜错也是有效起点</small></li>
+    <li><span>3</span><strong>只留可确认事实</strong><small>输入、输出、单位、方向</small></li>
+    <li><span>4</span><strong>建立直觉再推导</strong><small>每个符号都有来处</small></li>
+    <li><span>5</span><strong>做最小验证</strong><small>先预测，再观察</small></li>
+    <li><span>6</span><strong>故意改错一次</strong><small>看看假设在哪里断掉</small></li>
+    <li><span>7</span><strong>换一个条件再做</strong><small>用自己的话讲回来</small></li>
+  </ol>
+
+  <div class="learning-update-workspace">
+    <section class="learning-update-card" aria-labelledby="learning-card-form-title">
+      <div class="learning-update-card-heading">
+        <div>
+          <p class="section-kicker">当前草稿</p>
+          <h2 id="learning-card-form-title">先写你真正卡住的地方</h2>
+        </div>
+        <button class="button button-outline" type="button" data-new-record>新建一张卡</button>
+      </div>
+
+      <form class="learning-record-form" data-learning-record-form novalidate>
+        <input type="hidden" name="recordId" data-record-id>
+
+        <fieldset class="record-type-fieldset">
+          <legend>这次想做什么？</legend>
+          <div class="record-type-grid">
+
+            <label class="record-type-choice">
+              <input type="radio" name="recordType" value="learning-session" checked>
+              <span><strong>记下我的理解</strong><small>记录我原来怎么想、什么结果改变了认识，以及下一次只做哪一小步。</small></span>
+            </label>
+
+            <label class="record-type-choice">
+              <input type="radio" name="recordType" value="knowledge-contribution">
+              <span><strong>告诉知识库哪里难懂</strong><small>把难懂的原句、原因和补充建议整理成私人草稿，再交给学习助手处理。</small></span>
+            </label>
+
+          </div>
+        </fieldset>
+
+        <div class="learning-meta-grid">
+          <label class="learning-field">
+            <span>正在学习哪门课？ <em>必填</em></span>
+            <select name="courseId" required data-course-select>
+              <option value="">请选择课程</option>
+
+              <option value="math-diagnostic" data-course-url="/personal-knowledge-base/learn/math/diagnostic.html">P0 · 数学起点导航</option>
+
+              <option value="foundations-bootcamp" data-course-url="/personal-knowledge-base/notes/foundations-bootcamp.html">P0 · 零基础预备课</option>
+
+              <option value="engineering-toolkit" data-course-url="/personal-knowledge-base/notes/engineering-toolkit.html">P0 · 远程运维与开发工具</option>
+
+              <option value="evidence-first-engineering" data-course-url="/personal-knowledge-base/notes/evidence-first-engineering.html">P0 · 证据优先的工程排障</option>
+
+              <option value="linear-algebra-coordinate" data-course-url="/personal-knowledge-base/learn/math/linear-algebra-coordinate.html">M1 · 线性代数：从向量到坐标变换</option>
+
+              <option value="calculus-curvature" data-course-url="/personal-knowledge-base/learn/math/calculus-curvature.html">M1 · 微积分：从变化率到曲率</option>
+
+              <option value="probability-scene-split" data-course-url="/personal-knowledge-base/learn/math/probability-scene-split.html">M1 · 概率论：从随机性到场景切分</option>
+
+              <option value="autonomous-driving-overview" data-course-url="/personal-knowledge-base/notes/autonomous-driving-overview.html">A1 · 自动驾驶系统总览</option>
+
+              <option value="vehicle-hardware-network" data-course-url="/personal-knowledge-base/notes/vehicle-hardware-network.html">A1 · 车辆硬件与车载网络</option>
+
+              <option value="coordinate-transformations" data-course-url="/personal-knowledge-base/notes/coordinate-transformations.html">A1 · 从线性代数到坐标系转换</option>
+
+              <option value="perception-maps" data-course-url="/personal-knowledge-base/notes/perception-maps.html">A1 · 感知算法与地图基础</option>
+
+              <option value="nuscenes-dataset" data-course-url="/personal-knowledge-base/notes/nuscenes-dataset.html">A1 · nuScenes 数据集与数据任务</option>
+
+              <option value="deep-learning-training-loop" data-course-url="/personal-knowledge-base/learn/deep-learning/training-loop.html">DL · 深度学习：第一个完整训练闭环</option>
+
+
+
+
+
+
+
+
+
+              <option value="gpu-workflow" data-course-url="/personal-knowledge-base/notes/gpu-workflow.html">DL · GPU 工作流程图</option>
+
+              <option value="planning-autoware" data-course-url="/personal-knowledge-base/notes/planning-autoware.html">E1 · 规划控制与 Autoware</option>
+
+              <option value="ros2-autoware-debugging" data-course-url="/personal-knowledge-base/notes/ros2-autoware-debugging.html">E1 · 沿 ROS 2 图谱排查数据链</option>
+
+              <option value="ackermann-bicycle-model" data-course-url="/personal-knowledge-base/notes/ackermann-bicycle-model.html">E2 · 自行车与阿克曼模型推导</option>
+
+              <option value="curvature-calculation" data-course-url="/personal-knowledge-base/notes/curvature-calculation.html">E2 · 曲率计算与数值工程</option>
+
+              <option value="can-bus-interface" data-course-url="/personal-knowledge-base/notes/can-bus-interface.html">E2 · CAN 总线与接口边界</option>
+
+              <option value="perception-deployment-contracts" data-course-url="/personal-knowledge-base/notes/perception-deployment-contracts.html">P4 · 感知部署契约</option>
+
+              <option value="validation-closure" data-course-url="/personal-knowledge-base/notes/validation-closure.html">P4 · 验证闭环与工程交付</option>
+
+            </select>
+          </label>
+          <label class="learning-field">
+            <span>学习日期</span>
+            <input type="date" name="sessionDate" required data-session-date>
+          </label>
+          <label class="learning-field" data-record-types="learning-session">
+            <span>我现在停在哪一步？</span>
+            <select name="selfStatus" aria-describedby="learning-status-help" data-self-status>
+              <option value="starting">我刚开始想</option><option value="stuck">我卡在一个具体地方</option><option value="experiment-done">我完成了最小验证</option><option value="transfer-ready">我换个条件也能做</option>
+            </select>
+            <small class="learning-field-help" id="learning-status-help">选择“换个条件也能做”前，需要写下独立结果、可复查证据，以及故意改错后看到的失败边界。</small>
+          </label>
+        </div>
+
+
+        <details class="learning-form-section" data-record-types="learning-session knowledge-contribution" open>
+          <summary><span>1. 先把问题说清楚</span><small>只写两句话也可以：我想弄懂什么，我现在怎么猜。</small></summary>
+          <div class="learning-form-section-body">
+
+            <label class="learning-field" for="learning-field-question">
+              <span>今天只想弄懂什么？ <em>必填</em></span>
+
+              <textarea id="learning-field-question" data-field-id="question" rows="3" maxlength="1200" placeholder="例如：为什么同一个点换了坐标系以后，数字变了，但实际位置没有变？" required></textarea>
+
+            </label>
+
+            <label class="learning-field" for="learning-field-startingModel">
+              <span>看答案前，我是怎么想的？</span>
+
+              <textarea id="learning-field-startingModel" data-field-id="startingModel" rows="3" maxlength="2400" placeholder="我现在猜……，因为……。不知道也可以直接写“不知道”。"></textarea>
+
+            </label>
+
+            <label class="learning-field" for="learning-field-stuckAt">
+              <span>哪个词、符号或步骤让我停住了？</span>
+
+              <textarea id="learning-field-stuckAt" data-field-id="stuckAt" rows="2" maxlength="1600" placeholder="尽量指到一个具体词、一行公式、一个图或一段代码。"></textarea>
+
+            </label>
+
+          </div>
+        </details>
+
+        <details class="learning-form-section" data-record-types="learning-session" open>
+          <summary><span>2. 从最少的事实重新搭起来</span><small>先放下背过的结论，只使用能观察、计算或验证的事实。</small></summary>
+          <div class="learning-form-section-body">
+
+            <label class="learning-field" for="learning-field-facts">
+              <span>我现在能确认的事实是什么？</span>
+
+              <textarea id="learning-field-facts" data-field-id="facts" rows="4" maxlength="4000" placeholder="每行写一个事实。不要把猜测混进来。"></textarea>
+
+            </label>
+
+            <label class="learning-field" for="learning-field-contract">
+              <span>输入、输出、单位、形状和坐标方向分别是什么？</span>
+
+              <textarea id="learning-field-contract" data-field-id="contract" rows="4" maxlength="4000" placeholder="不相关的项目可以留空；相关时一定写清楚。"></textarea>
+
+            </label>
+
+            <label class="learning-field" for="learning-field-assumptions">
+              <span>这次暂时采用了哪些假设？</span>
+
+              <textarea id="learning-field-assumptions" data-field-id="assumptions" rows="3" maxlength="3000" placeholder="例如：忽略侧滑、角度使用弧度、同一 scene 不跨集合。"></textarea>
+
+            </label>
+
+            <label class="learning-field" for="learning-field-derivationSummary">
+              <span>从事实到结论，中间经过了哪几步？</span>
+
+              <textarea id="learning-field-derivationSummary" data-field-id="derivationSummary" rows="6" maxlength="8000" placeholder="用自己的话逐步写；公式可以使用 LaTeX。"></textarea>
+
+            </label>
+
+          </div>
+        </details>
+
+        <details class="learning-form-section" data-record-types="learning-session">
+          <summary><span>3. 用一个最小例子检查认识</span><small>先预测，再观察；结果不同，正好说明认识需要更新。</small></summary>
+          <div class="learning-form-section-body">
+
+            <label class="learning-field" for="learning-field-minimalExperiment">
+              <span>我使用了什么最小输入，做了什么？</span>
+
+              <textarea id="learning-field-minimalExperiment" data-field-id="minimalExperiment" rows="4" maxlength="4000" placeholder="例如：一个点、三个轨迹点、两个 scene 或一个 batch。"></textarea>
+
+            </label>
+
+            <label class="learning-field" for="learning-field-expected">
+              <span>动手前，我预计会看到什么？</span>
+
+              <textarea id="learning-field-expected" data-field-id="expected" rows="3" maxlength="2400" placeholder="先写预测，不要在看到结果后倒推。"></textarea>
+
+            </label>
+
+            <label class="learning-field" for="learning-field-observed">
+              <span>实际看到了什么？</span>
+
+              <textarea id="learning-field-observed" data-field-id="observed" rows="4" maxlength="4000" placeholder="写数字、趋势、报错或可复查的观察，不只写“成功了”。"></textarea>
+
+            </label>
+
+            <label class="learning-field" for="learning-field-counterexample">
+              <span>我故意改错了什么，错误怎样出现？</span>
+
+              <textarea id="learning-field-counterexample" data-field-id="counterexample" rows="4" maxlength="4000" placeholder="只改一个条件，并说明为什么结果可能仍然看起来合理。"></textarea>
+
+            </label>
+
+          </div>
+        </details>
+
+        <details class="learning-form-section" data-record-types="learning-session">
+          <summary><span>4. 把认识更新留下来</span><small>今天先停在这里也可以。卡点和下一小步都是有效结果。</small></summary>
+          <div class="learning-form-section-body">
+
+            <label class="learning-field" for="learning-field-revisedModel">
+              <span>我的认识发生了什么变化？</span>
+
+              <textarea id="learning-field-revisedModel" data-field-id="revisedModel" rows="4" maxlength="4000" placeholder="原来我认为……；现在我认为……；改变我想法的结果是……。"></textarea>
+
+            </label>
+
+            <label class="learning-field" for="learning-field-transfer">
+              <span>换一个数字或场景，我还能怎样再做一次？</span>
+
+              <textarea id="learning-field-transfer" data-field-id="transfer" rows="4" maxlength="4000" placeholder="只改变一个条件，写下结果和边界。"></textarea>
+
+            </label>
+
+            <label class="learning-field" for="learning-field-evidenceRef">
+              <span>什么安全结果能让我以后复查？</span>
+
+              <textarea id="learning-field-evidenceRef" data-field-id="evidenceRef" rows="3" maxlength="3000" placeholder="只写脱敏的文件名、命令、公开链接或结果摘要；不要粘贴 Token、IP、内部路径、车辆标识或原始日志。"></textarea>
+
+            </label>
+
+            <label class="learning-field" for="learning-field-nextAction">
+              <span>下一次只继续哪一小步？</span>
+
+              <textarea id="learning-field-nextAction" data-field-id="nextAction" rows="2" maxlength="1600" placeholder="最好能在 30–90 分钟内完成。"></textarea>
+
+            </label>
+
+            <label class="learning-field" for="learning-field-mentorQuestion">
+              <span>如果只问导师一句话，我会问什么？</span>
+
+              <textarea id="learning-field-mentorQuestion" data-field-id="mentorQuestion" rows="2" maxlength="1600" placeholder="把“我不会”缩小成一个可以回答的问题。"></textarea>
+
+            </label>
+
+          </div>
+        </details>
+
+        <details class="learning-form-section" data-record-types="knowledge-contribution" open>
+          <summary><span>2. 生成知识补充建议</span><small>这是私人草稿，不会直接修改公开页面，也不会自动推送到 GitHub。</small></summary>
+          <div class="learning-form-section-body">
+
+            <label class="learning-field" for="learning-field-sectionId">
+              <span>我正在看的页面或小节是哪里？ <em>必填</em></span>
+
+              <textarea id="learning-field-sectionId" data-field-id="sectionId" rows="2" maxlength="1600" placeholder="写页面标题、小节标题或站内链接。" required></textarea>
+
+            </label>
+
+            <label class="learning-field" for="learning-field-learnerProblem">
+              <span>为什么这里让我没看懂？ <em>必填</em></span>
+
+              <textarea id="learning-field-learnerProblem" data-field-id="learnerProblem" rows="4" maxlength="4000" placeholder="例如：少了生活例子、符号没定义、图和文字对不上。" required></textarea>
+
+            </label>
+
+            <label class="learning-field" for="learning-field-contributionType">
+              <span>我希望补充什么？</span>
+
+              <select id="learning-field-contributionType" data-field-id="contributionType">
+                <option value="clarity">换一种更清楚的说法</option><option value="example">补一个生活或工程例子</option><option value="visual">补一张真正有用的图</option><option value="derivation">把公式再拆细一点</option><option value="exercise">补一个最小练习或常见错误</option><option value="correction">提出可能的错误或修正</option><option value="source">补一个公开来源</option>
+              </select>
+
+            </label>
+
+            <label class="learning-field" for="learning-field-proposedChange">
+              <span>如果换成我的话，我会怎样解释？</span>
+
+              <textarea id="learning-field-proposedChange" data-field-id="proposedChange" rows="6" maxlength="8000" placeholder="先用自己的话写草稿，不需要像正式教材。"></textarea>
+
+            </label>
+
+            <label class="learning-field" for="learning-field-reason">
+              <span>为什么这个补充会帮助下一个初学者？</span>
+
+              <textarea id="learning-field-reason" data-field-id="reason" rows="3" maxlength="3000" placeholder="说明它解决的是哪个具体卡点。"></textarea>
+
+            </label>
+
+            <label class="learning-field" for="learning-field-safeEvidenceRef">
+              <span>有哪些公开或仓库内证据可以复查？</span>
+
+              <textarea id="learning-field-safeEvidenceRef" data-field-id="safeEvidenceRef" rows="3" maxlength="3000" placeholder="不要放私人学习记录、内部项目结论或敏感信息。"></textarea>
+
+            </label>
+
+          </div>
+        </details>
+
+
+        <div class="learning-record-actions">
+          <button class="button button-solid" type="submit">保存到这台设备</button>
+          <button class="button button-outline" type="button" data-copy-markdown>复制 Markdown</button>
+          <button class="button button-outline" type="button" data-download-markdown>下载当前卡片</button>
+        </div>
+        <p class="tool-message" data-learning-message aria-live="polite"></p>
+      </form>
+
+      <details class="manual-copy-panel" data-manual-copy-panel>
+        <summary>查看刚才生成的文字</summary>
+        <label class="learning-field" for="manual-copy-output"><span>复制失败时，可以在这里手动复制</span><textarea id="manual-copy-output" readonly rows="12" data-manual-copy-output></textarea></label>
+      </details>
+    </section>
+
+    <aside class="learning-history-panel" aria-labelledby="learning-history-title">
+      <p class="section-kicker">这台设备上的草稿</p>
+      <h2 id="learning-history-title">我的学习卡</h2>
+      <p class="learning-history-intro">点“继续填写”可以更新同一张卡，不会重复创建。</p>
+      <div class="learning-history-list" data-learning-history-list></div>
+      <div class="learning-history-empty" data-learning-history-empty>
+        <p>这里还没有记录，也完全没关系。</p>
+        <p><strong>先写两句话：</strong><br>“我今天想弄懂 ______。”<br>“我现在猜 ______，因为 ______。”</p>
+      </div>
+    </aside>
+  </div>
+
+  <section class="skill-workflow-card" aria-labelledby="skill-workflow-title">
+    <div>
+      <p class="section-kicker">第一性原理学习助手</p>
+      <h2 id="skill-workflow-title">让她先问你怎么想，再陪你一步步推导</h2>
+      <p>在这个仓库里打开 Codex，使用 <code>$first-principles-learning</code>。它会从现象、事实、单位、形状、坐标系和假设开始；先做最小例子，再故意改错，最后让你换一个条件独立完成。</p>
+      <p>下面的按钮只复制当前学习卡和安全提示，不会上传任何内容。</p>
+    </div>
+    <div class="skill-workflow-actions">
+      <button class="button button-solid" type="button" data-copy-skill-prompt>复制给第一性原理学习助手</button>
+      <a class="button button-outline" href="https://github.com/xqiang646-sudo/personal-knowledge-base/blob/main/.agents/skills/first-principles-learning/SKILL.md">查看 Skill 说明</a>
+    </div>
+  </section>
+
+  <section class="learning-backup-card" aria-labelledby="learning-backup-title" data-pagefind-ignore>
+    <div><p class="section-kicker">换设备前先备份</p><h2 id="learning-backup-title">导出和恢复全部学习卡</h2><p>JSON 用于备份和恢复；Markdown 用于阅读、发给导师或交给学习助手。导入只采用同一张卡里更新时间较新的版本，不会自动公开。导出的 Markdown 是未受信任草稿，必须经导师和安全检查，不能直接粘贴到公开课程。</p></div>
+    <div class="tool-actions">
+      <button class="button button-outline" type="button" data-export-learning-json>导出全部 JSON</button>
+      <label class="button button-outline learning-backup-import">导入并合并 JSON<input type="file" accept="application/json" aria-label="选择学习卡 JSON 备份并合并" data-import-learning-json></label>
+    </div>
+  </section>
+</div>
+
+<script id="learning-record-schema" type="application/json">{"schemaVersion":1,"maxEntries":500,"maxImportBytes":32000000,"storageKey":"personal-knowledge-base.learning-records.v1","progressStorageKey":"personal-knowledge-base.progress.v2","recordTypes":[{"id":"learning-session","label":"记下我的理解","description":"记录我原来怎么想、什么结果改变了认识，以及下一次只做哪一小步。"},{"id":"knowledge-contribution","label":"告诉知识库哪里难懂","description":"把难懂的原句、原因和补充建议整理成私人草稿，再交给学习助手处理。"}],"statuses":[{"id":"starting","label":"我刚开始想"},{"id":"stuck","label":"我卡在一个具体地方"},{"id":"experiment-done","label":"我完成了最小验证"},{"id":"transfer-ready","label":"我换个条件也能做"}],"groups":[{"id":"start","title":"1. 先把问题说清楚","description":"只写两句话也可以：我想弄懂什么，我现在怎么猜。","open":true,"types":["learning-session","knowledge-contribution"],"fields":[{"id":"question","label":"今天只想弄懂什么？","placeholder":"例如：为什么同一个点换了坐标系以后，数字变了，但实际位置没有变？","kind":"textarea","rows":3,"maxLength":1200,"required":true},{"id":"startingModel","label":"看答案前，我是怎么想的？","placeholder":"我现在猜……，因为……。不知道也可以直接写“不知道”。","kind":"textarea","rows":3,"maxLength":2400},{"id":"stuckAt","label":"哪个词、符号或步骤让我停住了？","placeholder":"尽量指到一个具体词、一行公式、一个图或一段代码。","kind":"textarea","rows":2,"maxLength":1600}]},{"id":"primitives","title":"2. 从最少的事实重新搭起来","description":"先放下背过的结论，只使用能观察、计算或验证的事实。","open":true,"types":["learning-session"],"fields":[{"id":"facts","label":"我现在能确认的事实是什么？","placeholder":"每行写一个事实。不要把猜测混进来。","kind":"textarea","rows":4,"maxLength":4000},{"id":"contract","label":"输入、输出、单位、形状和坐标方向分别是什么？","placeholder":"不相关的项目可以留空；相关时一定写清楚。","kind":"textarea","rows":4,"maxLength":4000},{"id":"assumptions","label":"这次暂时采用了哪些假设？","placeholder":"例如：忽略侧滑、角度使用弧度、同一 scene 不跨集合。","kind":"textarea","rows":3,"maxLength":3000},{"id":"derivationSummary","label":"从事实到结论，中间经过了哪几步？","placeholder":"用自己的话逐步写；公式可以使用 LaTeX。","kind":"textarea","rows":6,"maxLength":8000}]},{"id":"experiment","title":"3. 用一个最小例子检查认识","description":"先预测，再观察；结果不同，正好说明认识需要更新。","open":false,"types":["learning-session"],"fields":[{"id":"minimalExperiment","label":"我使用了什么最小输入，做了什么？","placeholder":"例如：一个点、三个轨迹点、两个 scene 或一个 batch。","kind":"textarea","rows":4,"maxLength":4000},{"id":"expected","label":"动手前，我预计会看到什么？","placeholder":"先写预测，不要在看到结果后倒推。","kind":"textarea","rows":3,"maxLength":2400},{"id":"observed","label":"实际看到了什么？","placeholder":"写数字、趋势、报错或可复查的观察，不只写“成功了”。","kind":"textarea","rows":4,"maxLength":4000},{"id":"counterexample","label":"我故意改错了什么，错误怎样出现？","placeholder":"只改一个条件，并说明为什么结果可能仍然看起来合理。","kind":"textarea","rows":4,"maxLength":4000}]},{"id":"update","title":"4. 把认识更新留下来","description":"今天先停在这里也可以。卡点和下一小步都是有效结果。","open":false,"types":["learning-session"],"fields":[{"id":"revisedModel","label":"我的认识发生了什么变化？","placeholder":"原来我认为……；现在我认为……；改变我想法的结果是……。","kind":"textarea","rows":4,"maxLength":4000},{"id":"transfer","label":"换一个数字或场景，我还能怎样再做一次？","placeholder":"只改变一个条件，写下结果和边界。","kind":"textarea","rows":4,"maxLength":4000},{"id":"evidenceRef","label":"什么安全结果能让我以后复查？","placeholder":"只写脱敏的文件名、命令、公开链接或结果摘要；不要粘贴 Token、IP、内部路径、车辆标识或原始日志。","kind":"textarea","rows":3,"maxLength":3000},{"id":"nextAction","label":"下一次只继续哪一小步？","placeholder":"最好能在 30–90 分钟内完成。","kind":"textarea","rows":2,"maxLength":1600},{"id":"mentorQuestion","label":"如果只问导师一句话，我会问什么？","placeholder":"把“我不会”缩小成一个可以回答的问题。","kind":"textarea","rows":2,"maxLength":1600}]},{"id":"contribution","title":"2. 生成知识补充建议","description":"这是私人草稿，不会直接修改公开页面，也不会自动推送到 GitHub。","open":true,"types":["knowledge-contribution"],"fields":[{"id":"sectionId","label":"我正在看的页面或小节是哪里？","placeholder":"写页面标题、小节标题或站内链接。","kind":"textarea","rows":2,"maxLength":1600,"required":true},{"id":"learnerProblem","label":"为什么这里让我没看懂？","placeholder":"例如：少了生活例子、符号没定义、图和文字对不上。","kind":"textarea","rows":4,"maxLength":4000,"required":true},{"id":"contributionType","label":"我希望补充什么？","kind":"select","maxLength":32,"options":[{"id":"clarity","label":"换一种更清楚的说法"},{"id":"example","label":"补一个生活或工程例子"},{"id":"visual","label":"补一张真正有用的图"},{"id":"derivation","label":"把公式再拆细一点"},{"id":"exercise","label":"补一个最小练习或常见错误"},{"id":"correction","label":"提出可能的错误或修正"},{"id":"source","label":"补一个公开来源"}]},{"id":"proposedChange","label":"如果换成我的话，我会怎样解释？","placeholder":"先用自己的话写草稿，不需要像正式教材。","kind":"textarea","rows":6,"maxLength":8000},{"id":"reason","label":"为什么这个补充会帮助下一个初学者？","placeholder":"说明它解决的是哪个具体卡点。","kind":"textarea","rows":3,"maxLength":3000},{"id":"safeEvidenceRef","label":"有哪些公开或仓库内证据可以复查？","placeholder":"不要放私人学习记录、内部项目结论或敏感信息。","kind":"textarea","rows":3,"maxLength":3000}]}]}</script>
+
+  </main>
+  <footer class="site-footer" data-pagefind-ignore>
+  <div class="portal-wrap footer-grid">
+    <p><strong>个人知识库 · 从零开始版</strong><br>先看懂一个例子，再学会一个方法。作业和导师反馈不会公开展示。</p>
+    <nav class="footer-links" aria-label="辅助导航"><a href="/personal-knowledge-base/update.html">我的学习卡</a><a href="/personal-knowledge-base/mentor.html">导师入口</a><a href="https://github.com/xqiang646-sudo/personal-knowledge-base">GitHub 仓库</a></nav>
+  </div>
+</footer>
+
+  <script defer src="/personal-knowledge-base/assets/progress.js"></script>
+
+  <script type="module" src="/personal-knowledge-base/assets/learning-update.js"></script>
+</body>
+</html>

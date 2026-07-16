@@ -5,6 +5,7 @@
       <a href="{{ '/' | siteUrl }}"{% if page.url == "/" or page.url == "/index.html" %} aria-current="page"{% endif %}>首页</a>
       <a href="{{ '/guide.html' | siteUrl }}"{% if guidePage %} aria-current="page"{% endif %}>今天学什么</a>
       <a href="{{ '/' | siteUrl }}#learning-path">全部课程</a>
+      <a href="{{ '/update.html' | siteUrl }}"{% if learningUpdatePage %} aria-current="page"{% endif %}>学习卡</a>
       <a href="{{ '/guide.html#stuck' | siteUrl }}">我卡住了</a>
       <a href="{{ '/search.html' | siteUrl }}"{% if page.url == "/search.html" %} aria-current="page"{% endif %}>搜索</a>
     </nav>
