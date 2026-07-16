@@ -6,6 +6,7 @@
   <meta name="description" content="自动驾驶点云、地图、感知、YOLOX与BEVFusion基础。">
   <title>感知算法与地图基础｜我的个人知识库</title>
   <link rel="stylesheet" href="../assets/knowledge.css">
+  <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
 </head>
 <body>
   <nav class="topbar"><div class="wrap"><a class="back" href="autonomous-driving-index.html">← 返回自动驾驶目录</a></div></nav>
@@ -21,7 +22,11 @@
     <section id="pointcloud">
       <h2>Point Cloud：点云是什么</h2>
       <p>激光雷达根据激光往返时间计算距离，再结合光束方向生成三维点。一个点常写成：</p>
-      <pre><code>p = (x, y, z, intensity, ring, timestamp, ...)</code></pre>
+      <div class="equation" role="math" aria-label="点云中一个点的常见字段">
+        \[
+        \mathbf p = \left(x,\,y,\,z,\,\mathrm{intensity},\,\mathrm{ring},\,\mathrm{timestamp},\ldots\right)
+        \]
+      </div>
       <p>点本身只说明“这个空间位置有反射”，并不知道它属于车辆、行人、地面还是墙。</p>
       <div class="grid">
         <div class="panel"><h3>实时点云</h3><p>车辆当前扫描到的动态环境，用于检测、地面分割、占据栅格和定位匹配。</p></div>
