@@ -9,19 +9,50 @@ function normalizeLatex(source) {
   return source;
 }
 
-function markdownItMath(markdown) {
+function isEscaped(source, index) {
+  let backslashCount = 0;
+  for (let cursor = index - 1; cursor >= 0 && source[cursor] === "\\"; cursor -= 1) {
+    backslashCount += 1;
+  }
+  return backslashCount % 2 === 1;
+}
+
+function inlineMathEnd(source, start, limit) {
+  for (let cursor = start + 1; cursor < limit; cursor += 1) {
+    const character = source[cursor];
+    if (character === "\n" || character === "\r") return -1;
+    if (character !== "$" || isEscaped(source, cursor)) continue;
+
+    // A doubled dollar sign belongs to a block delimiter. Stop instead of
+    // allowing an earlier inline opener to consume part of it.
+    if (source[cursor - 1] === "$" || source[cursor + 1] === "$") return -1;
+
+    // These boundaries match normal prose expectations: spaces stay outside
+    // the formula, and currency such as "$5 到 $10" is not treated as TeX.
+    if (/\s/u.test(source[cursor - 1] || "") || /\d/u.test(source[cursor + 1] || "")) {
+      return -1;
+    }
+    return cursor;
+  }
+  return -1;
+}
+
+export function markdownItMath(markdown) {
   markdown.inline.ruler.before("escape", "math_inline", (state, silent) => {
     const start = state.pos;
-    if (state.src[start] !== "$" || state.src[start + 1] === "$" || state.src[start - 1] === "\\") {
+    const nextCharacter = state.src[start + 1] || "";
+    if (
+      state.src[start] !== "$"
+      || state.src[start - 1] === "$"
+      || nextCharacter === "$"
+      || /\s/u.test(nextCharacter)
+      || isEscaped(state.src, start)
+    ) {
       return false;
     }
 
-    let end = start + 1;
-    while (end < state.posMax) {
-      if (state.src[end] === "$" && state.src[end - 1] !== "\\") break;
-      end += 1;
-    }
-    if (end >= state.posMax || end === start + 1) return false;
+    const end = inlineMathEnd(state.src, start, state.posMax);
+    if (end < 0 || end === start + 1) return false;
     if (silent) return true;
 
     const token = state.push("math_inline", "math", 0);

@@ -5,7 +5,7 @@
 .v2-nav a { display:inline-flex; min-height:44px; align-items:center; color:#e5ebff; text-decoration:none; font-size:14px; font-weight:750; }
 .v2-nav a:hover { color:white; }
 .v2-nav a[aria-current="page"] { color:white; text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:7px; }
-.v2-nav a:focus-visible,.continue-link:focus-visible,.course-next a:focus-visible,.beginner-choice:focus-visible,select:focus-visible,button:focus-visible,.topic-jump a:focus-visible,.reader-content-skip:focus-visible,.reader-disclosure>summary:focus-visible,.book-tree a:focus-visible,.book-chapter>summary:focus-visible,.page-outline a:focus-visible,.course-content a:focus-visible,.guide-content a:focus-visible,.lesson-diagram:focus-visible,.table-wrap:focus-visible,.course-prose pre:focus-visible,.course-prose mjx-container[display="true"]:focus-visible { outline:3px solid #172554; outline-offset:3px; box-shadow:0 0 0 6px #fbbf24; }
+.v2-nav a:focus-visible,.continue-link:focus-visible,.course-next a:focus-visible,.beginner-choice:focus-visible,select:focus-visible,button:focus-visible,.topic-jump a:focus-visible,.reader-content-skip:focus-visible,.reader-disclosure>summary:focus-visible,.book-tree a:focus-visible,.book-chapter>summary:focus-visible,.page-outline a:focus-visible,.course-content a:focus-visible,.guide-content a:focus-visible,.lesson-diagram:focus-visible,.table-wrap:focus-visible,.course-prose pre:focus-visible,.course-prose .math-display:focus-visible { outline:3px solid #172554; outline-offset:3px; box-shadow:0 0 0 6px #fbbf24; }
 .v2-hero { overflow:hidden; padding:clamp(58px,9vw,104px) 0 0; background:radial-gradient(circle at 82% 16%,rgba(255,255,255,.15),transparent 25%),radial-gradient(circle at 8% 96%,rgba(75,132,255,.34),transparent 32%),linear-gradient(135deg,var(--indigo-950),var(--indigo-800) 58%,var(--indigo-600)); color:white; }
 .v2-hero-grid { display:grid; grid-template-columns:minmax(0,1.65fr) minmax(280px,.72fr); gap:clamp(34px,7vw,84px); align-items:center; padding-bottom:50px; }
 .v2-hero h1 { max-width:880px; margin:0; color:white; font-size:clamp(40px,6.5vw,72px); line-height:1.06; letter-spacing:-.05em; }
@@ -170,7 +170,8 @@
 .mentor-reference-body { padding:4px 18px 18px; }
 .course-content img,.guide-content img { max-width:100%; height:auto; }
 .course-content .table-wrap,.guide-content .table-wrap { margin:22px 0; }
-.course-content mjx-container[display="true"] { max-width:100%; overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch; }
+.course-prose .math-display { max-width:100%; margin:1em 0; overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch; }
+.course-prose .math-display>mjx-container[display="true"] { width:max-content; min-width:100%; margin:0; text-align:center; }
 .guide-heading { padding:24px; border:0; border-radius:17px; background:linear-gradient(140deg,#172554,#3157d5); color:white; }
 .guide-heading .eyebrow { color:#c8d4ff; }
 .guide-heading h1 { color:white; }

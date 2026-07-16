@@ -136,19 +136,10 @@ function enhanceScrollableRegions() {
     codeBlock.setAttribute("aria-label", "代码示例，可横向滚动");
   }
 
-  const enhanceMath = () => {
-    for (const formula of document.querySelectorAll('.course-prose mjx-container[display="true"]')) {
-      formula.tabIndex = 0;
-      formula.setAttribute("role", "region");
-      formula.setAttribute("aria-label", "数学公式，可横向滚动");
-    }
-  };
-
-  enhanceMath();
-  if (window.MathJax?.startup?.promise) {
-    window.MathJax.startup.promise.then(enhanceMath);
-  } else {
-    window.addEventListener("load", enhanceMath, { once: true });
+  for (const formula of document.querySelectorAll(".course-prose .math-display")) {
+    formula.tabIndex = 0;
+    formula.setAttribute("role", "region");
+    formula.setAttribute("aria-label", "数学公式，可横向滚动");
   }
 }
 
