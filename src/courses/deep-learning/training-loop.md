@@ -3,6 +3,7 @@ layout: layouts/course.njk
 courseId: deep-learning-training-loop
 permalink: /learn/deep-learning/training-loop.html
 math: true
+diagrams: true
 ---
 
 ## 本课定位
@@ -161,6 +162,19 @@ $$
 \hat{Y}\in\mathbb{R}^{B\times m}
 $$
 
+```mermaid
+flowchart TB
+    accTitle: 张量形状从输入到预测
+    accDescr: 一个批次含 B 个样本，每个样本有 d 个特征；输入与权重相乘并加上偏置后，得到 B 乘 m 的预测。
+    X["输入 X<br/>(B × d)"] --> M["矩阵乘法"]
+    W["权重 W<br/>(d × m)"] --> M
+    M --> A["加偏置"]
+    B["偏置 b<br/>(m)"] --> A
+    A --> Y["预测 Ŷ<br/>(B × m)"]
+```
+
+*先检查矩阵乘法的内维 $d$ 是否一致，再确认预测保留了 batch 维 $B$。*
+
 偏置 $b$ 会沿 batch 维广播。广播很方便，但也可能掩盖错误，所以训练前应主动检查：
 
 ```python
@@ -285,6 +299,18 @@ optimizer.zero_grad()
 ```text
 清空旧梯度 → 前向计算 → 计算损失 → 反向传播 → 更新参数
 ```
+
+```mermaid
+flowchart TB
+    accTitle: 模型训练闭环
+    accDescr: 每个批次先清空旧梯度 再前向计算预测和损失 然后反向传播并更新参数 下一批次重新从清空旧梯度开始
+    D["当前批次"] --> FIRST["第 1 组<br/>① 清空旧梯度<br/>② 前向得到预测<br/>③ 计算损失"]
+    FIRST --> SECOND["第 2 组<br/>④ 反向传播<br/>⑤ 更新参数"]
+    SECOND --> N["下一批次"]
+    N -. "重复" .-> FIRST
+```
+
+*每个新批次都从清空旧梯度开始，再依次完成前向、损失、反向和更新；验证仍在训练闭环之外。*
 
 ## 优化器
 
@@ -515,6 +541,20 @@ plt.show()
 - 每次运行差异巨大：检查种子、切分、shuffle、环境和非确定性算子。
 
 ## 三条必须守住的数据边界
+
+```mermaid
+flowchart TB
+    accTitle: 正确的数据边界与泄漏错误
+    accDescr: 正确路径按场景切出互斥的训练 验证和测试集合并分离三种用途 错误路径让同一场景跨集合并造成验证结果失真
+    A["原始数据"] --> S["正确路径<br/>先按 scene 切分"]
+    S --> USE["三个互斥集合<br/>训练：更新参数<br/>验证：选择方案<br/>测试：最终评估"]
+    USE --> OK["集合互斥<br/>职责分离"]
+    A --> X["错误路径<br/>同一 scene 跨集合"]
+    X --> L["训练帧与验证帧<br/>共享场景信息"]
+    L --> BAD["信息泄漏<br/>验证结果失真"]
+```
+
+*正确路径同时隔离数据集合与使用职责；错误路径只要让同一 scene 跨集合，就会产生泄漏。*
 
 ### 训练集和验证集不能泄漏
 

@@ -3,6 +3,7 @@ layout: layouts/course.njk
 courseId: probability-scene-split
 permalink: /learn/math/probability-scene-split.html
 math: true
+diagrams: true
 ---
 
 ## 为什么概率论要从数据切分开始落地
@@ -80,6 +81,22 @@ P(A\mid B)=P(A).
 $$
 
 相邻视频帧通常不独立，因为它们共享地点、天气、目标和相似像素。随机打散帧不能消除这种真实关联。
+
+```mermaid
+flowchart TD
+    accTitle: 联合概率与条件概率关系
+    accDescr: 展示两个事件如何形成联合概率并分别得到两个方向不同的条件概率
+    O["样本空间"] --> A["事件 A"]
+    O --> B["事件 B"]
+    A --> J["联合 P(A,B)"]
+    B --> J
+    J --> AB["除以 P(B)"]
+    AB --> C1["P(A∣B)"]
+    J --> BA["除以 P(A)"]
+    BA --> C2["P(B∣A)"]
+```
+
+*两个条件概率共享同一个联合事件，但因为分母不同，回答的是两个不同问题。*
 
 ### 3. 期望、方差与标准差
 
@@ -171,6 +188,20 @@ $$
 scene-level split 的基本原则是：同一 scene 的所有 sample、sample data、标注以及由它们派生的裁剪、增强样本必须跟随同一个 split。
 
 对正式 nuScenes benchmark 应优先使用官方定义的 split。只有做教学子集或内部任务时才自定义，并且要保存 scene 列表、随机种子和生成规则。
+
+```mermaid
+flowchart TB
+    accTitle: 按帧泄漏与按 scene 正确切分
+    accDescr: 同一连续场景按帧打散会让训练帧和相邻验证帧共享场景信息 按场景分组则让整场景只进入一个互斥集合
+    S["同一个连续 scene"] --> W["错误<br/>按帧随机打散"]
+    W --> L["训练含帧 t<br/>验证含相邻帧 t+1"]
+    L --> O["共享场景信息<br/>评估过于乐观"]
+    S --> R["正确<br/>按 scene 分组"]
+    R --> G["整场景只进入<br/>一个数据集合"]
+    G --> V["scene 集合互斥<br/>评估真正未见场景"]
+```
+
+*按帧切分会让相邻帧跨集合并泄漏 scene 信息，按 scene 分组才让验证集代表真正未见场景。*
 
 ### 8. 从概率到似然与交叉熵
 

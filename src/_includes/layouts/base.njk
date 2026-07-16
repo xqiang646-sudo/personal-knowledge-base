@@ -8,6 +8,26 @@
   <link rel="stylesheet" href="{{ '/assets/knowledge.css' | siteUrl }}">
   <link rel="stylesheet" href="{{ '/assets/v2.css' | siteUrl }}">
   {% if math %}<script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>{% endif %}
+  {% if diagrams %}
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({
+      startOnLoad: true,
+      securityLevel: "strict",
+      theme: "base",
+      themeVariables: {
+        primaryColor: "#edf1ff",
+        primaryTextColor: "#172033",
+        primaryBorderColor: "#3157d5",
+        secondaryColor: "#eaf8f2",
+        tertiaryColor: "#fff4df",
+        lineColor: "#657087",
+        fontFamily: "Inter, PingFang SC, Microsoft YaHei, sans-serif"
+      },
+      flowchart: { htmlLabels: false, curve: "basis", useMaxWidth: false }
+    });
+  </script>
+  {% endif %}
 </head>
 <body class="{{ bodyClass or 'portal-body' }}">
   <a class="skip-link" href="#main-content">跳到主要内容</a>
