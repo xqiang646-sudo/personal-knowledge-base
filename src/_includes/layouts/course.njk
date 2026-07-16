@@ -1,56 +1,48 @@
 ---
 layout: layouts/base.njk
 ---
-{% set course = curriculum.courses | courseById(courseId) %}
-{% set stage = curriculum.stages | stageById(course.stage) %}
-{% set prerequisites = curriculum.courses | prerequisiteCourses(course.prerequisites) %}
-{% set previousCourse = curriculum.courses | previousAvailableCourse(course.id) %}
-{% set nextCourse = curriculum.courses | nextAvailableCourse(course.id) %}
+{% set currentCourse = curriculum.courses | courseById(courseId) %}
+{% set course = currentCourse %}
+{% set stage = curriculum.stages | stageById(currentCourse.stage) %}
+{% set prerequisites = curriculum.courses | prerequisiteCourses(currentCourse.prerequisites) %}
+{% set previousCourse = curriculum.courses | previousAvailableCourse(currentCourse.id) %}
+{% set nextCourse = curriculum.courses | nextAvailableCourse(currentCourse.id) %}
 
-<div class="portal-wrap course-shell" data-pagefind-body>
-  <aside class="course-sidebar" data-pagefind-ignore>
-    <p class="section-kicker">{{ stage.code }} · {{ stage.title }}</p>
-    <a class="course-back" href="{{ '/' | siteUrl }}#stage-{{ stage.id }}">← 返回学习路线</a>
-    <div class="course-progress-card">
-      <label for="progress-{{ course.id }}">本课学习状态</label>
-      <select id="progress-{{ course.id }}" data-progress-select data-course-id="{{ course.id }}">
-        <option value="not-started">未开始</option>
-        <option value="in-progress">学习中</option>
-        <option value="artifact-ready">产物已就绪</option>
-      </select>
-      <p>状态仅保存在当前浏览器；导师验收记录不进入公开网站。</p>
-    </div>
-    <dl class="course-facts compact">
-      <div><dt>预计时间</dt><dd>{{ course.effort }}</dd></div>
-      <div><dt>路线</dt><dd>{{ course.track }}</dd></div>
-      <div><dt>交付物</dt><dd>{{ course.deliverable }}</dd></div>
-    </dl>
-    <div class="sidebar-section">
-      <h2>先修课程</h2>
-      {% if prerequisites.length %}
-      <ul>
-        {% for item in prerequisites %}
-        <li>{% if item.url %}<a href="{{ item.url | siteUrl }}">{{ item.title }}</a>{% else %}<span>{{ item.title }}（待建设）</span>{% endif %}</li>
-        {% endfor %}
-      </ul>
-      {% else %}<p>无硬性先修，从这里开始即可。</p>{% endif %}
-    </div>
-  </aside>
-  <article class="course-content">
-    <div class="course-heading">
+<div class="portal-wrap reader-shell" data-pagefind-body>
+  <a class="reader-content-skip" href="#lesson-content">跳过目录，进入本课正文</a>
+  {% include "partials/book-outline.njk" %}
+
+  <article class="reader-content course-content" id="lesson-content" tabindex="-1" aria-labelledby="lesson-title">
+    <header class="course-heading">
+      <nav class="course-breadcrumb" aria-label="当前位置">
+        <a href="{{ '/guide.html' | siteUrl }}">学习指南</a>
+        <span aria-hidden="true">/</span>
+        <a href="{{ '/' | siteUrl }}#stage-{{ stage.id }}">{{ stage.code }} {{ stage.title }}</a>
+      </nav>
       <div class="course-top">
-        <span class="course-order">{{ stage.code }}</span>
+        <span class="course-order">{{ stage.code }}.{{ currentCourse.order }}</span>
         <span class="tag">{{ course.track }}</span>
         <span class="tag">{{ course.effort }}</span>
       </div>
-      <h1>{{ course.title }}</h1>
+      <h1 id="lesson-title">{{ course.title }}</h1>
       <p class="lead">{{ course.description }}</p>
+      <dl class="course-meta">
+        <div><dt>本课问题</dt><dd>{{ course.guidingQuestion }}</dd></div>
+        <div><dt>先修</dt><dd>{% if prerequisites.length %}{% for item in prerequisites %}{% if item.url %}<a href="{{ item.url | siteUrl }}">{{ item.title }}</a>{% else %}{{ item.title }}（待建设）{% endif %}{% if not loop.last %}、{% endif %}{% endfor %}{% else %}无硬性先修，从这里开始即可。{% endif %}</dd></div>
+      </dl>
       <div class="course-outcome"><strong>本课交付：</strong>{{ course.deliverable }}</div>
+    </header>
+
+    {% include "partials/course-learning-cycle.njk" %}
+
+    <div class="course-prose" data-course-prose>
+      {{ content | safe }}
     </div>
-    {{ content | safe }}
+
     <nav class="course-next" aria-label="课程前后导航" data-pagefind-ignore>
       {% if previousCourse %}<a href="{{ previousCourse.url | siteUrl }}"><span>上一课</span><strong>{{ previousCourse.title }}</strong></a>{% else %}<span></span>{% endif %}
       {% if nextCourse %}<a class="next" href="{{ nextCourse.url | siteUrl }}"><span>下一课</span><strong>{{ nextCourse.title }}</strong></a>{% endif %}
     </nav>
   </article>
+  {% include "partials/page-outline.njk" %}
 </div>

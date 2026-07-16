@@ -12,7 +12,7 @@
   ],
   "courses": [
     {
-      "id":"math-diagnostic","title":"数学入口诊断","description":"检查方程、函数、指数对数、三角函数、弧度和数学符号，不会的内容按需补齐。","stage":"p0","order":1,"effort":"1–2 小时","track":"核心必修","status":"pilot","url":"/learn/math/diagnostic.html","contentFile":"src/courses/math/math-diagnostic.md","prerequisites":[],"deliverable":"数学语言诊断 Notebook 与个人补课清单","topics":["数学","诊断","Python"],"mentorModules":["基础摸底"]
+      "id":"math-diagnostic","title":"数学入口诊断","description":"检查方程、函数、指数对数、三角函数、弧度和数学符号，不会的内容按需补齐。","guidingQuestion":"哪些数学基础会阻塞我理解坐标、曲率、数据切分和模型训练？","stage":"p0","order":1,"effort":"1–2 小时","track":"核心必修","status":"pilot","url":"/learn/math/diagnostic.html","contentFile":"src/courses/math/math-diagnostic.md","prerequisites":[],"deliverable":"数学语言诊断 Notebook 与个人补课清单","topics":["数学","诊断","Python"],"mentorModules":["基础摸底"]
     },
     {
       "id":"foundations-bootcamp","title":"零基础预备课（现有内容）","description":"计算机、Python、数学、时间、网络、ROS 词汇和数据基础的综合预备课。","stage":"p0","order":2,"effort":"18–24 小时","track":"迁移中","status":"legacy","url":"/notes/foundations-bootcamp.html","prerequisites":["math-diagnostic"],"deliverable":"基础诊断表与最小练习","topics":["工具","Python","数学"],"mentorModules":["基础摸底"]
@@ -24,13 +24,13 @@
       "id":"evidence-first-engineering","title":"证据优先的工程排障","description":"区分源码、部署、运行和验收事实，形成可复查的证据卡。","stage":"p0","order":4,"effort":"4–6 小时","track":"核心必修","status":"legacy","url":"/notes/evidence-first-engineering.html","prerequisites":["engineering-toolkit"],"deliverable":"一张可复查证据卡","topics":["证据","排障","工程方法"],"mentorModules":["M01"]
     },
     {
-      "id":"linear-algebra-coordinate","title":"线性代数：从向量到坐标变换","description":"掌握向量、矩阵、张量、基、投影、旋转、平移和齐次变换。","stage":"m1","order":1,"effort":"10–12 小时","track":"核心必修","status":"pilot","url":"/learn/math/linear-algebra-coordinate.html","contentFile":"src/courses/math/linear-algebra-coordinate.md","prerequisites":["math-diagnostic"],"deliverable":"坐标手算、NumPy 变换函数与往返测试","topics":["数学","线性代数","坐标系"],"mentorModules":["M06"]
+      "id":"linear-algebra-coordinate","title":"线性代数：从向量到坐标变换","description":"掌握向量、矩阵、张量、基、投影、旋转、平移和齐次变换。","guidingQuestion":"同一个点怎样在传感器、车辆与世界坐标系之间正确转换？","stage":"m1","order":1,"effort":"10–12 小时","track":"核心必修","status":"pilot","url":"/learn/math/linear-algebra-coordinate.html","contentFile":"src/courses/math/linear-algebra-coordinate.md","prerequisites":["math-diagnostic"],"deliverable":"坐标手算、NumPy 变换函数与往返测试","topics":["数学","线性代数","坐标系"],"mentorModules":["M06"]
     },
     {
-      "id":"calculus-curvature","title":"微积分：从变化率到曲率","description":"从导数、参数曲线、梯度和积分进入曲率、状态方程与自动微分。","stage":"m1","order":2,"effort":"14–17 小时","track":"核心必修","status":"pilot","url":"/learn/math/calculus-curvature.html","contentFile":"src/courses/math/calculus-curvature.md","prerequisites":["math-diagnostic","linear-algebra-coordinate"],"deliverable":"解析导数、有限差分、离散曲率与 autograd 对照","topics":["数学","微积分","曲率"],"mentorModules":["M08"]
+      "id":"calculus-curvature","title":"微积分：从变化率到曲率","description":"从导数、参数曲线、梯度和积分进入曲率、状态方程与自动微分。","guidingQuestion":"怎样从位置的变化率推导曲率，并可靠计算一条离散轨迹的弯曲程度？","stage":"m1","order":2,"effort":"14–17 小时","track":"核心必修","status":"pilot","url":"/learn/math/calculus-curvature.html","contentFile":"src/courses/math/calculus-curvature.md","prerequisites":["math-diagnostic","linear-algebra-coordinate"],"deliverable":"解析导数、有限差分、离散曲率与 autograd 对照","topics":["数学","微积分","曲率"],"mentorModules":["M08"]
     },
     {
-      "id":"probability-scene-split","title":"概率论：从随机性到场景切分","description":"掌握条件概率、期望方差、抽样、数据偏差、似然与交叉熵。","stage":"m1","order":3,"effort":"12–15 小时","track":"核心必修","status":"pilot","url":"/learn/math/probability-scene-split.html","contentFile":"src/courses/math/probability-scene-split.md","prerequisites":["math-diagnostic"],"deliverable":"场景级切分、泄漏检查与数据质量报告","topics":["数学","概率论","数据质量"],"mentorModules":["M05"]
+      "id":"probability-scene-split","title":"概率论：从随机性到场景切分","description":"掌握条件概率、期望方差、抽样、数据偏差、似然与交叉熵。","guidingQuestion":"怎样切分连续场景数据，才能避免泄漏并得到可信的模型评估？","stage":"m1","order":3,"effort":"12–15 小时","track":"核心必修","status":"pilot","url":"/learn/math/probability-scene-split.html","contentFile":"src/courses/math/probability-scene-split.md","prerequisites":["math-diagnostic"],"deliverable":"场景级切分、泄漏检查与数据质量报告","topics":["数学","概率论","数据质量"],"mentorModules":["M05"]
     },
     {
       "id":"autonomous-driving-overview","title":"自动驾驶系统总览","description":"从测量、估计、决策和执行理解自动驾驶闭环。","stage":"a1","order":1,"effort":"2–3 小时","track":"核心必修","status":"legacy","url":"/notes/autonomous-driving-overview.html","prerequisites":["evidence-first-engineering"],"deliverable":"系统闭环图","topics":["自动驾驶","系统"],"mentorModules":["系统总览"]
@@ -48,7 +48,7 @@
       "id":"nuscenes-dataset","title":"nuScenes 数据集与数据任务","description":"完成数据盘点、索引、QC、scene split、标签合同、统计和可视化。","stage":"a1","order":5,"effort":"20–28 小时","track":"数据主线","status":"legacy","url":"/notes/nuscenes-dataset.html","prerequisites":["coordinate-transformations","probability-scene-split","perception-maps"],"deliverable":"inventory、manifest、QC 与 dataset card","topics":["nuScenes","数据","数据质量"],"mentorModules":["M05"]
     },
     {
-      "id":"deep-learning-training-loop","title":"深度学习：第一个完整训练闭环","description":"从张量、线性模型、损失、梯度和优化器建立 PyTorch 训练闭环。","stage":"dl","order":1,"effort":"8–10 小时","track":"深度学习必修","status":"pilot","url":"/learn/deep-learning/training-loop.html","contentFile":"src/courses/deep-learning/training-loop.md","prerequisites":["linear-algebra-coordinate","calculus-curvature","probability-scene-split"],"deliverable":"线性回归和 Softmax 训练脚本、曲线与失败分析","topics":["深度学习","PyTorch","训练"],"mentorModules":["深度学习基础"]
+      "id":"deep-learning-training-loop","title":"深度学习：第一个完整训练闭环","description":"从张量、线性模型、损失、梯度和优化器建立 PyTorch 训练闭环。","guidingQuestion":"模型怎样利用数据、损失和梯度更新参数，并留下可复现的训练证据？","stage":"dl","order":1,"effort":"8–10 小时","track":"深度学习必修","status":"pilot","url":"/learn/deep-learning/training-loop.html","contentFile":"src/courses/deep-learning/training-loop.md","prerequisites":["linear-algebra-coordinate","calculus-curvature","probability-scene-split"],"deliverable":"线性回归和 Softmax 训练脚本、曲线与失败分析","topics":["深度学习","PyTorch","训练"],"mentorModules":["深度学习基础"]
     },
     {
       "id":"dl-mlp-generalization","title":"MLP、泛化与正则化","description":"多层感知机、激活函数、过拟合、权重衰减、Dropout 和分布偏移。","stage":"dl","order":2,"effort":"8–10 小时","track":"深度学习必修","status":"planned","url":null,"prerequisites":["deep-learning-training-loop"],"deliverable":"小数据过拟合与正则化对照实验","topics":["深度学习","MLP","泛化"],"mentorModules":["深度学习基础"]

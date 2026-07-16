@@ -2,10 +2,11 @@
   <div class="portal-wrap v2-header-inner">
     <a class="site-brand" href="{{ '/' | siteUrl }}">{{ site.shortName }}</a>
     <nav class="v2-nav" aria-label="知识库主导航">
-      <a href="{{ '/' | siteUrl }}#learning-path">学习路线</a>
-      <a href="{{ '/topics.html' | siteUrl }}">专题</a>
-      <a href="{{ '/search.html' | siteUrl }}">搜索</a>
-      <a href="{{ '/mentor.html' | siteUrl }}">导师面板</a>
+      <a href="{{ '/guide.html' | siteUrl }}"{% if guidePage %} aria-current="page"{% endif %}>学习指南</a>
+      <a href="{{ '/' | siteUrl }}#learning-path"{% if page.url == "/" or page.url == "/index.html" %} aria-current="page"{% endif %}>课程目录</a>
+      <a href="{{ '/topics.html' | siteUrl }}"{% if page.url == "/topics.html" %} aria-current="page"{% endif %}>专题</a>
+      <a href="{{ '/search.html' | siteUrl }}"{% if page.url == "/search.html" %} aria-current="page"{% endif %}>搜索</a>
+      <a href="{{ '/mentor.html' | siteUrl }}"{% if page.url == "/mentor.html" %} aria-current="page"{% endif %}>导师面板</a>
     </nav>
   </div>
 </header>
