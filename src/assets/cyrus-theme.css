@@ -26,10 +26,10 @@ body[data-theme="cyrus"] {
   --accent-soft: #eef1f5;
   --line: rgba(10, 12, 16, 0.12);
   --line-strong: rgba(10, 12, 16, 0.26);
-  --good: #24543f;
-  --good-soft: #edf8f3;
-  --warn: #744700;
-  --warn-soft: #fff6e7;
+  --good: #303030;
+  --good-soft: #edf0f4;
+  --warn: #5a5a5a;
+  --warn-soft: #f0f1f3;
   --danger: #5f1712;
   --danger-soft: #fff0ef;
   --sky-soft: #edf0f4;
@@ -40,66 +40,85 @@ body[data-theme="cyrus"] {
   --indigo-600: #5a5a5a;
   --glass-edge: rgba(255, 255, 255, 0.82);
   --glass-specular: rgba(255, 255, 255, 0.9);
+  --glass-shadow: rgba(31, 38, 54, 0.16);
   --glass-depth-shadow: rgba(13, 18, 28, 0.2);
   --glass-inner-shadow: rgba(8, 9, 11, 0.09);
-  --glass-refraction-map:
-    radial-gradient(120% 160% at 6% 0%, rgba(255, 255, 255, 0.86), transparent 34%),
-    radial-gradient(95% 140% at 96% 8%, rgba(127, 183, 255, 0.16), transparent 42%),
-    linear-gradient(118deg, rgba(255, 255, 255, 0.5), transparent 34%, rgba(255, 255, 255, 0.16) 64%, transparent);
   --glass-panel:
-    var(--glass-refraction-map),
-    linear-gradient(145deg, rgba(255, 255, 255, 0.76), rgba(247, 249, 252, 0.38) 52%, rgba(255, 255, 255, 0.58)),
-    rgba(255, 255, 255, 0.38);
+    linear-gradient(145deg, rgba(255, 255, 255, 0.7), rgba(247, 249, 252, 0.34)),
+    rgba(255, 255, 255, 0.3);
   --glass-control:
-    var(--glass-refraction-map),
-    linear-gradient(145deg, rgba(255, 255, 255, 0.88), rgba(237, 241, 247, 0.54)),
-    rgba(255, 255, 255, 0.48);
+    linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(237, 241, 247, 0.52)),
+    rgba(255, 255, 255, 0.38);
   --reading-surface:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(250, 251, 253, 0.94)),
-    #ffffff;
+    linear-gradient(145deg, rgba(255, 255, 255, 0.72), rgba(247, 249, 252, 0.36) 52%, rgba(255, 255, 255, 0.52)),
+    rgba(255, 255, 255, 0.34);
   --shadow:
-    0 24px 64px rgba(13, 18, 28, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.92),
-    inset 0 -1px 0 rgba(8, 9, 11, 0.06);
+    0 30px 76px rgba(20, 26, 36, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    inset 0 -1px 0 rgba(8, 9, 11, 0.055);
   --shadow-soft:
-    0 18px 48px rgba(17, 22, 31, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  --font-xingkai-cn: "Xingkai SC", "STXingkai", "Kaiti SC", "STKaiti", "KaiTi", "KaiTi_GB2312", "Songti SC", "STSong", serif;
-  --font-ui: "Times New Roman", Times, var(--font-xingkai-cn);
-  --font-heading: "Times New Roman", Times, var(--font-xingkai-cn);
-  --font-reading: "Times New Roman", Times, "Songti SC", "STSong", serif;
-  --font-code: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    0 16px 42px rgba(17, 22, 31, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86);
+  --font-ui: Inter, "Noto Sans SC", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-heading: "Noto Serif SC", "Playfair Display", Georgia, serif;
+  --font-reading: var(--font-ui);
+  --font-code: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   margin: 0;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(232, 236, 244, 0.62) 46%, rgba(255, 255, 255, 0.84)),
-    repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.22) 0 1px, transparent 1px 22px),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(232, 236, 244, 0.62) 46%, rgba(255, 255, 255, 0.82)),
     linear-gradient(90deg, rgba(8, 9, 11, 0.036) 1px, transparent 1px),
     linear-gradient(180deg, rgba(8, 9, 11, 0.032) 1px, transparent 1px),
     var(--paper);
   background-attachment: fixed;
-  background-size: auto, auto, 44px 44px, 44px 44px, auto;
+  background-size: auto, 44px 44px, 44px 44px, auto;
   color: var(--ink);
   font-family: var(--font-reading);
-  -webkit-font-smoothing: antialiased;
-  text-rendering: geometricPrecision;
+  min-width: 320px;
+  overflow-x: hidden;
+  position: relative;
 }
 
-body[data-theme="cyrus"] :where(h1, h2, h3, h4, .site-brand) {
+body[data-theme="cyrus"]::before,
+body[data-theme="cyrus"]::after {
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: fixed;
+  z-index: 0;
+}
+
+body[data-theme="cyrus"]::before {
+  background:
+    linear-gradient(120deg, rgba(255, 255, 255, 0.62), transparent 28%, rgba(255, 255, 255, 0.42) 56%, transparent 76%),
+    linear-gradient(24deg, rgba(7, 8, 10, 0.06), transparent 22%, rgba(7, 8, 10, 0.035) 58%, transparent);
+  filter: blur(28px);
+  opacity: 0.86;
+}
+
+body[data-theme="cyrus"]::after {
+  background-image:
+    repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.26) 0 1px, transparent 1px 22px),
+    repeating-linear-gradient(25deg, rgba(8, 9, 11, 0.022) 0 1px, transparent 1px 28px);
+  mix-blend-mode: screen;
+  opacity: 0.45;
+}
+
+body[data-theme="cyrus"] > main,
+body[data-theme="cyrus"] > footer {
+  position: relative;
+  z-index: 1;
+}
+
+body[data-theme="cyrus"] :where(h1, h2) {
   color: var(--ink);
   font-family: var(--font-heading);
+  font-weight: 900;
 }
 
 body[data-theme="cyrus"] :where(
+  h3,
+  h4,
   .v2-header,
-  .v2-nav,
-  .eyebrow,
-  .section-kicker,
-  .tag,
-  .course-status,
-  .course-order,
-  .stage-number,
-  .book-tree,
-  .page-outline,
   .button,
   button,
   input,
@@ -109,7 +128,23 @@ body[data-theme="cyrus"] :where(
   font-family: var(--font-ui);
 }
 
-body[data-theme="cyrus"] :where(code, pre, kbd, samp) {
+body[data-theme="cyrus"] :where(
+  .site-brand,
+  .v2-nav a,
+  .eyebrow,
+  .section-kicker,
+  .tag,
+  .course-status,
+  .course-order,
+  .stage-number,
+  .book-index,
+  .book-course-number,
+  .page-outline-title,
+  code,
+  pre,
+  kbd,
+  samp
+) {
   font-family: var(--font-code);
 }
 
@@ -134,15 +169,15 @@ body[data-theme="cyrus"] :where(
 body[data-theme="cyrus"] .v2-header {
   border-bottom: 1px solid rgba(8, 9, 11, 0.14);
   background:
-    var(--glass-refraction-map),
-    linear-gradient(145deg, rgba(255, 255, 255, 0.86), rgba(245, 248, 252, 0.62)),
-    rgba(255, 255, 255, 0.66);
+    linear-gradient(145deg, rgba(255, 255, 255, 0.78), rgba(245, 248, 252, 0.46) 48%, rgba(255, 255, 255, 0.58)),
+    linear-gradient(100deg, rgba(255, 255, 255, 0.68), transparent 38%, rgba(255, 255, 255, 0.28));
   box-shadow:
-    0 18px 44px rgba(17, 22, 31, 0.1),
-    inset 0 1px 0 var(--glass-specular);
+    0 28px 72px var(--glass-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    inset 0 -1px 0 rgba(8, 9, 11, 0.06);
   color: var(--ink);
-  -webkit-backdrop-filter: blur(30px) saturate(175%);
-  backdrop-filter: blur(30px) saturate(175%);
+  -webkit-backdrop-filter: blur(34px) saturate(170%);
+  backdrop-filter: blur(34px) saturate(170%);
 }
 
 body[data-theme="cyrus"] .v2-header-inner {
@@ -151,9 +186,11 @@ body[data-theme="cyrus"] .v2-header-inner {
 
 body[data-theme="cyrus"] .v2-header .site-brand {
   color: var(--ink);
-  font-size: 1.08rem;
-  font-weight: 900;
-  letter-spacing: 0.01em;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: normal;
+  text-transform: uppercase;
 }
 
 body[data-theme="cyrus"] .v2-nav {
@@ -161,21 +198,26 @@ body[data-theme="cyrus"] .v2-nav {
   padding: 5px;
   border: 1px solid var(--glass-edge);
   border-radius: 999px;
-  background: var(--glass-panel);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.32)),
+    rgba(255, 255, 255, 0.32);
   box-shadow:
-    0 14px 36px rgba(19, 24, 33, 0.1),
-    inset 0 1px 0 var(--glass-specular);
-  -webkit-backdrop-filter: blur(24px) saturate(165%);
-  backdrop-filter: blur(24px) saturate(165%);
+    0 18px 44px rgba(19, 24, 33, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  -webkit-backdrop-filter: blur(30px) saturate(170%);
+  backdrop-filter: blur(30px) saturate(170%);
 }
 
 body[data-theme="cyrus"] .v2-nav a {
-  min-height: 38px;
-  padding: 0 14px;
+  min-height: 40px;
+  padding: 12px 18px;
   border: 1px solid transparent;
   border-radius: 999px;
   color: rgba(8, 9, 11, 0.72);
-  font-weight: 700;
+  font-size: 0.84rem;
+  font-weight: 600;
+  line-height: 1;
+  text-transform: uppercase;
   transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease, color 160ms ease, transform 160ms ease;
 }
 
@@ -187,7 +229,9 @@ body[data-theme="cyrus"] .v2-nav a:hover {
 
 body[data-theme="cyrus"] .v2-nav a[aria-current="page"] {
   border-color: rgba(255, 255, 255, 0.9);
-  background: var(--glass-control);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.88), rgba(237, 241, 247, 0.62)),
+    rgba(255, 255, 255, 0.52);
   box-shadow:
     0 8px 22px rgba(18, 22, 30, 0.14),
     inset 0 1px 0 rgba(255, 255, 255, 0.96),
@@ -196,7 +240,7 @@ body[data-theme="cyrus"] .v2-nav a[aria-current="page"] {
   text-decoration: none;
 }
 
-/* Shared Cyrus surfaces. Reading surfaces stay nearly opaque for long lessons. */
+/* Shared Cyrus glass surfaces, with the same cool-white layering as the source page. */
 body[data-theme="cyrus"] :where(
   .panel,
   .link-card,
@@ -218,8 +262,8 @@ body[data-theme="cyrus"] :where(
   border-radius: 8px;
   background: var(--glass-panel);
   box-shadow: var(--shadow-soft);
-  -webkit-backdrop-filter: blur(24px) saturate(165%);
-  backdrop-filter: blur(24px) saturate(165%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  backdrop-filter: blur(20px) saturate(150%);
 }
 
 body[data-theme="cyrus"] :where(.course-content, .guide-content, .page) {
@@ -227,6 +271,8 @@ body[data-theme="cyrus"] :where(.course-content, .guide-content, .page) {
   border-radius: 8px;
   background: var(--reading-surface);
   box-shadow: var(--shadow);
+  -webkit-backdrop-filter: blur(22px) saturate(135%);
+  backdrop-filter: blur(22px) saturate(135%);
 }
 
 body[data-theme="cyrus"] :where(.course-card, .link-card, .course-next a, .button) {
@@ -254,20 +300,19 @@ body[data-theme="cyrus"] .v2-hero-grid {
   border: 1px solid var(--glass-edge);
   border-radius: 8px;
   background:
-    var(--glass-refraction-map),
-    linear-gradient(145deg, rgba(255, 255, 255, 0.84), rgba(245, 248, 252, 0.48) 54%, rgba(255, 255, 255, 0.68)),
-    rgba(255, 255, 255, 0.46);
+    linear-gradient(145deg, rgba(255, 255, 255, 0.78), rgba(245, 248, 252, 0.46) 48%, rgba(255, 255, 255, 0.58)),
+    linear-gradient(100deg, rgba(255, 255, 255, 0.68), transparent 38%, rgba(255, 255, 255, 0.28));
   box-shadow:
-    0 34px 90px var(--glass-depth-shadow),
-    inset 0 1px 0 var(--glass-specular),
-    inset 0 -1px 0 var(--glass-inner-shadow);
-  -webkit-backdrop-filter: blur(36px) saturate(180%);
-  backdrop-filter: blur(36px) saturate(180%);
+    0 28px 72px var(--glass-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    inset 0 -1px 0 rgba(8, 9, 11, 0.06);
+  -webkit-backdrop-filter: blur(34px) saturate(170%);
+  backdrop-filter: blur(34px) saturate(170%);
 }
 
 body[data-theme="cyrus"] .v2-hero h1 {
   color: var(--ink);
-  font-size: clamp(3rem, 6.5vw, 4.75rem);
+  font-size: clamp(3rem, 6.5vw, 4.25rem);
   font-weight: 900;
   letter-spacing: -0.045em;
   line-height: 0.98;
@@ -276,11 +321,16 @@ body[data-theme="cyrus"] .v2-hero h1 {
 
 body[data-theme="cyrus"] :where(.v2-hero .eyebrow, .section-kicker) {
   color: var(--brand);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: normal;
 }
 
 body[data-theme="cyrus"] .hero-intro,
 body[data-theme="cyrus"] .progress-overview > p {
   color: var(--muted);
+  line-height: 1.55;
 }
 
 body[data-theme="cyrus"] .v2-hero .hero-card {
@@ -312,8 +362,8 @@ body[data-theme="cyrus"] .v2-stats {
   background: var(--glass-panel);
   box-shadow: var(--shadow-soft);
   color: var(--ink);
-  -webkit-backdrop-filter: blur(24px) saturate(165%);
-  backdrop-filter: blur(24px) saturate(165%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  backdrop-filter: blur(20px) saturate(150%);
 }
 
 body[data-theme="cyrus"] .v2-stats > div {
@@ -328,8 +378,8 @@ body[data-theme="cyrus"] .button {
     0 12px 30px rgba(18, 22, 30, 0.12),
     inset 0 1px 0 var(--glass-specular);
   color: var(--ink);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
 }
 
 body[data-theme="cyrus"] .button:hover {
@@ -360,7 +410,7 @@ body[data-theme="cyrus"] .stage-number {
 body[data-theme="cyrus"] .stage-gate {
   border-left-color: var(--good);
   background: var(--good-soft);
-  color: #315a4a;
+  color: var(--ink-soft);
 }
 
 body[data-theme="cyrus"] .course-order {
@@ -399,14 +449,16 @@ body[data-theme="cyrus"] .course-status {
 }
 
 body[data-theme="cyrus"] .course-status[data-state="in-progress"] {
-  border: 1px solid rgba(116, 71, 0, 0.2);
+  border: 1px solid var(--line);
   background: var(--warn-soft);
   color: var(--warn);
 }
 
 body[data-theme="cyrus"] .course-status[data-state="artifact-ready"] {
-  background: var(--good-soft);
-  color: var(--good);
+  background:
+    linear-gradient(145deg, rgba(11, 12, 15, 0.86), rgba(42, 45, 52, 0.72)),
+    rgba(9, 10, 12, 0.72);
+  color: var(--paper-soft);
 }
 
 /* Reader sidebars retain the D2L structure and use Cyrus glass material. */
@@ -578,7 +630,7 @@ body[data-theme="cyrus"] .guide-heading .button-quiet {
 }
 
 body[data-theme="cyrus"] .guide-finish {
-  background: var(--good-soft);
+  background: var(--paper-tint);
 }
 
 /* Math, code, tables, and diagrams prioritize legibility over translucency. */
@@ -724,7 +776,7 @@ body[data-theme="cyrus"] .button-danger {
 
 @media (max-width: 760px) {
   body[data-theme="cyrus"] {
-    background-size: auto, auto, 34px 34px, 34px 34px, auto;
+    background-size: auto, 34px 34px, 34px 34px, auto;
   }
 
   body[data-theme="cyrus"] .v2-header-inner {
