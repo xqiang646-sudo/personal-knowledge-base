@@ -4,16 +4,49 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="参考《视觉 SLAM 十四讲》的学习路线，从线性代数、换基和刚体运动推导二维与三维坐标变换。">
-  <title>从线性代数到坐标系转换｜导师补充知识</title>
+  <title>从线性代数到坐标系转换｜个人知识库</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/knowledge.css">
+  <link rel="stylesheet" href="../assets/cyrus-theme.css">
   <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
 </head>
-<body>
+<body data-theme="cyrus">
   <nav class="topbar" data-pagefind-ignore><div class="wrap"><a class="back" href="../index.html#learning-path">← 返回零基础学习路线</a></div></nav>
   <article class="page wrap" data-pagefind-body>
-    <div class="meta">导师补充 M06 · 线性代数与刚体运动 · 复核于 2026-07-16</div>
+    <div class="meta">坐标系入门 · 从同一个杯子的两组地址开始 · 更新于 2026-07-16</div>
     <h1>从线性代数到坐标系转换</h1>
     <p class="lead">一个物理点不会因为换坐标系而移动，改变的是描述它的数字。本课先补向量、基和矩阵，再从换基推导旋转、平移、齐次变换与多传感器坐标链。</p>
+
+    <aside class="friendly-start" aria-labelledby="friendly-coordinate-title">
+      <p class="friendly-start-label">第一次读，先只记住这件事</p>
+      <h2 id="friendly-coordinate-title">坐标是地址，不是物体本身</h2>
+      <p class="friendly-start-intro">桌上的杯子没有动。你用桌角作原点，我用自己脚边作原点，会报出两组不同数字。坐标变换做的事情，就是把“你报的地址”准确翻译成“我使用的地址”。</p>
+      <div class="friendly-start-grid">
+        <div class="friendly-start-card"><strong>先有画面</strong><p>同一个路锥，可以同时拥有相机坐标、车辆坐标和地图坐标；改变的是参照物，不是路锥。</p></div>
+        <div class="friendly-start-card"><strong>今天只做到</strong><p>画两套二维坐标轴，先完成一次纯平移，再完成一次 90° 旋转，并把结果换回去。</p></div>
+        <div class="friendly-start-card"><strong>卡住先去</strong><p>先读<a href="../learn/math/linear-algebra-coordinate.html">线性代数：从向量到坐标变换</a>。李群、雅可比和高级证明第一遍可以跳过。</p></div>
+      </div>
+      <figure class="friendly-figure">
+        <svg viewBox="0 0 760 250" role="img" aria-labelledby="coordinate-picture-title coordinate-picture-desc">
+          <title id="coordinate-picture-title">同一个路锥在传感器和车辆坐标系中有不同坐标</title>
+          <desc id="coordinate-picture-desc">左边以传感器为原点，右边以车辆为原点。路锥没有移动，平移坐标原点后，它的数字表示发生变化。</desc>
+          <rect class="diagram-frame" x="20" y="18" width="290" height="205" rx="16" />
+          <rect class="diagram-frame" x="450" y="18" width="290" height="205" rx="16" />
+          <text class="diagram-label" x="40" y="47">传感器坐标系 S</text>
+          <text class="diagram-label" x="470" y="47">车辆坐标系 E</text>
+          <path class="diagram-line" d="M82 182 L270 182 M82 182 L82 65" />
+          <path class="diagram-line" d="M512 182 L700 182 M512 182 L512 65" />
+          <circle class="diagram-dot-active" cx="220" cy="92" r="12" />
+          <circle class="diagram-dot-active" cx="620" cy="112" r="12" />
+          <text class="diagram-note" x="238" y="88">路锥 pₛ=(2,1)</text>
+          <text class="diagram-note" x="638" y="108">路锥 pₑ=(3,1)</text>
+          <path class="diagram-line" d="M330 118 L425 118 M408 103 L425 118 L408 133" />
+          <text class="diagram-note" x="377" y="94" text-anchor="middle">原点换了</text>
+          <text class="diagram-note" x="377" y="158" text-anchor="middle">物体没动</text>
+        </svg>
+        <figcaption>先问“坐标写在哪把尺子上”，再决定该用哪个旋转和平移。</figcaption>
+      </figure>
+    </aside>
 
     <div class="panel provenance">
       <p><strong>参考路线：</strong>高翔等《视觉 SLAM 十四讲：从理论到实践（第 2 版）》第 3 讲“三维空间刚体运动”，并用第 4 讲解释 SO(3)/SE(3) 与局部增量的入门意义。</p>

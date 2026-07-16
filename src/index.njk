@@ -9,66 +9,86 @@ bodyClass: portal-body
 <section class="v2-hero">
   <div class="portal-wrap v2-hero-grid">
     <div>
-      <p class="eyebrow">BEGINNER TO EVIDENCE · V2 试点</p>
-      <h1>从数学地基开始，走到一次可复查的数据与模型交付</h1>
-      <p class="hero-intro">面向完全零基础实习生：先补 Python、线性代数、微积分和概率论，再进入坐标转换、nuScenes、深度学习与自动驾驶工程。</p>
+      <p class="eyebrow">写给第一次接触自动驾驶数据的你</p>
+      <h1>不会没关系，我们从第一步开始</h1>
+      <p class="hero-intro">如果你看到矩阵、坐标系、nuScenes 或神经网络会发懵，这很正常。这里会先用生活里的画面讲明白，再带你看公式、手算一个例子，最后才运行代码。</p>
       <div class="hero-actions">
-        <a class="button" href="{{ '/guide.html' | siteUrl }}">先看怎样学习</a>
-        <a class="button button-secondary" href="{{ '/learn/math/diagnostic.html' | siteUrl }}">开始入口诊断</a>
+        <a class="button" href="#start-here">带我走第一步</a>
+        <a class="button button-secondary" href="#learning-path">我想先看看有哪些课</a>
       </div>
     </div>
     <aside class="hero-card progress-overview" aria-label="当前浏览器学习进度">
-      <span class="hero-card-label">当前浏览器</span>
-      <strong data-progress-summary>0 / 0 门产物就绪</strong>
+      <span class="hero-card-label">你自己的学习记录</span>
+      <strong data-progress-summary>先选一条最适合你的起步路线</strong>
       <div class="progress-track" aria-hidden="true"><span data-progress-bar></span></div>
-      <a class="continue-link" data-continue-link href="{{ '/learn/math/diagnostic.html' | siteUrl }}">从数学入口诊断开始 →</a>
-      <p>进度只保存在这台设备；作业和导师评价不会写入公开仓库。</p>
+      <a class="continue-link" data-continue-link href="{{ '/guide.html' | siteUrl }}">先花 5 分钟认识怎么学 →</a>
+      <p>不会就是起点，不是缺点。这里不公开姓名、作业或评分。</p>
     </aside>
-  </div>
-  <div class="portal-wrap v2-stats" aria-label="课程体系规模">
-    <div><strong>{{ curriculum.stages.length }}</strong><span>个学习阶段</span></div>
-    <div><strong>{{ curriculum.courses | countStatus('pilot') }}</strong><span>门 V2 试点课程</span></div>
-    <div><strong>3</strong><span>门数学核心</span></div>
-    <div><strong>1</strong><span>个综合结课项目</span></div>
   </div>
 </section>
 <div class="portal-wrap portal-main">
-  <section class="portal-section" id="orientation">
-    <div class="section-heading"><p class="section-kicker">先建立认知闭环</p><h2>先输出自己的想法，再接受答案</h2><p>每一课都从可检查的问题开始，先预测，再建立直觉和正式表达；最后主动制造失败、独立迁移并留下证据。</p></div>
-    <ol class="learning-loop">
-      <li><span>1</span><strong>问题</strong><p>今天只解决一个可检查的问题。</p></li>
-      <li><span>2</span><strong>预测</strong><p>不查答案，先写自己怎么想。</p></li>
-      <li><span>3</span><strong>直觉</strong><p>用图、方向和数量级看懂趋势。</p></li>
-      <li><span>4</span><strong>形式化</strong><p>说清变量、公式、单位和假设。</p></li>
-      <li><span>5</span><strong>动手</strong><p>先手算，再运行最小代码。</p></li>
-      <li><span>6</span><strong>反例</strong><p>故意破坏条件，观察错误传播。</p></li>
-      <li><span>7</span><strong>迁移留证</strong><p>换条件独立完成并保存证据。</p></li>
-    </ol>
-    <p class="orientation-link"><a href="{{ '/guide.html' | siteUrl }}">打开完整学习指南：55 分钟节奏、导师周循环与首月路线 →</a></p>
-  </section>
-  <section class="portal-section milestones" id="milestones">
-    <div class="section-heading"><p class="section-kicker">分段产生价值</p><h2>不需要学完整条路线才开始做事</h2></div>
-    <div class="grid three">
-      <article class="panel"><span class="milestone-label">里程碑 A · 25–40h</span><h3>基础数据协作</h3><p>可以做目录盘点、格式检查、基础统计和结果可视化。</p></article>
-      <article class="panel"><span class="milestone-label">里程碑 B · 80–120h</span><h3>独立数据任务</h3><p>理解坐标、标定与场景切分，完成 nuScenes mini 数据交付。</p></article>
-      <article class="panel"><span class="milestone-label">里程碑 C · 完整核心</span><h3>视觉模型实验</h3><p>能运行小型 PyTorch 训练，解释指标、曲线和失败样本。</p></article>
+  <section class="portal-section beginner-entry" id="start-here">
+    <div class="section-heading"><p class="section-kicker">先选你现在的状态</p><h2>不用研究整张路线，只回答“我现在最需要什么”</h2><p>下面没有正确答案。选一个最像你的情况，先走一小步；走错了也随时可以回来换。</p></div>
+    <div class="beginner-choice-grid">
+      <a class="beginner-choice" href="{{ '/guide.html' | siteUrl }}">
+        <span class="choice-number">01</span><h3>我第一次来，什么都不熟</h3>
+        <p>先看一个 5 分钟说明，知道这里怎么读、卡住时怎么办，以及今天只需要完成什么。</p>
+        <strong>从学习指南开始 →</strong>
+      </a>
+      <a class="beginner-choice" href="{{ '/notes/nuscenes-dataset.html' | siteUrl }}">
+        <span class="choice-number">02</span><h3>我已经接到 nuScenes 数据任务</h3>
+        <p>先把数据集想成一本“多传感器行车记录册”，认识 scene、sample 和 token，再决定补哪块数学。</p>
+        <strong>先听懂数据集在说什么 →</strong>
+      </a>
+      <a class="beginner-choice" href="{{ '/learn/math/diagnostic.html' | siteUrl }}">
+        <span class="choice-number">03</span><h3>我一看到公式就不知道从哪下手</h3>
+        <p>这不是考试。用几个小问题找出真正卡住你的地方，只补当前需要的那一小块。</p>
+        <strong>看看我适合从哪里开始 →</strong>
+      </a>
     </div>
   </section>
+  <section class="portal-section" id="orientation">
+    <div class="section-heading"><p class="section-kicker">每一课都有人带路</p><h2>先听懂人话，再看图，再碰公式</h2><p>你不需要第一遍就记住全部内容。页面会提醒你每一步在做什么，也会告诉你看不懂时可以先跳到哪里。</p></div>
+    <ol class="learning-loop">
+      <li><span>1</span><strong>说清问题</strong><p>今天只弄懂一件事。</p></li>
+      <li><span>2</span><strong>先猜一下</strong><p>猜错没关系，要说理由。</p></li>
+      <li><span>3</span><strong>先看图</strong><p>看方向、远近和变化趋势。</p></li>
+      <li><span>4</span><strong>翻译公式</strong><p>每个符号都换成人话。</p></li>
+      <li><span>5</span><strong>算一个</strong><p>先手算最小例子，再跑代码。</p></li>
+      <li><span>6</span><strong>故意改错</strong><p>看看错误会从哪里冒出来。</p></li>
+      <li><span>7</span><strong>讲给别人</strong><p>换个数字，再用自己的话讲。</p></li>
+    </ol>
+    <p class="orientation-link"><a href="{{ '/guide.html' | siteUrl }}">看一个完整示范：一小时到底怎么学一小节 →</a></p>
+  </section>
+  <section class="portal-section milestones" id="milestones">
+    <div class="section-heading"><p class="section-kicker">学一点，就能开始帮上忙</p><h2>不用等所有课程学完，能力会一段一段长出来</h2></div>
+    <div class="grid three">
+      <article class="panel"><span class="milestone-label">先走 25–40 小时</span><h3>能帮忙整理数据</h3><p>看懂目录和文件格式，做基础统计，把结果画出来，并说明自己检查了什么。</p></article>
+      <article class="panel"><span class="milestone-label">继续到 80–120 小时</span><h3>能独立完成一个小任务</h3><p>理解坐标、标定和场景切分，完成一份 nuScenes mini 数据报告。</p></article>
+      <article class="panel"><span class="milestone-label">完成核心路线后</span><h3>能解释一次模型实验</h3><p>运行小型 PyTorch 训练，读懂曲线，找出失败样本，而不只是说“代码跑通了”。</p></article>
+    </div>
+  </section>
+  <div class="v2-stats course-overview-stats" aria-label="课程体系规模">
+    <div><strong>{{ curriculum.stages.length }}</strong><span>个阶段，按需要进入</span></div>
+    <div><strong>{{ curriculum.courses.length }}</strong><span>门课，不要求一次学完</span></div>
+    <div><strong>3</strong><span>门数学课，都从直觉开始</span></div>
+    <div><strong>1</strong><span>份最后能讲清楚的作品</span></div>
+  </div>
   <section class="portal-section" id="learning-path">
-    <div class="section-heading"><p class="section-kicker">T 型课程系统</p><h2>核心必修先支撑数据任务，再按方向深入</h2><p>“V2 试点”已按新模板编写；“现有内容”会在后续批次逐课迁移；“待建设”先展示依赖与目标，不伪装成已完成。</p></div>
+    <div class="section-heading"><p class="section-kicker">完整课程地图</p><h2>课很多，但你每次只需要决定“下一门”</h2><p>“可以开始”表示页面会一步步带你学；“可以阅读”表示知识已经完整，但讲解方式还会继续优化；“正在准备”只让你提前知道以后会学什么。</p></div>
     <nav class="stage-nav" aria-label="学习阶段快捷导航">{% for stage in curriculum.stages %}<a href="#stage-{{ stage.id }}">{{ stage.code }} {{ stage.title }}</a>{% endfor %}</nav>
     <ol class="stage-list">
       {% for stage in curriculum.stages %}
       {% set stageCourses = curriculum.courses | coursesForStage(stage.id) %}
       <li class="learning-stage" id="stage-{{ stage.id }}">
-        <div class="stage-summary"><span class="stage-number">{{ stage.code }}</span><h3>{{ stage.title }}</h3><p>{{ stage.description }}</p><p class="stage-time">建议 {{ stage.effort }}</p><div class="stage-gate"><strong>阶段门：</strong>{{ stage.gate }}</div></div>
+        <div class="stage-summary"><span class="stage-number">{{ stage.code }}</span><h3>{{ stage.title }}</h3><p>{{ stage.description }}</p><p class="stage-time">大约需要 {{ stage.effort }}</p><div class="stage-gate"><strong>学到这里，你应该能：</strong>{{ stage.gate }}</div></div>
         <div class="course-grid">{% for course in stageCourses %}{{ courseCard(course) }}{% endfor %}</div>
       </li>
       {% endfor %}
     </ol>
   </section>
   <section class="portal-cta" aria-labelledby="start-title">
-    <div><p class="section-kicker">第一步只需一小时</p><h2 id="start-title">先诊断，不要从第一页硬啃到底</h2><p>完成数学入口诊断后，再决定是否需要补方程、函数、三角函数和数学符号。</p></div>
-    <div class="hero-actions"><a class="button" href="{{ '/learn/math/diagnostic.html' | siteUrl }}">开始诊断</a></div>
+    <div><p class="section-kicker">不知道选哪门时</p><h2 id="start-title">先看看你适合从哪里开始</h2><p>不会的题直接写“不知道”。这不是考试，只是帮你找到下一小步。</p></div>
+    <div class="hero-actions"><a class="button" href="{{ '/learn/math/diagnostic.html' | siteUrl }}">带我做第一步</a></div>
   </section>
 </div>

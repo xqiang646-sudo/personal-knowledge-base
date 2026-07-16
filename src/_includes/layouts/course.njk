@@ -27,11 +27,27 @@ layout: layouts/base.njk
       <h1 id="lesson-title">{{ course.title }}</h1>
       <p class="lead">{{ course.description }}</p>
       <dl class="course-meta">
-        <div><dt>本课问题</dt><dd>{{ course.guidingQuestion }}</dd></div>
-        <div><dt>先修</dt><dd>{% if prerequisites.length %}{% for item in prerequisites %}{% if item.url %}<a href="{{ item.url | siteUrl }}">{{ item.title }}</a>{% else %}{{ item.title }}（待建设）{% endif %}{% if not loop.last %}、{% endif %}{% endfor %}{% else %}无硬性先修，从这里开始即可。{% endif %}</dd></div>
+        <div><dt>这节课要回答</dt><dd>{{ course.guidingQuestion }}</dd></div>
+        <div><dt>开始前最好会</dt><dd>{% if prerequisites.length %}{% for item in prerequisites %}{% if item.url %}<a href="{{ item.url | siteUrl }}">{{ item.title }}</a>{% else %}{{ item.title }}（内容准备中）{% endif %}{% if not loop.last %}、{% endif %}{% endfor %}{% else %}没有硬性要求，你可以直接从这里开始。{% endif %}</dd></div>
       </dl>
-      <div class="course-outcome"><strong>本课交付：</strong>{{ course.deliverable }}</div>
+      <div class="course-outcome"><strong>学完后，你能拿出：</strong>{{ course.deliverable }}</div>
     </header>
+
+    {% if mentorIntro %}
+    <section class="mentor-brief" aria-labelledby="mentor-brief-title">
+      <div class="mentor-brief-heading">
+        <p class="section-kicker">老师先说</p>
+        <h2 id="mentor-brief-title">先有画面，再碰公式</h2>
+        <p>{{ mentorIntro }}</p>
+      </div>
+      {% include "partials/course-concept-visual.njk" %}
+      <div class="mentor-brief-grid">
+        <article><span>把它想成</span><p>{{ mentorAnalogy }}</p></article>
+        <article><span>现在只做一步</span><p>{{ mentorFirstStep }}</p></article>
+        <article><span>卡住时</span><p>{{ mentorStuck }}</p></article>
+      </div>
+    </section>
+    {% endif %}
 
     {% include "partials/course-learning-cycle.njk" %}
 

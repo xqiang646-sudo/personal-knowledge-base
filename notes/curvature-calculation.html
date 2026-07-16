@@ -4,16 +4,49 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="从向量、行列式、导数、链式法则和弧长出发，推导连续与离散路径曲率并分析数值稳定性。">
-  <title>从微积分和线性代数推导曲率｜导师补充知识</title>
+  <title>从微积分和线性代数推导曲率｜个人知识库</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/knowledge.css">
+  <link rel="stylesheet" href="../assets/cyrus-theme.css">
   <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
 </head>
-<body>
+<body data-theme="cyrus">
   <nav class="topbar" data-pagefind-ignore><div class="wrap"><a class="back" href="../index.html#learning-path">← 返回零基础学习路线</a></div></nav>
   <article class="page wrap" data-pagefind-body>
-    <div class="meta">导师补充 M08 · 微积分与路径几何 · 复核于 2026-07-16</div>
+    <div class="meta">曲率入门 · 从直线、大圆弯和小圆弯开始 · 更新于 2026-07-16</div>
     <h1>从微积分和线性代数推导曲率</h1>
     <p class="lead">曲率描述“路径方向随前进距离改变得多快”。本课先补向量、行列式、导数、参数曲线、链式法则和弧长，再推导连续公式、离散三点公式与工程计算方法。</p>
+
+    <aside class="friendly-start" aria-labelledby="friendly-curvature-title">
+      <p class="friendly-start-label">第一次读，先只记住这件事</p>
+      <h2 id="friendly-curvature-title">同样转 90°，用 10 米转完比用 100 米转完更急</h2>
+      <p class="friendly-start-intro">曲率就是“每向前走一段距离，方向改变了多少”。直线方向不变，所以曲率是 0；圆越小，走同样距离时方向变得越多，所以曲率越大。</p>
+      <div class="friendly-start-grid">
+        <div class="friendly-start-card"><strong>先有画面</strong><p>直路、宽缓弯和发卡弯依次更急。圆形路径上，半径越小，曲率越大。</p></div>
+        <div class="friendly-start-card"><strong>今天只做到</strong><p>画一条直线、一个大圆和一个小圆，先按曲率从小到大排序，再验证 κ=1/R。</p></div>
+        <div class="friendly-start-card"><strong>卡住先去</strong><p>先读<a href="../learn/math/calculus-curvature.html">曲率基础课</a>。连续公式的完整证明和数值稳定性可以第二遍再看。</p></div>
+      </div>
+      <figure class="friendly-figure">
+        <svg viewBox="0 0 760 230" role="img" aria-labelledby="curvature-picture-title curvature-picture-desc">
+          <title id="curvature-picture-title">直线、大圆弯和小圆弯的曲率依次增大</title>
+          <desc id="curvature-picture-desc">左侧直线方向不变，中间宽缓弯方向变化慢，右侧小半径弯方向变化快。圆的曲率等于半径的倒数。</desc>
+          <rect class="diagram-frame" x="20" y="18" width="220" height="180" rx="16" />
+          <rect class="diagram-frame" x="270" y="18" width="220" height="180" rx="16" />
+          <rect class="diagram-frame" x="520" y="18" width="220" height="180" rx="16" />
+          <path class="diagram-line" d="M60 126 L200 126" />
+          <path class="diagram-line" d="M304 154 Q380 58 456 154" />
+          <path class="diagram-line" d="M568 164 A74 74 0 0 1 690 76" />
+          <text class="diagram-label" x="130" y="58" text-anchor="middle">直线</text>
+          <text class="diagram-note" x="130" y="177" text-anchor="middle">方向不变 · κ = 0</text>
+          <text class="diagram-label" x="380" y="58" text-anchor="middle">大圆弯</text>
+          <text class="diagram-note" x="380" y="177" text-anchor="middle">半径大 · 曲率小</text>
+          <text class="diagram-label" x="630" y="58" text-anchor="middle">小圆弯</text>
+          <text class="diagram-note" x="630" y="177" text-anchor="middle">半径小 · 曲率大</text>
+          <text class="diagram-label" x="380" y="222" text-anchor="middle">圆上 κ = 1 / R</text>
+        </svg>
+        <figcaption>曲率不是“转了多少度”，而是“每向前走一米，方向改变了多少”。</figcaption>
+      </figure>
+    </aside>
 
     <div class="panel provenance">
       <p><strong>贡献角色：</strong>导师原创推导　<strong>对象：</strong>规划、控制与轨迹数据处理入门学习者　<strong>证据状态：</strong>二维有向路径几何</p>

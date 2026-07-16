@@ -4,20 +4,20 @@
     <div class="course-top">
       <span class="course-order">{{ course.order }}</span>
       <span class="tag">{{ course.track }}</span>
-      {% if course.status == 'pilot' %}<span class="tag tag-live">V2 试点</span>{% elif course.status == 'legacy' %}<span class="tag tag-legacy">现有内容</span>{% endif %}
+      {% if course.status == 'pilot' %}<span class="tag tag-live">可以开始</span>{% elif course.status == 'legacy' %}<span class="tag tag-legacy">可以阅读</span>{% endif %}
     </div>
     <h4>{{ course.title }}</h4>
     <p>{{ course.description }}</p>
-    <span class="course-result"><strong>交付：</strong>{{ course.deliverable }}</span>
-    <span class="course-status" data-progress-label="{{ course.id }}">未开始</span>
-    <span class="course-link">进入课程 →</span>
+    <span class="course-result"><strong>学完能带走：</strong>{{ course.deliverable }}</span>
+    <span class="course-status" data-progress-label="{{ course.id }}">还没开始</span>
+    <span class="course-link">打开这节课 →</span>
   </a>
   {% else %}
-  <article class="course-card v2-course-card is-planned" aria-label="{{ course.title }}，待建设">
-    <div class="course-top"><span class="course-order">{{ course.order }}</span><span class="tag">{{ course.track }}</span><span class="tag tag-planned">待建设</span></div>
+  <article class="course-card v2-course-card is-planned" aria-label="{{ course.title }}，正在准备">
+    <div class="course-top"><span class="course-order">{{ course.order }}</span><span class="tag">{{ course.track }}</span><span class="tag tag-planned">正在准备</span></div>
     <h4>{{ course.title }}</h4>
     <p>{{ course.description }}</p>
-    <span class="course-result"><strong>计划交付：</strong>{{ course.deliverable }}</span>
+    <span class="course-result"><strong>以后会学到：</strong>{{ course.deliverable }}</span>
   </article>
   {% endif %}
 {% endmacro %}

@@ -6,7 +6,7 @@
   "description": "面向零基础实习生的数据、数学、深度学习与自动驾驶教学系统",
   "scripts": {
     "dev": "eleventy --serve",
-    "build": "eleventy && node scripts/prepare-search.mjs && pagefind --site _site",
+    "build": "node scripts/clean-output.mjs && eleventy && node scripts/prepare-search.mjs && pagefind --site _site",
     "publish:pages": "npm run check && node scripts/publish-pages.mjs",
     "validate:content": "node scripts/validate-content.mjs",
     "validate:links": "node scripts/validate-links.mjs _site",

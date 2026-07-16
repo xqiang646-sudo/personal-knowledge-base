@@ -4,6 +4,10 @@ courseId: probability-scene-split
 permalink: /learn/math/probability-scene-split.html
 math: true
 diagrams: true
+mentorIntro: 概率论在这节课里不是掷骰子。它帮你回答：手里的数据代表什么、切分是否公平，以及模型是不是偷偷见过验证数据。
+mentorAnalogy: 同一个 scene 的相邻帧像同一段视频里的“兄弟姐妹”。把一部分放训练集、一部分放验证集，看似随机，其实是在泄题。
+mentorFirstStep: 拿 6 张便签代表 3 个 scene，每个 scene 两帧；先按帧随机分一次，再按 scene 分一次，比较差别。
+mentorStuck: 分不清公式时，先画集合并数样本。把“条件已经发生”圈出来，再决定分母到底是哪一组。
 ---
 
 ## 为什么概率论要从数据切分开始落地

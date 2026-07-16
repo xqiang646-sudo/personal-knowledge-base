@@ -1,16 +1,28 @@
 ---
 layout: layouts/base.njk
-title: 导师面板
-description: 以诊断、证据、验收量表和复测管理实习生学习，而不是只看页面完成度。
+title: 导师带教工具
+description: 每周只带会一件事，用生活例子、最小练习和具体反馈帮助实习生跨过当前卡点。
 permalink: /mentor.html
 bodyClass: portal-body
 ---
 <div class="portal-wrap directory-page">
-  <header class="directory-heading"><p class="section-kicker">导师视图</p><h1>进度由交付物更新，不由阅读时长更新</h1><p class="lead">公开面板只提供流程和课程映射。实习生姓名、作业、反馈、评分和内部证据必须保存在私有位置。</p></header>
+  <header class="directory-heading"><p class="section-kicker">导师入口</p><h1>本周只带会一件事</h1><p class="lead">不要求她一次听懂完整章。先共同确定一个看得见的小结果，再根据真正的卡点补最少的知识。</p></header>
+  <section class="mentor-coaching-card" aria-labelledby="mentor-card-title">
+    <div><p class="section-kicker">可以直接复制的带教卡</p><h2 id="mentor-card-title">先陪她完成一次，再让她换条件独立做</h2></div>
+    <div class="mentor-card-grid">
+      <p><strong>本周只学会：</strong>________</p>
+      <p><strong>开始前先问她：</strong>________</p>
+      <p><strong>我用什么生活例子解释：</strong>________</p>
+      <p><strong>一起完成的最小例子：</strong>________</p>
+      <p><strong>她独立更换的条件：</strong>________</p>
+      <p><strong>卡住时只补哪一块：</strong>________</p>
+    </div>
+    <blockquote>“你不是完全不会，而是 ______ 这一小块还没有连起来。我们先只补它。”</blockquote>
+  </section>
   <section class="portal-section mentor-workflow">
-    <div class="section-heading compact-heading"><p class="section-kicker">每周闭环</p><h2>带教流程</h2></div>
+    <div class="section-heading compact-heading"><p class="section-kicker">一周只围绕一个小结果</p><h2>怎样陪她学，而不是替她做</h2></div>
     <ol class="learning-loop">
-      <li><span>1</span><strong>诊断</strong><p>确认先修缺口和安全边界。</p></li><li><span>2</span><strong>讲解</strong><p>围绕一个可观察的任务建立模型。</p></li><li><span>3</span><strong>跟做</strong><p>让学习者边解释边完成示例。</p></li><li><span>4</span><strong>迁移</strong><p>换数据、参数或错误条件独立完成。</p></li><li><span>5</span><strong>验收</strong><p>检查证据，决定通过或复测。</p></li>
+      <li><span>1</span><strong>先听她说</strong><p>确认她现在怎么理解、具体卡在哪。</p></li><li><span>2</span><strong>给一个画面</strong><p>用生活场景和图解释，不先堆术语。</p></li><li><span>3</span><strong>一起做一个</strong><p>让她边说边完成最小例子。</p></li><li><span>4</span><strong>换条件再做</strong><p>只换一个数字、数据或错误条件。</p></li><li><span>5</span><strong>用证据收尾</strong><p>让她说清结果、卡点和下一小步。</p></li>
     </ol>
   </section>
   <section class="portal-section">
@@ -20,7 +32,7 @@ bodyClass: portal-body
   <section class="portal-section">
     <div class="section-heading compact-heading"><p class="section-kicker">课程映射</p><h2>每门课只维护一份元数据</h2></div>
     <div class="table-wrap" tabindex="0" role="region" aria-label="导师课程映射表"><table class="mentor-table"><thead><tr><th>阶段</th><th>课程</th><th>状态</th><th>交付物</th><th>导师模块</th></tr></thead><tbody>
-      {% for course in curriculum.courses %}{% set stage = curriculum.stages | stageById(course.stage) %}<tr><td>{{ stage.code }}</td><td>{% if course.url %}<a href="{{ course.url | siteUrl }}">{{ course.title }}</a>{% else %}{{ course.title }}{% endif %}</td><td>{{ '待建设' if course.status == 'planned' else ('V2 试点' if course.status == 'pilot' else '现有内容') }}</td><td>{{ course.deliverable }}</td><td>{{ course.mentorModules | join('、') }}</td></tr>{% endfor %}
+      {% for course in curriculum.courses %}{% set stage = curriculum.stages | stageById(course.stage) %}<tr><td>{{ stage.code }}</td><td>{% if course.url %}<a href="{{ course.url | siteUrl }}">{{ course.title }}</a>{% else %}{{ course.title }}{% endif %}</td><td>{{ '正在准备' if course.status == 'planned' else ('可直接带教' if course.status == 'pilot' else '内容可用') }}</td><td>{{ course.deliverable }}</td><td>{{ course.mentorModules | join('、') }}</td></tr>{% endfor %}
     </tbody></table></div>
   </section>
   <section class="progress-tools panel" data-pagefind-ignore><h2>浏览器进度备份</h2><p>这里导出的只是当前设备上的自学状态，不包含导师验收结论。</p><div class="tool-actions"><button class="button button-solid" type="button" data-progress-export>导出进度 JSON</button><label class="button button-outline">导入进度 JSON<input type="file" accept="application/json" data-progress-import hidden></label><button class="button button-danger" type="button" data-progress-reset>重置本机进度</button></div><p class="tool-message" data-progress-message aria-live="polite"></p></section>

@@ -7,7 +7,7 @@
     <div class="reader-disclosure-body">
       <div class="book-heading">
         <a class="book-home" href="{{ '/' | siteUrl }}">自动驾驶学习系统</a>
-        <p>按章节学习，也按真实任务取用。</p>
+        <p>不用从头读到尾，只打开你下一步需要的那一课。</p>
       </div>
 
       <nav class="book-tree" aria-label="教材章节目录">
@@ -27,13 +27,13 @@
               <a href="{{ item.url | siteUrl }}"{% if currentCourse and item.id == currentCourse.id %} class="is-active" aria-current="page"{% endif %}>
                 <span class="book-course-number">{{ treeStage.code }}.{{ item.order }}</span>
                 <span class="book-course-title">{{ item.title }}</span>
-                <small class="book-course-state state-{{ item.status }}">{% if item.status == "pilot" %}试点{% else %}现有{% endif %}</small>
+                <small class="book-course-state state-{{ item.status }}">{% if item.status == "pilot" %}可开始{% else %}可阅读{% endif %}</small>
               </a>
               {% else %}
-              <span class="book-course-planned" aria-label="{{ item.title }}，待建设">
+              <span class="book-course-planned" aria-label="{{ item.title }}，正在准备">
                 <span class="book-course-number">{{ treeStage.code }}.{{ item.order }}</span>
                 <span class="book-course-title">{{ item.title }}</span>
-                <small class="book-course-state state-planned">待建</small>
+                <small class="book-course-state state-planned">准备中</small>
               </span>
               {% endif %}
             </li>
@@ -45,13 +45,13 @@
 
       {% if currentCourse %}
       <div class="book-progress">
-        <label for="progress-{{ currentCourse.id }}">本课学习状态</label>
+        <label for="progress-{{ currentCourse.id }}">我现在学到哪里</label>
         <select id="progress-{{ currentCourse.id }}" data-progress-select data-course-id="{{ currentCourse.id }}">
-          <option value="not-started">未开始</option>
-          <option value="in-progress">学习中</option>
-          <option value="artifact-ready">产物已就绪</option>
+          <option value="not-started">还没开始</option>
+          <option value="in-progress">我正在学</option>
+          <option value="artifact-ready">我能独立做一次</option>
         </select>
-        <p>只保存在当前浏览器；“产物已就绪”仍需导师验收。</p>
+        <p>只保存在这台设备。这里不是打分，不用为了点亮进度赶进度。</p>
       </div>
       {% endif %}
     </div>

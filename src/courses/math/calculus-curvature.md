@@ -4,6 +4,10 @@ courseId: calculus-curvature
 permalink: /learn/math/calculus-curvature.html
 math: true
 diagrams: true
+mentorIntro: 微积分只是研究“变化”。这节课不会从极限定义把你淹没，而是从车走了多远、方向变了多少开始，慢慢得到速度、导数和曲率。
+mentorAnalogy: 两辆车都向前走 1 米，谁的车头方向改变得更多，谁走的路就弯得更急；曲率就是把这件事变成数字。
+mentorFirstStep: 先画一条直线、一个大圆和一个小圆，不用公式，按“弯得有多急”给它们排序。
+mentorStuck: 先只看单位和趋势：直线应为 0，小圆应比大圆曲率大。结果违背这两点时，先检查符号与采样间隔。
 ---
 
 ## 为什么从变化率学到曲率
@@ -33,7 +37,7 @@ diagrams: true
 7. 为什么用相邻两个采样点做差会放大位置噪声？
 8. 对损失 $L(w)=(w-3)^2$，当 $w=5$ 时，要让损失变小，$w$ 应增大还是减小？
 
-建议先通过数学入口诊断，并完成向量范数、坐标方向与 NumPy shape 的基础学习。
+建议先做一次数学起点导航，并接触过向量范数、坐标方向与 NumPy shape；不会的部分可以边学边补。
 
 ## 核心章节
 

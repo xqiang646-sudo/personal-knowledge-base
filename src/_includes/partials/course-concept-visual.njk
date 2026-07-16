@@ -1,0 +1,39 @@
+{% if courseId == "math-diagnostic" %}
+<figure class="concept-visual diagnostic-visual" role="img" aria-label="单位、角度和数组形状是后续课程会反复使用的三件数学工具">
+  <div class="diagnostic-tools">
+    <div><span>36 km/h → 10 m/s</span><strong>单位</strong><small>知道数字在量什么</small></div>
+    <div><span>90° → π/2</span><strong>角度</strong><small>知道车头朝哪个方向</small></div>
+    <div><span>(32, 3, 224, 224)</span><strong>shape</strong><small>知道数据每一维是什么</small></div>
+  </div>
+  <figcaption>现在不是考你会不会；只是看看这三件工具里，哪一件值得先补。</figcaption>
+</figure>
+{% elif courseId == "linear-algebra-coordinate" %}
+<figure class="concept-visual coordinate-visual" role="img" aria-label="同一个路锥在车辆坐标系和传感器坐标系中使用不同数字表示">
+  <div class="coordinate-compare">
+    <div class="coordinate-plane vehicle-plane"><span class="axis-label axis-x">车辆 x</span><span class="axis-label axis-y">车辆 y</span><span class="visual-point">路锥<small>(3, 2)</small></span></div>
+    <div class="same-object">同一个物体<br><span class="direction-desktop">换一把尺子 →</span><span class="direction-mobile">换一把尺子 ↓</span></div>
+    <div class="coordinate-plane sensor-plane"><span class="axis-label axis-x">传感器 x</span><span class="axis-label axis-y">传感器 y</span><span class="visual-point">路锥<small>(1, 2)</small></span></div>
+  </div>
+  <figcaption>路锥没有移动；原点和坐标轴换了，所以描述它的数字变了。</figcaption>
+</figure>
+{% elif courseId == "calculus-curvature" %}
+<figure class="concept-visual curvature-visual" role="img" aria-label="直线、大圆弯和小圆弯的曲率依次增大">
+  <div class="curve-compare">
+    <div class="curve-card"><div class="road road-straight"></div><strong>直线</strong><span>方向不变 · κ = 0</span></div>
+    <div class="curve-card"><div class="road road-gentle"></div><strong>大圆弯</strong><span>方向慢慢变 · 曲率小</span></div>
+    <div class="curve-card"><div class="road road-tight"></div><strong>小圆弯</strong><span>方向很快变 · 曲率大</span></div>
+  </div>
+  <figcaption>先看“每走 1 米，车头改变多少”，再去理解导数和公式。</figcaption>
+</figure>
+{% elif courseId == "probability-scene-split" %}
+<figure class="concept-visual split-visual" role="img" aria-label="同一场景的相邻帧不应拆分到训练集和验证集">
+  <div class="split-case bad-split"><strong>按帧乱分：像把同一套题泄露到验证集</strong><div><span class="frame train">A1</span><span class="frame valid">A2</span><span class="frame train">B1</span><span class="frame valid">B2</span><span class="frame train">C1</span><span class="frame valid">C2</span></div></div>
+  <div class="split-case good-split"><strong>按 scene 分：一整段行程只属于一个集合</strong><div><span class="scene-group train">Scene A · A1 A2</span><span class="scene-group train">Scene B · B1 B2</span><span class="scene-group valid">Scene C · C1 C2</span></div></div>
+  <figcaption>相邻帧太像，拆开会让验证结果看起来虚高。</figcaption>
+</figure>
+{% elif courseId == "deep-learning-training-loop" %}
+<figure class="concept-visual training-visual" role="img" aria-label="模型训练由数据、预测、比较误差和更新参数反复循环组成">
+  <div class="training-loop-visual"><span>给数据</span><b>→</b><span>模型先猜</span><b>→</b><span>比较差多少</span><b>→</b><span>参数改一点</span><b>↺</b></div>
+  <figcaption>模型不是突然“学会”的，而是在很多次小纠正中逐渐变准。</figcaption>
+</figure>
+{% endif %}

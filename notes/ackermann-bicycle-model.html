@@ -4,16 +4,53 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="从向量、叉积、刚体点速度和纯滚动约束逐步推导阿克曼转向与运动学自行车模型。">
-  <title>阿克曼转向与自行车模型完整推导｜导师补充知识</title>
+  <title>阿克曼转向与自行车模型完整推导｜个人知识库</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/knowledge.css">
+  <link rel="stylesheet" href="../assets/cyrus-theme.css">
   <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
 </head>
-<body>
+<body data-theme="cyrus">
   <nav class="topbar" data-pagefind-ignore><div class="wrap"><a class="back" href="../index.html#learning-path">← 返回零基础学习路线</a></div></nav>
   <article class="page wrap" data-pagefind-body>
-    <div class="meta">导师补充 M07 · 车辆运动学 · 复核于 2026-07-16</div>
+    <div class="meta">车辆运动学入门 · 从四个车轮怎样一起转弯开始 · 更新于 2026-07-16</div>
     <h1>阿克曼转向与运动学自行车模型完整推导</h1>
     <p class="lead">阿克曼几何回答“左右前轮分别应该转多少”，自行车模型回答“整车在虚拟转角下怎样运动”。本课不从最终公式开始，而是从叉积、刚体点速度和车轮无侧滑约束一步步推出它们。</p>
+
+    <aside class="friendly-start" aria-labelledby="friendly-ackermann-title">
+      <p class="friendly-start-label">第一次读，先只记住这件事</p>
+      <h2 id="friendly-ackermann-title">转弯时，内侧车轮必须比外侧车轮多转一点</h2>
+      <p class="friendly-start-intro">汽车转弯时，四个轮子走的不是同一个圆。内轮的圆更小，所以内轮转角更大。把四个车轮的轴线延长，它们应该交在同一个瞬时转动中心；否则轮胎就会横着蹭地。</p>
+      <div class="friendly-start-grid">
+        <div class="friendly-start-card"><strong>先有画面</strong><p>想象推购物车绕一个点转圈：每个轮子的速度都沿着自己圆轨迹的切线方向。</p></div>
+        <div class="friendly-start-card"><strong>今天只做到</strong><p>画一辆俯视小车、内外两个圆和共同圆心，先判断哪只前轮转角更大。</p></div>
+        <div class="friendly-start-card"><strong>卡住先去</strong><p>不懂“弯得多急”先看<a href="../learn/math/calculus-curvature.html">微积分：从变化率到曲率</a>；叉积看不懂可以先跳到本页数值例子。</p></div>
+      </div>
+      <figure class="friendly-figure">
+        <svg viewBox="0 0 760 280" role="img" aria-labelledby="ackermann-picture-title ackermann-picture-desc">
+          <title id="ackermann-picture-title">左转时四个车轮围绕同一个瞬时转动中心</title>
+          <desc id="ackermann-picture-desc">俯视车辆左转，左前轮离圆心更近，转角大于右前轮。各车轮到瞬时转动中心的半径不同，但共享同一个圆心。</desc>
+          <circle class="diagram-dot-active" cx="118" cy="222" r="12" />
+          <text class="diagram-label" x="56" y="253">共同圆心 ICR</text>
+          <path class="diagram-soft-line" d="M118 222 L326 82 M118 222 L434 82 M118 222 L326 208 M118 222 L434 208" />
+          <path class="diagram-soft-line" d="M92 212 A238 238 0 0 1 318 24 M92 212 A348 348 0 0 1 442 24" />
+          <rect class="diagram-frame" x="300" y="42" width="160" height="190" rx="28" />
+          <path class="diagram-line" d="M315 208 L445 208 M326 70 L434 70" />
+          <line class="diagram-line" x1="310" y1="187" x2="310" y2="229" />
+          <line class="diagram-line" x1="450" y1="187" x2="450" y2="229" />
+          <line class="diagram-line" x1="308" y1="60" x2="338" y2="91" />
+          <line class="diagram-line" x1="418" y1="57" x2="450" y2="84" />
+          <path class="diagram-line" d="M380 145 L380 104 M368 117 L380 104 L392 117" />
+          <text class="diagram-note" x="300" y="37">内轮：转角更大 δᵢ</text>
+          <text class="diagram-note" x="446" y="37">外轮：转角更小 δₒ</text>
+          <text class="diagram-note" x="397" y="147">车头方向</text>
+          <text class="diagram-label" x="515" y="110">四个轮子走四个圆</text>
+          <text class="diagram-note" x="515" y="138">半径不同</text>
+          <text class="diagram-note" x="515" y="160">圆心相同</text>
+        </svg>
+        <figcaption>先看共同圆心：内侧前轮离圆心更近，所以必须比外侧前轮多转一点。</figcaption>
+      </figure>
+    </aside>
 
     <div class="panel provenance">
       <p><strong>贡献角色：</strong>导师原创推导　<strong>对象：</strong>规划与控制入门学习者　<strong>证据状态：</strong>平面低速运动学模型</p>

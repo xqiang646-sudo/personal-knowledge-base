@@ -3,6 +3,81 @@ import markdownItAnchor from "markdown-it-anchor";
 
 const SITE_PREFIX = "/personal-knowledge-base/";
 
+function normalizeLatex(source) {
+  // Keep TeX commands and matrix row separators untouched. The dedicated math
+  // tokens prevent Markdown from interpreting underscores or backslashes.
+  return source;
+}
+
+function markdownItMath(markdown) {
+  markdown.inline.ruler.before("escape", "math_inline", (state, silent) => {
+    const start = state.pos;
+    if (state.src[start] !== "$" || state.src[start + 1] === "$" || state.src[start - 1] === "\\") {
+      return false;
+    }
+
+    let end = start + 1;
+    while (end < state.posMax) {
+      if (state.src[end] === "$" && state.src[end - 1] !== "\\") break;
+      end += 1;
+    }
+    if (end >= state.posMax || end === start + 1) return false;
+    if (silent) return true;
+
+    const token = state.push("math_inline", "math", 0);
+    token.content = normalizeLatex(state.src.slice(start + 1, end));
+    token.markup = "$";
+    state.pos = end + 1;
+    return true;
+  });
+
+  markdown.block.ruler.before("fence", "math_block", (state, startLine, endLine, silent) => {
+    const start = state.bMarks[startLine] + state.tShift[startLine];
+    const lineEnd = state.eMarks[startLine];
+    if (state.src.slice(start, start + 2) !== "$$") return false;
+    if (silent) return true;
+
+    const openingRemainder = state.src.slice(start + 2, lineEnd);
+    let content = "";
+    let closingLine = startLine;
+    let found = false;
+
+    if (openingRemainder.trim().endsWith("$$")) {
+      content = openingRemainder.trim().slice(0, -2);
+      found = true;
+    } else {
+      content = openingRemainder;
+      for (closingLine = startLine + 1; closingLine < endLine; closingLine += 1) {
+        const currentStart = state.bMarks[closingLine] + state.tShift[closingLine];
+        const currentEnd = state.eMarks[closingLine];
+        const currentLine = state.src.slice(currentStart, currentEnd);
+        const closingIndex = currentLine.lastIndexOf("$$");
+        if (closingIndex >= 0 && currentLine.slice(closingIndex + 2).trim() === "") {
+          content += `\n${currentLine.slice(0, closingIndex)}`;
+          found = true;
+          break;
+        }
+        content += `\n${currentLine}`;
+      }
+    }
+
+    if (!found) return false;
+
+    const token = state.push("math_block", "math", 0);
+    token.block = true;
+    token.content = normalizeLatex(content.trim());
+    token.map = [startLine, closingLine + 1];
+    token.markup = "$$";
+    state.line = closingLine + 1;
+    return true;
+  }, { alt: ["paragraph", "reference", "blockquote", "list"] });
+
+  markdown.renderer.rules.math_inline = (tokens, index) =>
+    `\\(${markdown.utils.escapeHtml(tokens[index].content)}\\)`;
+  markdown.renderer.rules.math_block = (tokens, index) =>
+    `<div class="math-display">\\[${markdown.utils.escapeHtml(tokens[index].content)}\\]</div>\n`;
+}
+
 function normalizedUrl(value) {
   if (!value) return "";
   if (/^(?:https?:|mailto:|tel:|#)/.test(value)) return value;
@@ -15,7 +90,7 @@ export default function (eleventyConfig) {
     html: true,
     linkify: true,
     typographer: false,
-  }).use(markdownItAnchor, {
+  }).use(markdownItMath).use(markdownItAnchor, {
     level: [2, 3, 4],
     slugify: (value) => value
       .trim()

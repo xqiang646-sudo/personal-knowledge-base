@@ -4,6 +4,10 @@ courseId: deep-learning-training-loop
 permalink: /learn/deep-learning/training-loop.html
 math: true
 diagrams: true
+mentorIntro: 先把神经网络当成一个会犯错的新同事：给它例子，让它回答，告诉它差了多少，再让它把参数改一点。不断重复，就是训练。
+mentorAnalogy: 教人把两类物品分开。第一次规则不准，就比较答案和标准答案，只改一点规则，再用下一批样本检查。
+mentorFirstStep: 暂时忘掉 CNN 和大模型，只跟踪一个数字从“预测”到“损失”再到“参数更新”发生了什么。
+mentorStuck: 代码一长就回到六个词：数据、预测、损失、梯度、更新、验证。指出当前这一行属于哪一步。
 ---
 
 ## 本课定位

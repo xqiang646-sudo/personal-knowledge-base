@@ -4,6 +4,10 @@ courseId: linear-algebra-coordinate
 permalink: /learn/math/linear-algebra-coordinate.html
 math: true
 diagrams: true
+mentorIntro: 线性代数在这里不是“大矩阵计算”。我们只学一件实用的事：同一个点换一个观察位置后，数字为什么会变，以及怎样把它准确换回来。
+mentorAnalogy: 车里的一瓶水，相对驾驶座、激光雷达和地图原点会有三组不同坐标；水没有移动，改变的是描述它的尺子。
+mentorFirstStep: 在纸上画两套互相垂直的坐标轴，放一个点，先用两句话描述它相对两套原点的位置。
+mentorStuck: 每看到一个矩阵，先别算；在旁边写清“它把谁的坐标变到谁”。方向说不清时，先回到图上。
 ---
 
 ## 为什么线性代数要和坐标系一起学
@@ -35,7 +39,7 @@ diagrams: true
 7. 为什么 $T_{GE}T_{ES}$ 与 $T_{ES}T_{GE}$ 通常不是同一件事？
 8. 一个点云数组形状为 $(N,4)$，你认为四列可能表示什么？哪些信息不能只看 shape 得知？
 
-建议先通过“数学入口诊断”，并能够使用 NumPy 创建数组、查看 `shape`、调用 `np.sin` 和 `np.cos`。
+建议先做一次“数学起点导航”，并尝试用 NumPy 创建数组、查看 `shape`、调用 `np.sin` 和 `np.cos`；不会也可以边学边补。
 
 ## 核心章节
 

@@ -2,7 +2,7 @@
   "version": 2,
   "updated": "2026-07-16",
   "stages": [
-    {"id":"p0","code":"P0","title":"起点诊断与数字工具","description":"确认数学和计算机基础，建立安全、可复现的数据工作方式。","effort":"27–38 小时","gate":"能在沙箱中运行 Python 数据脚本，说明输入、输出、环境和失败边界。"},
+    {"id":"p0","code":"P0","title":"起点导航与数字工具","description":"看看你已经会什么、下一小步补什么，并建立安全、可复现的数据工作方式。","effort":"27–38 小时","gate":"能在沙箱中运行 Python 数据脚本，说明输入、输出、环境和失败边界。"},
     {"id":"m1","code":"M1","title":"数学核心","description":"用线性代数、微积分和概率论支撑坐标、轨迹、数据质量与深度学习。","effort":"36–44 小时","gate":"每个数学对象都能手算、编码验证，并映射到一个自动驾驶任务。"},
     {"id":"a1","code":"A1","title":"自动驾驶数据主线","description":"理解系统、传感器、坐标和 nuScenes 数据图，完成可追溯的数据任务。","effort":"38–54 小时","gate":"提交包含 inventory、scene split、QC、可视化和 dataset card 的 mini 数据包。"},
     {"id":"dl","code":"DL","title":"深度学习与计算机视觉","description":"沿 D2L 的 PyTorch 路线学习训练闭环、CNN、ResNet 和视觉数据任务。","effort":"45–62 小时","gate":"独立复现小型视觉实验，解释训练曲线、指标、失败样本和数据边界。"},
@@ -12,10 +12,10 @@
   ],
   "courses": [
     {
-      "id":"math-diagnostic","title":"数学入口诊断","description":"检查方程、函数、指数对数、三角函数、弧度和数学符号，不会的内容按需补齐。","guidingQuestion":"哪些数学基础会阻塞我理解坐标、曲率、数据切分和模型训练？","stage":"p0","order":1,"effort":"1–2 小时","track":"核心必修","status":"pilot","url":"/learn/math/diagnostic.html","contentFile":"src/courses/math/math-diagnostic.md","prerequisites":[],"deliverable":"数学语言诊断 Notebook 与个人补课清单","topics":["数学","诊断","Python"],"mentorModules":["基础摸底"]
+      "id":"math-diagnostic","title":"数学起点导航","description":"看看方程、函数、指数对数、三角函数、弧度和数学符号里，哪一小块适合先补。","guidingQuestion":"哪些数学基础会阻塞我理解坐标、曲率、数据切分和模型训练？","stage":"p0","order":1,"effort":"1–2 小时","track":"核心必修","status":"pilot","url":"/learn/math/diagnostic.html","contentFile":"src/courses/math/math-diagnostic.md","prerequisites":[],"deliverable":"数学语言起点 Notebook 与个人补课清单","topics":["数学","诊断","Python"],"mentorModules":["基础摸底"]
     },
     {
-      "id":"foundations-bootcamp","title":"零基础预备课（现有内容）","description":"计算机、Python、数学、时间、网络、ROS 词汇和数据基础的综合预备课。","stage":"p0","order":2,"effort":"18–24 小时","track":"迁移中","status":"legacy","url":"/notes/foundations-bootcamp.html","prerequisites":["math-diagnostic"],"deliverable":"基础诊断表与最小练习","topics":["工具","Python","数学"],"mentorModules":["基础摸底"]
+      "id":"foundations-bootcamp","title":"零基础预备课","description":"计算机、Python、数学、时间、网络、ROS 词汇和数据基础的综合预备课。","stage":"p0","order":2,"effort":"18–24 小时","track":"基础预备","status":"legacy","url":"/notes/foundations-bootcamp.html","prerequisites":["math-diagnostic"],"deliverable":"基础导航表与最小练习","topics":["工具","Python","数学"],"mentorModules":["基础摸底"]
     },
     {
       "id":"engineering-toolkit","title":"远程运维与开发工具","description":"SSH、Git、目录、网络、日志和服务的安全使用。","stage":"p0","order":3,"effort":"4–6 小时","track":"核心必修","status":"legacy","url":"/notes/engineering-toolkit.html","prerequisites":[],"deliverable":"沙箱操作记录与主机边界说明","topics":["工具","Linux","Git"],"mentorModules":["M01"]

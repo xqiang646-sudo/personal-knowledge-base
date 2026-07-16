@@ -104,9 +104,28 @@ body[data-theme="cyrus"]::after {
 }
 
 body[data-theme="cyrus"] > main,
-body[data-theme="cyrus"] > footer {
+body[data-theme="cyrus"] > footer,
+body[data-theme="cyrus"] > .page {
   position: relative;
   z-index: 1;
+}
+
+body[data-theme="cyrus"] > .topbar {
+  border-bottom: 1px solid rgba(8, 9, 11, 0.14);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.78), rgba(245, 248, 252, 0.46) 48%, rgba(255, 255, 255, 0.58)),
+    rgba(255, 255, 255, 0.52);
+  box-shadow:
+    0 18px 44px rgba(31, 38, 54, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96);
+  -webkit-backdrop-filter: blur(30px) saturate(170%);
+  backdrop-filter: blur(30px) saturate(170%);
+}
+
+body[data-theme="cyrus"] .back {
+  color: var(--ink);
+  font-family: var(--font-code);
+  font-size: 0.82rem;
 }
 
 body[data-theme="cyrus"] :where(h1, h2) {
@@ -133,6 +152,8 @@ body[data-theme="cyrus"] :where(
   .v2-nav a,
   .eyebrow,
   .section-kicker,
+  .choice-number,
+  .mentor-brief-grid span,
   .tag,
   .course-status,
   .course-order,
@@ -245,6 +266,7 @@ body[data-theme="cyrus"] :where(
   .panel,
   .link-card,
   .learning-loop li,
+  .beginner-choice,
   .course-card,
   .hero-card,
   .stage-nav,
@@ -252,10 +274,13 @@ body[data-theme="cyrus"] :where(
   .reader-disclosure-body,
   .page-outline,
   .course-learning-cycle,
+  .mentor-brief,
+  .mentor-brief-grid article,
   .course-meta > div,
   .course-next a,
   .lesson-diagram,
   .guide-finish,
+  .mentor-coaching-card,
   .book-progress
 ) {
   border-color: var(--glass-edge);
@@ -264,6 +289,27 @@ body[data-theme="cyrus"] :where(
   box-shadow: var(--shadow-soft);
   -webkit-backdrop-filter: blur(20px) saturate(150%);
   backdrop-filter: blur(20px) saturate(150%);
+}
+
+body[data-theme="cyrus"] .friendly-start {
+  border-color: var(--glass-edge);
+  border-radius: 8px;
+  background: var(--glass-panel);
+  box-shadow: var(--shadow-soft);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  backdrop-filter: blur(20px) saturate(150%);
+}
+
+body[data-theme="cyrus"] .friendly-start-label,
+body[data-theme="cyrus"] .friendly-start-card strong {
+  color: var(--ink);
+  font-family: var(--font-code);
+}
+
+body[data-theme="cyrus"] .friendly-start-card {
+  border-color: rgba(8, 9, 11, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.76);
 }
 
 body[data-theme="cyrus"] :where(.course-content, .guide-content, .page) {
@@ -277,6 +323,32 @@ body[data-theme="cyrus"] :where(.course-content, .guide-content, .page) {
 
 body[data-theme="cyrus"] :where(.course-card, .link-card, .course-next a, .button) {
   transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+body[data-theme="cyrus"] .beginner-choice {
+  border-color: var(--glass-edge);
+  border-radius: 8px;
+  background: var(--glass-panel);
+  box-shadow: var(--shadow-soft);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  backdrop-filter: blur(20px) saturate(150%);
+}
+
+body[data-theme="cyrus"] .beginner-choice:hover {
+  border-color: var(--line-strong);
+  box-shadow:
+    0 22px 54px rgba(17, 22, 31, 0.14),
+    inset 0 1px 0 var(--glass-specular);
+}
+
+body[data-theme="cyrus"] .beginner-choice .choice-number {
+  border-radius: 6px;
+  background: var(--ink);
+  color: #ffffff;
+}
+
+body[data-theme="cyrus"] .beginner-choice strong {
+  color: var(--ink);
 }
 
 body[data-theme="cyrus"] :where(.course-card, .link-card, .course-next a):hover {
@@ -570,6 +642,25 @@ body[data-theme="cyrus"] .course-outcome {
   background: var(--good-soft);
 }
 
+body[data-theme="cyrus"] .mentor-brief {
+  border-color: var(--glass-edge);
+  border-radius: 8px;
+  background: var(--glass-panel);
+  box-shadow: var(--shadow-soft);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  backdrop-filter: blur(20px) saturate(150%);
+}
+
+body[data-theme="cyrus"] .mentor-brief-grid article {
+  border-color: rgba(8, 9, 11, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.76);
+}
+
+body[data-theme="cyrus"] .mentor-brief-grid span {
+  color: var(--ink);
+}
+
 body[data-theme="cyrus"] .course-learning-cycle {
   border-color: var(--glass-edge);
   background: var(--glass-panel);
@@ -652,10 +743,24 @@ body[data-theme="cyrus"] pre code {
   color: inherit;
 }
 
-body[data-theme="cyrus"] :where(.equation, .lesson-diagram, .flow) {
+body[data-theme="cyrus"] :where(.equation, .lesson-diagram, .flow, .concept-visual) {
   border-color: var(--line);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.94);
+}
+
+body[data-theme="cyrus"] :where(.coordinate-plane, .curve-card, .split-case, .training-loop-visual span) {
+  border-color: var(--line);
+  background-color: rgba(255, 255, 255, 0.82);
+}
+
+body[data-theme="cyrus"] :where(.visual-point, .frame.valid, .scene-group.valid) {
+  background: var(--ink);
+  color: #ffffff;
+}
+
+body[data-theme="cyrus"] .road {
+  color: var(--ink);
 }
 
 body[data-theme="cyrus"] .lesson-diagram {
@@ -784,14 +889,10 @@ body[data-theme="cyrus"] .button-danger {
   }
 
   body[data-theme="cyrus"] .v2-nav {
-    flex-wrap: nowrap;
-    overflow-x: auto;
+    flex-wrap: wrap;
+    overflow-x: visible;
     border-radius: 8px;
-    scrollbar-width: none;
-  }
-
-  body[data-theme="cyrus"] .v2-nav::-webkit-scrollbar {
-    display: none;
+    gap: 2px;
   }
 
   body[data-theme="cyrus"] .v2-nav a {

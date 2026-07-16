@@ -4,15 +4,55 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="面向数据任务教学的 nuScenes 入门课程：数据结构、索引、质量检查、切分、标签合同、统计与交付。">
-  <title>nuScenes 数据集与数据任务入门｜导师补充知识</title>
+  <title>nuScenes 数据集与数据任务入门｜个人知识库</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/knowledge.css">
+  <link rel="stylesheet" href="../assets/cyrus-theme.css">
 </head>
-<body>
+<body data-theme="cyrus">
   <nav class="topbar" data-pagefind-ignore><div class="wrap"><a class="back" href="../index.html#learning-path">← 返回零基础学习路线</a></div></nav>
   <article class="page wrap" data-pagefind-body>
-    <div class="meta">导师补充 M05 · 数据基础 · 复核于 2026-07-16</div>
+    <div class="meta">自动驾驶数据入门 · 从一张相机图开始 · 更新于 2026-07-16</div>
     <h1>nuScenes 数据集与数据任务入门</h1>
     <p class="lead">这不是一篇数据规模速查，而是一门可以带着实习生完成的入门课：先读懂 nuScenes 的数据关系，再做盘点、索引、质量检查、切分、统计和可追溯交付。</p>
+
+    <aside class="friendly-start" aria-labelledby="friendly-nuscenes-title">
+      <p class="friendly-start-label">第一次读，先只记住这件事</p>
+      <h2 id="friendly-nuscenes-title">先追一张相机图，不要先背完整数据表</h2>
+      <p class="friendly-start-intro">把 nuScenes 想成一本多传感器行车记录册：一段约 20 秒的行程叫 <strong>scene</strong>，其中一个被选中的时刻叫 <strong>sample</strong>，这个时刻真正落盘的相机或点云文件叫 <strong>sample_data</strong>，<strong>token</strong> 就像每张资料卡的唯一取件码。</p>
+      <div class="friendly-start-grid">
+        <div class="friendly-start-card"><strong>先有画面</strong><p>车顶的相机、雷达和激光雷达同时记录同一段路，只是各自保存的文件和频率不同。</p></div>
+        <div class="friendly-start-card"><strong>今天只做到</strong><p>沿着一个 token 找到一张前视图，并能说清它属于哪个 scene、哪个 sample。</p></div>
+        <div class="friendly-start-card"><strong>卡住先去</strong><p>不懂集合和切分时先看<a href="../learn/math/probability-scene-split.html">概率与 scene 切分</a>；坐标问题稍后再补。</p></div>
+      </div>
+      <figure class="friendly-figure">
+        <svg viewBox="0 0 760 230" role="img" aria-labelledby="nuscenes-picture-title nuscenes-picture-desc">
+          <title id="nuscenes-picture-title">从 scene 里的 sample 找到多种传感器文件</title>
+          <desc id="nuscenes-picture-desc">一段二十秒行程包含多个 sample，选中其中一个 sample 后，可以沿 token 找到前视相机、激光雷达和毫米波雷达文件。</desc>
+          <rect class="diagram-frame" x="20" y="18" width="720" height="78" rx="16" />
+          <text class="diagram-label" x="40" y="47">scene · 一段约 20 秒的行程</text>
+          <line class="diagram-line" x1="76" y1="72" x2="684" y2="72" />
+          <circle class="diagram-dot" cx="150" cy="72" r="11" />
+          <circle class="diagram-dot-active" cx="380" cy="72" r="13" />
+          <circle class="diagram-dot" cx="610" cy="72" r="11" />
+          <text class="diagram-note" x="115" y="91">sample ①</text>
+          <text class="diagram-inverse" x="376" y="77" text-anchor="middle">2</text>
+          <text class="diagram-note" x="578" y="91">sample ③</text>
+          <line class="diagram-soft-line" x1="380" y1="88" x2="380" y2="124" />
+          <path class="diagram-soft-line" d="M380 124 L148 150 M380 124 L380 150 M380 124 L612 150" />
+          <rect class="diagram-frame" x="62" y="150" width="174" height="52" rx="12" />
+          <rect class="diagram-frame" x="293" y="150" width="174" height="52" rx="12" />
+          <rect class="diagram-frame" x="524" y="150" width="174" height="52" rx="12" />
+          <text class="diagram-label" x="149" y="174" text-anchor="middle">CAM_FRONT</text>
+          <text class="diagram-note" x="149" y="191" text-anchor="middle">一张前视图</text>
+          <text class="diagram-label" x="380" y="174" text-anchor="middle">LIDAR_TOP</text>
+          <text class="diagram-note" x="380" y="191" text-anchor="middle">一帧点云</text>
+          <text class="diagram-label" x="611" y="174" text-anchor="middle">RADAR_FRONT</text>
+          <text class="diagram-note" x="611" y="191" text-anchor="middle">一帧雷达</text>
+        </svg>
+        <figcaption>先选中一个 sample，再沿 token 找到各传感器的 sample_data；这就是第一条数据关系。</figcaption>
+      </figure>
+    </aside>
 
     <div class="panel provenance">
       <p><strong>贡献角色：</strong>导师原创课程设计　<strong>对象：</strong>后续需要承担数据盘点、清洗、统计和任务数据准备的实习生　<strong>证据状态：</strong>基于 nuScenes v1.0 官方网站、论文、schema、教程与 devkit</p>

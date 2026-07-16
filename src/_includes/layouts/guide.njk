@@ -7,12 +7,12 @@ layout: layouts/base.njk
 
   <article class="reader-content guide-content" id="lesson-content" tabindex="-1" aria-labelledby="guide-title">
     <header class="guide-heading">
-      <p class="eyebrow">LEARNING GUIDE · 从人的认知出发</p>
+      <p class="eyebrow">第一次来 · 从这里开始</p>
       <h1 id="guide-title">{{ title }}</h1>
       <p class="lead">{{ description }}</p>
       <div class="guide-heading-actions">
-        <a class="button button-primary" href="{{ '/learn/math/diagnostic.html' | siteUrl }}">从数学入口诊断开始</a>
-        <a class="button button-quiet" href="{{ '/' | siteUrl }}#learning-path">查看 7 阶段路线</a>
+        <a class="button button-primary" href="{{ '/learn/math/diagnostic.html' | siteUrl }}">开始不打分的诊断</a>
+        <a class="button button-quiet" href="{{ '/' | siteUrl }}#start-here">回到三条起步路线</a>
       </div>
     </header>
 
@@ -20,10 +20,10 @@ layout: layouts/base.njk
       {{ content | safe }}
 
       <section class="guide-finish" aria-labelledby="guide-finish-title">
-        <p class="section-kicker">现在开始</p>
-        <h2 id="guide-finish-title">第一次只完成“诊断—预测—留证”</h2>
-        <p>不要一次打开很多课程。先完成数学入口诊断，写下自己的预测和补课清单，再根据先修关系选择下一课。</p>
-        <a class="button button-primary" href="{{ '/learn/math/diagnostic.html' | siteUrl }}">进入数学入口诊断</a>
+        <p class="section-kicker">今天只做一件事</p>
+        <h2 id="guide-finish-title">不知道选哪门，就从不打分的诊断开始</h2>
+        <p>会做的写过程，不会的写“不知道”。完成后只选一个最小缺口补，不要一次打开很多课程。</p>
+        <a class="button button-primary" href="{{ '/learn/math/diagnostic.html' | siteUrl }}">带我开始第一步</a>
       </section>
     </div>
   </article>
