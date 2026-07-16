@@ -39,12 +39,17 @@
       transition: transform .18s ease, box-shadow .18s ease;
     }
     .card:hover { transform: translateY(-3px); box-shadow: 0 16px 36px rgba(30, 45, 90, .12); }
+    .card:focus-visible { outline: 3px solid #f59e0b; outline-offset: 3px; }
     .meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
     .tag { padding: 3px 10px; border-radius: 999px; background: #edf1ff; color: var(--brand); font-size: 13px; }
     h2 { margin: 0 0 10px; font-size: 25px; }
     .summary { margin: 0; color: var(--muted); }
     .read { display: inline-block; margin-top: 18px; color: var(--brand); font-weight: 650; }
     footer { padding: 24px 0 40px; color: var(--muted); font-size: 14px; }
+    @media (prefers-reduced-motion: reduce) {
+      .card { transition: none; }
+      .card:hover { transform: none; }
+    }
   </style>
 </head>
 <body>
@@ -58,6 +63,16 @@
   <main class="wrap">
     <h2 class="section-title">最新条目</h2>
     <div class="cards">
+      <a class="card" href="notes/mentor-index.html">
+        <div class="meta">
+          <span class="tag">导师补充</span>
+          <span class="tag">工程方法</span>
+          <span class="tag">数学基础</span>
+        </div>
+        <h2>从知识到工程证据</h2>
+        <p class="summary">补充工程证据与验证方法，并用可授课课程建立 nuScenes 数据任务、坐标变换、车辆模型和曲率所需的数学基础。</p>
+        <span class="read">进入导师补充目录 →</span>
+      </a>
       <a class="card" href="notes/autonomous-driving-index.html">
         <div class="meta">
           <span class="tag">专题目录</span>

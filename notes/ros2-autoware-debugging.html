@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="沿 ROS 2 图谱排查 Autoware 数据链：节点、话题、类型、QoS、时间戳、TF 与消息语义。">
+  <title>沿 ROS 2 图谱排查数据链｜导师补充知识</title>
+  <link rel="stylesheet" href="../assets/knowledge.css">
+</head>
+<body>
+  <nav class="topbar"><div class="wrap"><a class="back" href="mentor-index.html">← 返回导师补充目录</a></div></nav>
+  <article class="page wrap">
+    <div class="meta">导师补充 M02 · ROS 2 / Autoware · 复核于 2026-07-15</div>
+    <h1>沿 ROS 2 图谱排查数据链</h1>
+    <p class="lead">不要从“某个算法可能坏了”开始猜。先把系统还原成发布者、消息契约、传输条件和订阅者，再证明数据在哪一段停止满足条件。</p>
+
+    <div class="panel provenance">
+      <p><strong>贡献角色：</strong>导师原创整理　<strong>对象：</strong>自动驾驶入门学习者　<strong>证据状态：</strong>通用方法；具体项目结论需在目标环境重新验证</p>
+      <p><strong>安全范围：</strong>以下命令用于只读观察。不要在实车或生产系统中尝试发布控制消息、修改参数或重启节点。</p>
+    </div>
+
+    <div class="toc">
+      <a href="#graph">系统图谱</a><a href="#contract">消息契约</a><a href="#time-tf">时间与 TF</a><a href="#chain">上下游链</a><a href="#commands">只读命令</a><a href="#example">排查例子</a><a href="#practice">练习</a>
+    </div>
+
+    <section id="graph">
+      <h2>第一层：进程存在，不等于节点工作</h2>
+      <p>ROS 2 的计算由节点完成，节点通过话题、服务和动作协作。排查时要从实际运行图谱出发，而不是只看源码目录、launch 文件或终端里有没有一个进程名。</p>
+      <div class="grid">
+        <div class="panel"><h3>进程层</h3><p>程序是否启动、是否退出、是否反复重启、使用了哪个入口和配置。</p></div>
+        <div class="panel"><h3>节点层</h3><p>节点是否出现在当前 ROS domain，名称和命名空间是否符合预期。</p></div>
+        <div class="panel"><h3>图谱层</h3><p>谁发布、谁订阅、端点数量是否正确，是否连接到预期的上下游。</p></div>
+        <div class="panel"><h3>功能层</h3><p>消息内容是否有效，下游是否真正采用，场景行为是否符合预期。</p></div>
+      </div>
+      <p>ROS 2 Jazzy 官方入门文档分别解释了 <a href="https://docs.ros.org/en/jazzy/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Nodes/Understanding-ROS2-Nodes.html">ROS 2 节点</a>和<a href="https://docs.ros.org/en/jazzy/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Topics/Understanding-ROS2-Topics.html">话题</a>的基本模型；项目使用其他 ROS 2 发行版时，应切换到对应版本文档。</p>
+    </section>
+
+    <section id="contract">
+      <h2>第二层：话题存在，不等于通信成立</h2>
+      <p>发布者和订阅者必须在多个条件上同时匹配。只执行 <code>ros2 topic list</code> 只能证明名称被发现，不能证明下游收到了可用数据。</p>
+      <div class="table-wrap" role="region" aria-label="ROS 2 消息契约检查表" tabindex="0">
+        <table>
+          <caption>从名称到语义逐层检查消息契约</caption>
+          <thead><tr><th scope="col">检查项</th><th scope="col">要回答的问题</th><th scope="col">典型失败</th></tr></thead>
+          <tbody>
+            <tr><td>名称与命名空间</td><td>上下游指向的是同一个完整话题名吗？</td><td>重映射、前缀或命名空间不同</td></tr>
+            <tr><td>消息类型</td><td>发布者与订阅者使用同一接口类型吗？</td><td>接口版本或类型不一致</td></tr>
+            <tr><td>QoS</td><td>可靠性、持久性和队列等策略兼容吗？</td><td>端点可见但无法配对</td></tr>
+            <tr><td>频率与新鲜度</td><td>是否持续发布，时间戳是否仍在更新？</td><td>残留端点、卡死或频率不足</td></tr>
+            <tr><td>消息内容</td><td>数组非空、数值范围和状态字段合理吗？</td><td>有消息但内容不可用</td></tr>
+            <tr><td>消费结果</td><td>下游回调、输出或状态是否随输入变化？</td><td>收到消息但被过滤或拒绝</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>QoS 会影响端点能否连接和数据怎样传递；概念与兼容性应以当前发行版的官方说明为准，本页参考 <a href="https://docs.ros.org/en/jazzy/Concepts/Intermediate/About-Quality-of-Service-Settings.html">ROS 2 Jazzy QoS 文档</a>。</p>
+    </section>
+
+    <section id="time-tf">
+      <h2>第三层：检查时间、坐标系与数据同步</h2>
+      <div class="grid">
+        <div class="panel"><h3>时间戳</h3><p>消息时间来自系统时钟、传感器时钟还是仿真时钟？节点是否启用了相同的时钟来源？</p></div>
+        <div class="panel"><h3>新鲜度</h3><p>“最后一条消息”距离现在多久？一次历史消息不能证明当前数据仍在流动。</p></div>
+        <div class="panel"><h3>TF</h3><p>消息的 <code>frame_id</code> 能否在对应时间变换到算法需要的目标坐标系？</p></div>
+        <div class="panel"><h3>同步</h3><p>多传感器消息是否落在可接受的时间窗口内，队列和近似同步策略是否会丢弃数据？</p></div>
+      </div>
+      <div class="key"><p><strong>判断方法：</strong>先证明消息到达，再证明时间有效，再证明坐标可变换，最后才讨论算法语义。</p></div>
+    </section>
+
+    <section id="chain">
+      <h2>第四层：沿输入—处理—输出—消费者前进</h2>
+      <div class="flow" role="img" aria-label="沿自动驾驶数据链从输入向下游逐段验证">
+        <div class="flow-row">
+          <div class="node">传感器 / 地图 / 路线</div><div class="arrow">→</div>
+          <div class="node accent">预处理 / 感知</div><div class="arrow">→</div>
+          <div class="node">融合 / 预测</div><div class="arrow">→</div>
+          <div class="node accent">规划</div><div class="arrow">→</div>
+          <div class="node">控制输出</div>
+        </div>
+      </div>
+      <p><a href="https://autowarefoundation.github.io/autoware-documentation/main/design/autoware-concepts/">Autoware 官方概念说明</a>将自动驾驶系统组织为感知、规划、控制等功能域。实际包名、接口和数据流会随版本变化，所以应从当前系统图谱确认，而不是背诵固定话题名。</p>
+      <p>每到一段，都问四个问题：输入端点是谁？输入内容有效吗？当前节点产生了什么输出？哪个下游消费者实际采用了输出？第一个无法被证据回答的问题，就是下一步检查点。</p>
+    </section>
+
+    <section id="commands">
+      <h2>一组通用的只读检查</h2>
+      <pre><code># 1. 当前运行图谱
+ros2 node list
+ros2 node info /&lt;NODE&gt;
+ros2 topic list -t
+
+# 2. 端点、类型与 QoS
+ros2 topic info /&lt;TOPIC&gt; --verbose
+ros2 interface show &lt;MESSAGE_TYPE&gt;
+
+# 3. 频率与一条样本（必要时先限制字段或重定向到安全位置）
+ros2 topic hz /&lt;TOPIC&gt;
+ros2 topic echo /&lt;TOPIC&gt; --once
+
+# 4. 坐标变换
+ros2 run tf2_ros tf2_echo &lt;TARGET_FRAME&gt; &lt;SOURCE_FRAME&gt;</code></pre>
+      <div class="warning"><p><strong>注意：</strong>命令输出可能包含地图位置、设备标识或其他现场信息。公开笔记只记录脱敏后的结构和结论，不粘贴原始实车消息。</p></div>
+    </section>
+
+    <section id="example">
+      <h2>虚构例子：可视化里看不到检测结果</h2>
+      <ol>
+        <li>确认显示工具订阅的完整话题名和消息类型。</li>
+        <li>确认目标话题有活动发布者，发布频率和时间戳持续变化。</li>
+        <li>抽取一条消息，检查检测数组是否为空、置信度与坐标是否合理。</li>
+        <li>确认消息 <code>frame_id</code> 到显示固定坐标系的 TF 在同一时间有效。</li>
+        <li>如果消息和 TF 都有效，再检查显示插件、过滤条件和队列设置。</li>
+      </ol>
+      <p>只有在第 3 步证明消息内容异常时，才把问题范围缩到检测节点或它的输入；在此之前，“模型坏了”只是一个尚未验证的假设。</p>
+    </section>
+
+    <section id="practice">
+      <h2>实习生练习</h2>
+      <ol>
+        <li>画出一个虚构的三节点数据链，并标出发布者、话题类型和订阅者。</li>
+        <li>设计一个“话题存在但下游无数据”的 QoS 失败例子。</li>
+        <li>解释时间戳正常但 TF 不可用时，为什么算法或可视化仍可能丢弃消息。</li>
+        <li>把一次排查过程写成“观察—假设—可证伪检查—结论”。</li>
+      </ol>
+    </section>
+
+    <div class="related"><a href="perception-deployment-contracts.html">下一篇：训练到部署的契约 →</a></div>
+  </article>
+</body>
+</html>

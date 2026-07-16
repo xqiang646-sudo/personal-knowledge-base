@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="感知模型从训练到部署的契约：数据、几何、语义、运行时、精度与端到端性能。">
+  <title>训练到部署的契约｜导师补充知识</title>
+  <link rel="stylesheet" href="../assets/knowledge.css">
+</head>
+<body>
+  <nav class="topbar"><div class="wrap"><a class="back" href="mentor-index.html">← 返回导师补充目录</a></div></nav>
+  <article class="page wrap">
+    <div class="meta">导师补充 M03 · 感知部署 · 复核于 2026-07-15</div>
+    <h1>训练到部署的契约</h1>
+    <p class="lead">模型文件能加载，只证明运行时接受了它；只有训练与部署在输入、几何、语义、数值精度和输出解释上保持一致，结果才有意义。</p>
+
+    <div class="panel provenance">
+      <p><strong>贡献角色：</strong>导师原创整理　<strong>对象：</strong>感知与部署入门学习者　<strong>证据状态：</strong>通用检查框架，不代表任何具体模型已通过验收</p>
+      <p><strong>安全范围：</strong>示例不包含真实模型、数据、硬件指标、内部路径或项目参数。</p>
+    </div>
+
+    <div class="toc">
+      <a href="#contract">契约模型</a><a href="#data">数据</a><a href="#geometry">几何</a><a href="#semantics">语义</a><a href="#runtime">运行时</a><a href="#performance">性能</a><a href="#checklist">检查表</a><a href="#practice">练习</a>
+    </div>
+
+    <section id="contract">
+      <h2>先把部署看成一组必须同时成立的契约</h2>
+      <div class="flow" role="img" aria-label="训练数据通过前处理进入模型，再经后处理成为系统输出">
+        <div class="flow-row">
+          <div class="node">原始数据</div><div class="arrow">→</div>
+          <div class="node accent">前处理契约</div><div class="arrow">→</div>
+          <div class="node">模型输入输出</div><div class="arrow">→</div>
+          <div class="node accent">后处理契约</div><div class="arrow">→</div>
+          <div class="node">系统消息</div>
+        </div>
+      </div>
+      <p>每个箭头都包含格式转换。任何一个转换与训练时不同，都可能让程序“正常运行”但输出悄悄失真。</p>
+    </section>
+
+    <section id="data">
+      <h2>数据契约：模型到底看到了什么</h2>
+      <div class="grid">
+        <div class="panel"><h3>格式与布局</h3><p>颜色通道、位深、张量维度顺序、批大小、点字段和内存连续性是否一致。</p></div>
+        <div class="panel"><h3>数值范围</h3><p>整数到浮点如何转换，是否归一化，均值方差、量纲和异常值处理是否一致。</p></div>
+        <div class="panel"><h3>时间与采样</h3><p>帧率、曝光、时间同步、点云累积或抽样方式是否改变输入分布。</p></div>
+        <div class="panel"><h3>有效性</h3><p>空帧、缺点、遮挡、重复数据和传感器状态是否被明确处理。</p></div>
+      </div>
+      <div class="key"><p><strong>检查方式：</strong>保存一份合规的合成输入，在训练前处理和部署前处理两端分别导出中间张量，比较形状、类型、范围和少量确定位置的值。</p></div>
+    </section>
+
+    <section id="geometry">
+      <h2>几何契约：尺寸、坐标和标定必须对齐</h2>
+      <ul>
+        <li><strong>图像：</strong>缩放是拉伸、等比例填充还是裁剪？框和掩码怎样映射回原图？</li>
+        <li><strong>点云：</strong>坐标轴方向、单位、有效范围、体素化边界与最大点数是否一致？</li>
+        <li><strong>多传感器：</strong>内参、外参、畸变模型和时间偏差属于哪个版本？</li>
+        <li><strong>系统坐标：</strong>模型输出位于传感器、车体还是地图坐标系？下游在什么时刻做变换？</li>
+      </ul>
+      <p>几何错误常常不是“完全没有输出”，而是稳定地产生偏移、缩放错误、方向相反或边界附近异常，因此必须用可计算的对应点验证。</p>
+    </section>
+
+    <section id="semantics">
+      <h2>语义契约：同一个数字代表同一件事吗</h2>
+      <div class="table-wrap" role="region" aria-label="感知输出语义契约检查表" tabindex="0">
+        <table>
+          <caption>部署前必须固定的输出解释</caption>
+          <thead><tr><th scope="col">契约</th><th scope="col">需要固定的内容</th><th scope="col">常见后果</th></tr></thead>
+          <tbody>
+            <tr><td>类别映射</td><td>类别索引、名称、合并规则和未知类</td><td>标签整体错位</td></tr>
+            <tr><td>置信度</td><td>激活函数、分数组合、阈值和校准方式</td><td>数量突然过多或过少</td></tr>
+            <tr><td>框与姿态</td><td>中心/角点表示、长宽高顺序、角度定义与单位</td><td>框方向或尺寸错误</td></tr>
+            <tr><td>后处理</td><td>排序、去重、抑制策略、最大输出数</td><td>重复目标或真实目标被删</td></tr>
+            <tr><td>系统消息</td><td>字段单位、坐标系、有效标志和协方差含义</td><td>下游误用或过滤输出</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="runtime">
+      <h2>运行时契约：引擎可执行不等于结果等价</h2>
+      <ol>
+        <li><strong>版本：</strong>导出工具、算子集、推理运行时、驱动和目标硬件组合是什么？</li>
+        <li><strong>形状：</strong>静态或动态输入范围是否覆盖真实数据，profile 是否选对？</li>
+        <li><strong>精度：</strong>FP32、FP16 或 INT8 会怎样改变数值，量化校准数据是否有代表性？</li>
+        <li><strong>插件与算子：</strong>自定义算子的实现、布局和边界条件是否与训练框架一致？</li>
+        <li><strong>缓冲区：</strong>内存类型、生命周期、步长、同步和异步流是否使用正确？</li>
+      </ol>
+      <p>部署转换后要用一组固定样本同时运行参考后端和目标后端，比较中间张量或最终输出，并提前定义允许误差。只有“输出看起来差不多”无法定位数值差异。</p>
+    </section>
+
+    <section id="performance">
+      <h2>性能契约：先定义测量边界</h2>
+      <div class="flow" role="img" aria-label="感知端到端时延由采集、解码、前处理、传输、推理、后处理和发布组成">
+        <div class="flow-row">
+          <div class="node">采集 / 解码</div><div class="arrow">→</div>
+          <div class="node accent">前处理</div><div class="arrow">→</div>
+          <div class="node">传输 / 同步</div><div class="arrow">→</div>
+          <div class="node accent">推理</div><div class="arrow">→</div>
+          <div class="node">后处理 / 发布</div>
+        </div>
+      </div>
+      <p>“模型推理耗时”和“输入到输出的端到端时延”是不同指标。NVIDIA TensorRT 11.1 的<a href="https://docs.nvidia.com/deeplearning/tensorrt/11.1.0/performance/best-practices.html">性能最佳实践</a>和<a href="https://docs.nvidia.com/deeplearning/tensorrt/11.1.0/performance/benchmarking.html">性能基准文档</a>强调先明确测量目标、同步行为和基准条件。</p>
+      <ol>
+        <li>固定硬件、软件版本、输入尺寸、批大小、负载和时钟策略。</li>
+        <li>先记录未优化基线，再一次只改变一个变量。</li>
+        <li>区分预热样本与稳定样本，报告分布或分位数，不只报告最好的一次。</li>
+        <li>性能提升后重新检查精度、输出稳定性、资源占用和长时间运行。</li>
+      </ol>
+    </section>
+
+    <section id="checklist">
+      <h2>部署验收检查表</h2>
+      <ul class="checklist">
+        <li>□ 输入类型、形状、布局、颜色/点字段与训练一致</li>
+        <li>□ 归一化、缩放、裁剪、填充和无效值处理一致</li>
+        <li>□ 标定、坐标系、单位、时间同步和输出映射可验证</li>
+        <li>□ 类别、阈值、激活、后处理和系统消息语义一致</li>
+        <li>□ 参考后端与目标后端在固定样本上满足误差标准</li>
+        <li>□ 性能测量边界、环境、样本数和统计方式已记录</li>
+        <li>□ 优化后重新完成准确性、稳定性和资源回归</li>
+      </ul>
+    </section>
+
+    <section id="practice">
+      <h2>实习生练习</h2>
+      <ol>
+        <li>为一个虚构图像分类模型写出完整输入与输出契约。</li>
+        <li>设计一个“模型可运行但类别全部错位”的最小复现实验。</li>
+        <li>解释为什么只比较平均推理耗时不能代表端到端实时性。</li>
+        <li>列出一次 FP16 优化后必须重新验证的三类风险。</li>
+      </ol>
+    </section>
+
+    <div class="related"><a href="validation-closure.html">下一篇：从候选结果到正式结论 →</a></div>
+  </article>
+</body>
+</html>

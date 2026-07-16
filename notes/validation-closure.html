@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="把工程结果从未验证、候选推进到正式结论，并形成可复现的验证与交接闭环。">
+  <title>从候选结果到正式结论｜导师补充知识</title>
+  <link rel="stylesheet" href="../assets/knowledge.css">
+</head>
+<body>
+  <nav class="topbar"><div class="wrap"><a class="back" href="mentor-index.html">← 返回导师补充目录</a></div></nav>
+  <article class="page wrap">
+    <div class="meta">导师补充 M04 · 验证与交接 · 复核于 2026-07-15</div>
+    <h1>从候选结果到正式结论</h1>
+    <p class="lead">“这次成功了”是一条观察；“问题已关闭”是一项需要环境、场景、指标、回归和可复现证据共同支持的结论。</p>
+
+    <div class="panel provenance">
+      <p><strong>贡献角色：</strong>导师原创整理　<strong>对象：</strong>工程验证与问题交接入门者　<strong>证据状态：</strong>通用模板；实际验收标准由项目负责人定义</p>
+      <p><strong>安全范围：</strong>公开记录使用合成示例和脱敏路径，不上传原始车辆数据、日志、地图、账号或内部链接。</p>
+    </div>
+
+    <div class="toc">
+      <a href="#status">状态</a><a href="#environment">环境边界</a><a href="#scenario">场景与指标</a><a href="#evidence">证据包</a><a href="#mixed">混合结果</a><a href="#regression">回归</a><a href="#handoff">交接模板</a><a href="#practice">练习</a>
+    </div>
+
+    <section id="status">
+      <h2>先给结论一个明确状态</h2>
+      <div class="table-wrap" role="region" aria-label="验证结论状态说明" tabindex="0">
+        <table>
+          <caption>不同状态允许表达的结论</caption>
+          <thead><tr><th scope="col">状态</th><th scope="col">含义</th><th scope="col">可以怎样写</th></tr></thead>
+          <tbody>
+            <tr><td>未验证</td><td>只有现象、想法或未执行的修改</td><td>“待在目标环境检查”</td></tr>
+            <tr><td>候选</td><td>在有限样本或替代环境出现正向结果</td><td>“候选修复；已通过本地样例，尚未目标验收”</td></tr>
+            <tr><td>正式</td><td>在指定目标环境按预先约定的条件通过</td><td>“在版本、场景和指标 X 下正式通过”</td></tr>
+            <tr><td>已失效</td><td>环境、版本或新证据使旧结论不再适用</td><td>“旧结论仅适用于先前版本，需重新验证”</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="key"><p><strong>状态不是质量评价：</strong>候选结果可以很有价值，但不能省略它尚未覆盖的环境和风险。</p></div>
+    </section>
+
+    <section id="environment">
+      <h2>环境边界：在哪里通过，就只证明到哪里</h2>
+      <div class="grid">
+        <div class="panel"><h3>开发机</h3><p>适合语法、单元测试、静态检查和快速样例；不能自动代表目标系统的依赖、硬件或时序。</p></div>
+        <div class="panel"><h3>仿真环境</h3><p>适合可重复场景和边界输入；传感器噪声、执行器、网络和真实负载仍可能不同。</p></div>
+        <div class="panel"><h3>目标计算平台</h3><p>可验证部署依赖、运行时、资源和吞吐；没有真实场景时仍不能替代完整系统验收。</p></div>
+        <div class="panel"><h3>受控现场 / 实车</h3><p>只能在授权的安全流程、场地、负责人和停止条件下进行，并完整保留条件与例外。</p></div>
+      </div>
+      <p>例如，本地 Mac 上的构建成功不能写成目标 Ubuntu 主机正式通过；目标主机一次启动成功，也不能自动证明实车功能达标。</p>
+    </section>
+
+    <section id="scenario">
+      <h2>先定义场景和通过标准，再运行测试</h2>
+      <ol>
+        <li><strong>环境：</strong>主机、系统、运行时、硬件、代码、模型和配置版本。</li>
+        <li><strong>前置条件：</strong>依赖服务、输入数据、地图、路线和系统状态。</li>
+        <li><strong>场景：</strong>输入怎样变化，持续多久，哪些边界条件必须覆盖。</li>
+        <li><strong>指标：</strong>正确性、频率、时延、资源、稳定性或安全约束怎样计算。</li>
+        <li><strong>门槛：</strong>什么叫通过、失败、无效样本和允许例外。</li>
+        <li><strong>停止条件：</strong>何时立即停止测试并转入安全处置。</li>
+      </ol>
+      <p>测试完成后才临时挑选有利指标，会让结论无法审计。通过标准应在看到结果之前就写清。</p>
+    </section>
+
+    <section id="evidence">
+      <h2>一个最小可复查证据包</h2>
+      <pre><code>结论状态：未验证 / 候选 / 正式 / 已失效
+问题或目标：
+
+环境与版本：
+启动入口与配置：
+场景与输入：
+时间窗口：
+通过标准：
+
+执行步骤：
+原始结果位置：&lt;SANITIZED_ARTIFACT_PATH&gt;
+关键指标与计算方法：
+失败样本与例外：
+
+结论：
+适用范围：
+剩余风险：
+验证者 / 日期：
+复现或回滚入口：</code></pre>
+      <p>公开仓库可以保留脱敏后的模板、方法和合成样例；原始受限证据应留在获授权的存储位置，只在公开记录中说明其存在和审核状态。</p>
+    </section>
+
+    <section id="mixed">
+      <h2>混合结果不能压成一个“通过”</h2>
+      <div class="grid">
+        <div class="panel"><h3>分别记录</h3><p>按场景、版本、输入类型或运行时长列出通过、失败和未执行项。</p></div>
+        <div class="panel"><h3>保留失败</h3><p>失败样本是适用范围的边界，不应因为多数样本通过就被删除。</p></div>
+        <div class="panel"><h3>区分原因</h3><p>测试设施失败、输入无效和被测功能失败是不同结论，需要不同后续行动。</p></div>
+        <div class="panel"><h3>限制措辞</h3><p>写“场景 A 通过、场景 B 失败”，不要写“整体正常”掩盖差异。</p></div>
+      </div>
+    </section>
+
+    <section id="regression">
+      <h2>关闭问题前的回归闭环</h2>
+      <div class="flow" role="img" aria-label="从复现基线到修改验证、失败场景回归和正式结论的闭环">
+        <div class="flow-row">
+          <div class="node">复现原问题</div><div class="arrow">→</div>
+          <div class="node accent">固定基线</div><div class="arrow">→</div>
+          <div class="node">最小修改</div><div class="arrow">→</div>
+          <div class="node accent">同条件复测</div><div class="arrow">→</div>
+          <div class="node">相关场景回归</div>
+        </div>
+      </div>
+      <ul>
+        <li>原问题在修改前能够稳定复现，避免“问题自己消失”。</li>
+        <li>修改后用相同输入、环境和指标复测，保证比较公平。</li>
+        <li>检查相邻功能和过去失败场景，避免修好一处、破坏另一处。</li>
+        <li>记录新版本与旧版本差异、回滚方法和需持续观察的风险。</li>
+      </ul>
+    </section>
+
+    <section id="handoff">
+      <h2>可复现的问题交接模板</h2>
+      <pre><code>标题：&lt;MODULE&gt; 在 &lt;CONDITION&gt; 下出现 &lt;SYMPTOM&gt;
+
+预期行为：
+实际行为：
+影响范围：
+
+环境 / 版本 / 配置：
+最小复现步骤：
+发生时间窗口：
+脱敏证据位置：
+
+已确认事实：
+-
+尚未确认的假设：
+-
+已排除项：
+-
+
+当前负责人：
+下一步与完成标准：
+安全限制 / 回滚方法：</code></pre>
+      <p>交接的目标不是证明谁对谁错，而是让接手者不必重新寻找环境、复现入口和已完成检查。事实、假设和结论必须分栏。</p>
+    </section>
+
+    <section id="practice">
+      <h2>实习生练习</h2>
+      <ol>
+        <li>把“我本地跑通了，所以已经修好”改写成准确的候选结论。</li>
+        <li>为一个虚构的频率下降问题定义场景、指标、门槛和无效样本。</li>
+        <li>给出一个“多数通过但不能整体判定通过”的混合结果例子。</li>
+        <li>用交接模板写一份不超过一页的可复现问题记录。</li>
+      </ol>
+    </section>
+
+    <div class="related"><a href="nuscenes-dataset.html">下一篇：nuScenes 数据集与数据任务入门 →</a></div>
+  </article>
+</body>
+</html>

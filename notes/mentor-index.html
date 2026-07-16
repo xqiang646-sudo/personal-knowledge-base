@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="导师补充课程目录：工程证据、nuScenes 数据任务、坐标变换、车辆模型和曲率的可授课基础知识。">
+  <title>导师补充知识｜我的个人知识库</title>
+  <link rel="stylesheet" href="../assets/knowledge.css">
+</head>
+<body>
+  <nav class="topbar"><div class="wrap"><a class="back" href="autonomous-driving-index.html">← 返回自动驾驶目录</a></div></nav>
+  <main class="page wrap">
+    <div class="meta">导师补充 · 工程方法、数据与几何基础</div>
+    <h1>导师补充知识</h1>
+    <p class="lead">这组内容按课程组织：先给学习目标和先修知识，再做概念推导、数值实验、工程任务与验收。目标不是让实习生记术语，而是能独立完成一次可追溯的数据或几何任务。</p>
+
+    <div class="warning">
+      <p><strong>公开边界：</strong>所有示例都使用占位符和通用流程，不包含真实账号、密码、IP、车辆标识、内部仓库路径或未公开指标。项目相关结论仍需回到当前主机、版本、配置和运行证据重新确认。</p>
+    </div>
+
+    <div class="flow" role="img" aria-label="证据优先工程闭环">
+      <div class="flow-row">
+        <div class="node">问题与范围</div><div class="arrow">→</div>
+        <div class="node accent">现场证据</div><div class="arrow">→</div>
+        <div class="node">机制解释</div><div class="arrow">→</div>
+        <div class="node accent">最小改动</div><div class="arrow">→</div>
+        <div class="node">验证与沉淀</div>
+      </div>
+    </div>
+
+    <div class="panel provenance">
+      <p><strong>贡献角色：</strong>导师原创整理　<strong>对象：</strong>自动驾驶工程入门学习者　<strong>最后复核：</strong>2026-07-16</p>
+      <p><strong>内容状态：</strong>可授课的通用课程、练习与公式推导；项目版本、接口、参数和验收结论必须结合当前官方文档与目标环境证据重新确认。</p>
+    </div>
+
+    <h2>工程方法 M01–M04</h2>
+    <div class="grid">
+      <a class="link-card" href="evidence-first-engineering.html">
+        <span class="tag">M01 方法</span><span class="tag">证据</span>
+        <h3>证据优先的工程排障</h3>
+        <p>区分源码事实、部署配置和实时运行状态；把现象、假设、证据和结论分开。</p>
+      </a>
+      <a class="link-card" href="ros2-autoware-debugging.html">
+        <span class="tag">M02 ROS 2</span><span class="tag">Autoware</span>
+        <h3>沿 ROS 2 图谱排查数据链</h3>
+        <p>从进程、节点、话题、QoS、时间戳、TF 到消息语义，证明数据在哪一层中断。</p>
+      </a>
+      <a class="link-card" href="perception-deployment-contracts.html">
+        <span class="tag">M03 感知</span><span class="tag">部署</span>
+        <h3>训练到部署的契约</h3>
+        <p>对齐数据、坐标、尺寸、标定、类别、精度、前后处理和端到端时延。</p>
+      </a>
+      <a class="link-card" href="validation-closure.html">
+        <span class="tag">M04 验证</span><span class="tag">闭环</span>
+        <h3>从候选结果到正式结论</h3>
+        <p>明确环境、场景、指标、证据、例外和回归条件，让“通过”可以复查和复现。</p>
+      </a>
+    </div>
+
+    <h2>数据与几何基础 M05–M08</h2>
+    <div class="grid">
+      <a class="link-card" href="nuscenes-dataset.html">
+        <span class="tag">M05 nuScenes</span><span class="tag">数据任务</span>
+        <h3>nuScenes 数据集与数据任务入门</h3>
+        <p>从数据关系走到盘点、索引、QC、scene split、标签合同、统计和可追溯交付。</p>
+      </a>
+      <a class="link-card" href="coordinate-transformations.html">
+        <span class="tag">M06 坐标系</span><span class="tag">SLAM 十四讲</span>
+        <h3>从线性代数到坐标系转换</h3>
+        <p>沿《视觉 SLAM 十四讲》的学习路线，从基和换基推导 SO(3)、SE(3)、四元数和传感器坐标链。</p>
+      </a>
+      <a class="link-card" href="ackermann-bicycle-model.html">
+        <span class="tag">M07 车辆模型</span><span class="tag">推导</span>
+        <h3>阿克曼转向与自行车模型完整推导</h3>
+        <p>从叉积、刚体点速度和无侧滑约束推到 ICR、内外轮转角、运动方程与倒车符号。</p>
+      </a>
+      <a class="link-card" href="curvature-calculation.html">
+        <span class="tag">M08 曲率</span><span class="tag">微积分</span>
+        <h3>从微积分和线性代数推导曲率</h3>
+        <p>从行列式、导数、链式法则和弧长推出连续与离散曲率，并用实验理解噪声和采样。</p>
+      </a>
+    </div>
+
+    <h2>推荐学习路线</h2>
+    <div class="grid">
+      <div class="panel"><h3>工程证据线</h3><p>M01 事实层 → M02 ROS 2 图谱 → M03 部署契约 → M04 验证与交接。</p></div>
+      <div class="panel"><h3>数据与几何线</h3><p>M05 数据任务 → M06 线性代数与坐标变换 → M07 刚体速度与车辆模型 → M08 微积分与曲率。</p></div>
+    </div>
+
+    <h2>带教使用方式</h2>
+    <div class="grid three">
+      <div class="panel"><h3>课前诊断</h3><p>先做页面中的先修小题；不会的概念先补，不把数学缺口藏在公式后面。</p></div>
+      <div class="panel"><h3>课中推导</h3><p>遮住最终公式，让学习者按定义、假设和中间量自己推出结果，再用数值例子验证。</p></div>
+      <div class="panel"><h3>课后交付</h3><p>完成实验产物和边界测试，口头解释失败模式，并按页面验收表逐项检查。</p></div>
+    </div>
+
+    <div class="key"><p><strong>掌握标准：</strong>能解释、能独立推导、能算一个新例子、能指出失败模式并给出验证证据；只会认术语、背公式或背命令还不算掌握。</p></div>
+
+    <div class="related"><a href="evidence-first-engineering.html">从第一篇开始：证据优先的工程排障 →</a></div>
+  </main>
+</body>
+</html>
