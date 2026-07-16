@@ -3,6 +3,7 @@ layout: layouts/course.njk
 courseId: linear-algebra-coordinate
 permalink: /learn/math/linear-algebra-coordinate.html
 math: true
+diagrams: true
 ---
 
 ## 为什么线性代数要和坐标系一起学
@@ -88,6 +89,20 @@ $$
 $$
 
 但当 $\lVert\mathbf a\rVert_2$ 接近零时不能直接归一化，代码中必须设置容差并明确处理。
+
+```mermaid
+flowchart TB
+    accTitle: 几何向量 基与坐标的关系
+    accDescr: 基 A 与基 B 的关系先定义坐标变换 将变换应用于同一几何向量在基 A 下的坐标后 得到它在基 B 下的坐标
+    BASES["选择两组基<br/>基 A 与基 B"] --> T["两组基的关系<br/>定义 T(B←A)"]
+    V["同一几何向量"] --> PA["在基 A 下的坐标<br/>p(A)"]
+    T --> APPLY["将 T(B←A)<br/>应用于 p(A)"]
+    PA --> APPLY
+    APPLY --> PB["在基 B 下的坐标<br/>p(B)"]
+    V -. "几何对象不变" .-> PB
+```
+
+*两组基先定义映射 $T(B\leftarrow A)$，再由它把 $p(A)$ 变成 $p(B)$，几何向量本身没有改变。*
 
 ### 3. 矩阵乘法与变换顺序
 
@@ -217,6 +232,18 @@ $$
 $T_{ES}$ 描述传感器相对车辆的标定；$T_{GE(t)}$ 描述采集时刻车辆在全局坐标中的位姿。它们含义不同，不能因为都是旋转和平移就混用。
 
 nuScenes 使用四元数存储部分旋转。四元数到旋转矩阵的转换放在后续坐标系专题中；本课先确保你能读懂“从哪到哪”、正确复合矩阵并验证逆变换。
+
+```mermaid
+flowchart TB
+    accTitle: nuScenes 传感器到全局坐标链
+    accDescr: 传感器点先通过安装标定进入车辆坐标 再通过采集时刻的车辆位姿进入全局坐标 最后按相反顺序做逆变换并检查往返误差
+    PS["输入<br/>传感器点 p(S)"] --> CAL["正向第 1 组<br/>标定 T(E←S)<br/>得到 p(E)"]
+    CAL --> POSE["正向第 2 组<br/>时刻 t 的位姿 T(G←E,t)<br/>得到 p(G)"]
+    POSE --> BACK["反向检查组<br/>先 T(E←G,t)<br/>再 T(S←E)"]
+    BACK --> ERR["比较返回点 p'(S)<br/>与原始点 p(S)"]
+```
+
+*正向链先用安装标定、再用时刻 $t$ 的车辆位姿，往返检查则严格按相反顺序应用逆变换。*
 
 ### 8. 张量的轴、归约与广播
 

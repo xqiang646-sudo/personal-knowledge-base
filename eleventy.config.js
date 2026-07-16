@@ -27,6 +27,15 @@ export default function (eleventyConfig) {
   markdown.renderer.rules.table_open = () =>
     '<div class="table-wrap" role="region" tabindex="0"><table>';
   markdown.renderer.rules.table_close = () => '</table></div>';
+  const defaultFence = markdown.renderer.rules.fence;
+  markdown.renderer.rules.fence = (tokens, index, options, environment, renderer) => {
+    const language = tokens[index].info.trim().split(/\s+/)[0];
+    if (language === "mermaid") {
+      const source = markdown.utils.escapeHtml(tokens[index].content);
+      return `<div class="lesson-diagram"><pre class="mermaid">${source}</pre></div>`;
+    }
+    return defaultFence(tokens, index, options, environment, renderer);
+  };
 
   eleventyConfig.setLibrary("md", markdown);
   eleventyConfig.addPassthroughCopy("assets");
