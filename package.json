@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "eleventy --serve",
     "build": "eleventy && node scripts/prepare-search.mjs && pagefind --site _site",
+    "publish:pages": "npm run check && node scripts/publish-pages.mjs",
     "validate:content": "node scripts/validate-content.mjs",
     "validate:links": "node scripts/validate-links.mjs _site",
     "check": "npm run validate:content && npm run build && npm run validate:links"

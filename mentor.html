@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="以诊断、证据、验收量表和复测管理实习生学习，而不是只看页面完成度。">
+  <title>导师面板｜个人知识库</title>
+  <link rel="icon" href="/personal-knowledge-base/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/personal-knowledge-base/assets/knowledge.css">
+  <link rel="stylesheet" href="/personal-knowledge-base/assets/v2.css">
+  <link rel="stylesheet" href="/personal-knowledge-base/assets/cyrus-theme.css">
+
+
+</head>
+<body class="portal-body" data-theme="cyrus">
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <header class="v2-header" data-pagefind-ignore>
+  <div class="portal-wrap v2-header-inner">
+    <a class="site-brand" href="/personal-knowledge-base/">个人知识库</a>
+    <nav class="v2-nav" aria-label="知识库主导航">
+      <a href="/personal-knowledge-base/guide.html">学习指南</a>
+      <a href="/personal-knowledge-base/#learning-path">课程目录</a>
+      <a href="/personal-knowledge-base/topics.html">专题</a>
+      <a href="/personal-knowledge-base/search.html">搜索</a>
+      <a href="/personal-knowledge-base/mentor.html" aria-current="page">导师面板</a>
+    </nav>
+  </div>
+</header>
+
+  <main id="main-content" tabindex="-1">
+    <div class="portal-wrap directory-page">
+  <header class="directory-heading"><p class="section-kicker">导师视图</p><h1>进度由交付物更新，不由阅读时长更新</h1><p class="lead">公开面板只提供流程和课程映射。实习生姓名、作业、反馈、评分和内部证据必须保存在私有位置。</p></header>
+  <section class="portal-section mentor-workflow">
+    <div class="section-heading compact-heading"><p class="section-kicker">每周闭环</p><h2>带教流程</h2></div>
+    <ol class="learning-loop">
+      <li><span>1</span><strong>诊断</strong><p>确认先修缺口和安全边界。</p></li><li><span>2</span><strong>讲解</strong><p>围绕一个可观察的任务建立模型。</p></li><li><span>3</span><strong>跟做</strong><p>让学习者边解释边完成示例。</p></li><li><span>4</span><strong>迁移</strong><p>换数据、参数或错误条件独立完成。</p></li><li><span>5</span><strong>验收</strong><p>检查证据，决定通过或复测。</p></li>
+    </ol>
+  </section>
+  <section class="portal-section">
+    <div class="section-heading compact-heading"><p class="section-kicker">统一量表</p><h2>四个维度都达到 2 才通过</h2></div>
+    <div class="rubric-grid"><article class="panel"><h3>机制理解</h3><p>能说明定义、输入输出、假设和推导关系。</p></article><article class="panel"><h3>独立实现</h3><p>能在新数据或新参数下完成任务。</p></article><article class="panel"><h3>证据复现</h3><p>输入、环境、命令、输出和版本完整。</p></article><article class="panel"><h3>失败分析</h3><p>能说明至少一个边界并定位一个故意错误。</p></article></div>
+  </section>
+  <section class="portal-section">
+    <div class="section-heading compact-heading"><p class="section-kicker">课程映射</p><h2>每门课只维护一份元数据</h2></div>
+    <div class="table-wrap" tabindex="0" role="region" aria-label="导师课程映射表"><table class="mentor-table"><thead><tr><th>阶段</th><th>课程</th><th>状态</th><th>交付物</th><th>导师模块</th></tr></thead><tbody>
+      <tr><td>P0</td><td><a href="/personal-knowledge-base/learn/math/diagnostic.html">数学入口诊断</a></td><td>V2 试点</td><td>数学语言诊断 Notebook 与个人补课清单</td><td>基础摸底</td></tr><tr><td>P0</td><td><a href="/personal-knowledge-base/notes/foundations-bootcamp.html">零基础预备课（现有内容）</a></td><td>现有内容</td><td>基础诊断表与最小练习</td><td>基础摸底</td></tr><tr><td>P0</td><td><a href="/personal-knowledge-base/notes/engineering-toolkit.html">远程运维与开发工具</a></td><td>现有内容</td><td>沙箱操作记录与主机边界说明</td><td>M01</td></tr><tr><td>P0</td><td><a href="/personal-knowledge-base/notes/evidence-first-engineering.html">证据优先的工程排障</a></td><td>现有内容</td><td>一张可复查证据卡</td><td>M01</td></tr><tr><td>M1</td><td><a href="/personal-knowledge-base/learn/math/linear-algebra-coordinate.html">线性代数：从向量到坐标变换</a></td><td>V2 试点</td><td>坐标手算、NumPy 变换函数与往返测试</td><td>M06</td></tr><tr><td>M1</td><td><a href="/personal-knowledge-base/learn/math/calculus-curvature.html">微积分：从变化率到曲率</a></td><td>V2 试点</td><td>解析导数、有限差分、离散曲率与 autograd 对照</td><td>M08</td></tr><tr><td>M1</td><td><a href="/personal-knowledge-base/learn/math/probability-scene-split.html">概率论：从随机性到场景切分</a></td><td>V2 试点</td><td>场景级切分、泄漏检查与数据质量报告</td><td>M05</td></tr><tr><td>A1</td><td><a href="/personal-knowledge-base/notes/autonomous-driving-overview.html">自动驾驶系统总览</a></td><td>现有内容</td><td>系统闭环图</td><td>系统总览</td></tr><tr><td>A1</td><td><a href="/personal-knowledge-base/notes/vehicle-hardware-network.html">车辆硬件与车载网络</a></td><td>现有内容</td><td>硬件角色与数据链图</td><td>系统总览</td></tr><tr><td>A1</td><td><a href="/personal-knowledge-base/notes/coordinate-transformations.html">从线性代数到坐标系转换</a></td><td>现有内容</td><td>变换脚本与 sensor→ego→global 往返验证</td><td>M06</td></tr><tr><td>A1</td><td><a href="/personal-knowledge-base/notes/perception-maps.html">感知算法与地图基础</a></td><td>现有内容</td><td>感知输入—处理—输出契约图</td><td>感知基础</td></tr><tr><td>A1</td><td><a href="/personal-knowledge-base/notes/nuscenes-dataset.html">nuScenes 数据集与数据任务</a></td><td>现有内容</td><td>inventory、manifest、QC 与 dataset card</td><td>M05</td></tr><tr><td>DL</td><td><a href="/personal-knowledge-base/learn/deep-learning/training-loop.html">深度学习：第一个完整训练闭环</a></td><td>V2 试点</td><td>线性回归和 Softmax 训练脚本、曲线与失败分析</td><td>深度学习基础</td></tr><tr><td>DL</td><td>MLP、泛化与正则化</td><td>待建设</td><td>小数据过拟合与正则化对照实验</td><td>深度学习基础</td></tr><tr><td>DL</td><td>CNN、批量归一化与 ResNet</td><td>待建设</td><td>图像分类器、checkpoint 与 CPU/GPU 对照</td><td>计算机视觉</td></tr><tr><td>DL</td><td>视觉数据、检测与分割基础</td><td>待建设</td><td>视觉标注和增广质量检查实验</td><td>计算机视觉</td></tr><tr><td>DL</td><td>nuScenes-mini 视觉结课项目</td><td>待建设</td><td>可复现的小型视觉数据项目</td><td>综合验收</td></tr><tr><td>DL</td><td><a href="/personal-knowledge-base/notes/gpu-workflow.html">GPU 工作流程图</a></td><td>现有内容</td><td>CPU/GPU 分工说明</td><td>M03</td></tr><tr><td>E1</td><td><a href="/personal-knowledge-base/notes/planning-autoware.html">规划控制与 Autoware</a></td><td>现有内容</td><td>规划控制分层图与消息语义表</td><td>M02</td></tr><tr><td>E1</td><td><a href="/personal-knowledge-base/notes/ros2-autoware-debugging.html">沿 ROS 2 图谱排查数据链</a></td><td>现有内容</td><td>只读断链报告</td><td>M02</td></tr><tr><td>E2</td><td><a href="/personal-knowledge-base/notes/ackermann-bicycle-model.html">自行车与阿克曼模型推导</a></td><td>现有内容</td><td>轨迹仿真与边界分析</td><td>M07</td></tr><tr><td>E2</td><td><a href="/personal-knowledge-base/notes/curvature-calculation.html">曲率计算与数值工程</a></td><td>现有内容</td><td>多种曲率算法和误差对比</td><td>M08</td></tr><tr><td>E2</td><td><a href="/personal-knowledge-base/notes/can-bus-interface.html">CAN 总线与接口边界</a></td><td>现有内容</td><td>离线报文解码和边界说明</td><td>车辆接口</td></tr><tr><td>P4</td><td><a href="/personal-knowledge-base/notes/perception-deployment-contracts.html">感知部署契约</a></td><td>现有内容</td><td>golden samples 与部署 manifest</td><td>M03</td></tr><tr><td>P4</td><td><a href="/personal-knowledge-base/notes/validation-closure.html">验证闭环与工程交付</a></td><td>现有内容</td><td>完整的证据化结业交付</td><td>M04</td></tr>
+    </tbody></table></div>
+  </section>
+  <section class="progress-tools panel" data-pagefind-ignore><h2>浏览器进度备份</h2><p>这里导出的只是当前设备上的自学状态，不包含导师验收结论。</p><div class="tool-actions"><button class="button button-solid" type="button" data-progress-export>导出进度 JSON</button><label class="button button-outline">导入进度 JSON<input type="file" accept="application/json" data-progress-import hidden></label><button class="button button-danger" type="button" data-progress-reset>重置本机进度</button></div><p class="tool-message" data-progress-message aria-live="polite"></p></section>
+</div>
+
+  </main>
+  <footer class="site-footer" data-pagefind-ignore>
+  <div class="portal-wrap footer-grid">
+    <p><strong>个人知识库 · V2 试点</strong><br>公开站点只承载课程与模板；实习生作业、导师评价和内部证据保存在私有记录中。</p>
+    <a href="https://github.com/xqiang646-sudo/personal-knowledge-base">GitHub 仓库</a>
+  </div>
+</footer>
+
+  <script defer src="/personal-knowledge-base/assets/progress.js"></script>
+
+</body>
+</html>

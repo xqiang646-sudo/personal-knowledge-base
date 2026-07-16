@@ -1,0 +1,865 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="掌握条件概率、期望方差、抽样、数据偏差、似然与交叉熵。">
+  <title>概率论：从随机性到场景切分｜个人知识库</title>
+  <link rel="icon" href="/personal-knowledge-base/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/personal-knowledge-base/assets/knowledge.css">
+  <link rel="stylesheet" href="/personal-knowledge-base/assets/v2.css">
+  <link rel="stylesheet" href="/personal-knowledge-base/assets/cyrus-theme.css">
+  <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
+
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({
+      startOnLoad: true,
+      securityLevel: "strict",
+      theme: "base",
+      themeVariables: {
+        primaryColor: "#ffffff",
+        primaryTextColor: "#08090b",
+        primaryBorderColor: "#111111",
+        secondaryColor: "#e9edf3",
+        tertiaryColor: "#f4f6f9",
+        lineColor: "#656b76",
+        fontFamily: "Inter, Noto Sans SC, system-ui, sans-serif"
+      },
+      flowchart: { htmlLabels: false, curve: "basis", useMaxWidth: false }
+    });
+  </script>
+
+</head>
+<body class="course-body" data-theme="cyrus">
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <header class="v2-header" data-pagefind-ignore>
+  <div class="portal-wrap v2-header-inner">
+    <a class="site-brand" href="/personal-knowledge-base/">个人知识库</a>
+    <nav class="v2-nav" aria-label="知识库主导航">
+      <a href="/personal-knowledge-base/guide.html">学习指南</a>
+      <a href="/personal-knowledge-base/#learning-path">课程目录</a>
+      <a href="/personal-knowledge-base/topics.html">专题</a>
+      <a href="/personal-knowledge-base/search.html">搜索</a>
+      <a href="/personal-knowledge-base/mentor.html">导师面板</a>
+    </nav>
+  </div>
+</header>
+
+  <main id="main-content" tabindex="-1">
+
+
+
+
+
+
+
+<div class="portal-wrap reader-shell" data-pagefind-body>
+  <a class="reader-content-skip" href="#lesson-content">跳过目录，进入本课正文</a>
+  <aside class="reader-book-sidebar" aria-label="教材目录" data-pagefind-ignore>
+  <details class="reader-disclosure book-disclosure" data-responsive-disclosure data-collapse-at="860" open>
+    <summary>
+      <span>教材目录</span>
+      <strong>M1.3</strong>
+    </summary>
+    <div class="reader-disclosure-body">
+      <div class="book-heading">
+        <a class="book-home" href="/personal-knowledge-base/">自动驾驶学习系统</a>
+        <p>按章节学习，也按真实任务取用。</p>
+      </div>
+
+      <nav class="book-tree" aria-label="教材章节目录">
+        <a class="book-guide" href="/personal-knowledge-base/guide.html">
+          <span class="book-index">指南</span>
+          <span><strong>学习指南</strong><small>先学会怎样完成一课</small></span>
+        </a>
+
+
+
+        <details class="book-chapter">
+          <summary><span>P0</span><strong>起点诊断与数字工具</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/learn/math/diagnostic.html">
+                <span class="book-course-number">P0.1</span>
+                <span class="book-course-title">数学入口诊断</span>
+                <small class="book-course-state state-pilot">试点</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/foundations-bootcamp.html">
+                <span class="book-course-number">P0.2</span>
+                <span class="book-course-title">零基础预备课（现有内容）</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/engineering-toolkit.html">
+                <span class="book-course-number">P0.3</span>
+                <span class="book-course-title">远程运维与开发工具</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/evidence-first-engineering.html">
+                <span class="book-course-number">P0.4</span>
+                <span class="book-course-title">证据优先的工程排障</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+
+        <details class="book-chapter is-current" open>
+          <summary><span>M1</span><strong>数学核心</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/learn/math/linear-algebra-coordinate.html">
+                <span class="book-course-number">M1.1</span>
+                <span class="book-course-title">线性代数：从向量到坐标变换</span>
+                <small class="book-course-state state-pilot">试点</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/learn/math/calculus-curvature.html">
+                <span class="book-course-number">M1.2</span>
+                <span class="book-course-title">微积分：从变化率到曲率</span>
+                <small class="book-course-state state-pilot">试点</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/learn/math/probability-scene-split.html" class="is-active" aria-current="page">
+                <span class="book-course-number">M1.3</span>
+                <span class="book-course-title">概率论：从随机性到场景切分</span>
+                <small class="book-course-state state-pilot">试点</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+
+        <details class="book-chapter">
+          <summary><span>A1</span><strong>自动驾驶数据主线</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/autonomous-driving-overview.html">
+                <span class="book-course-number">A1.1</span>
+                <span class="book-course-title">自动驾驶系统总览</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/vehicle-hardware-network.html">
+                <span class="book-course-number">A1.2</span>
+                <span class="book-course-title">车辆硬件与车载网络</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/coordinate-transformations.html">
+                <span class="book-course-number">A1.3</span>
+                <span class="book-course-title">从线性代数到坐标系转换</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/perception-maps.html">
+                <span class="book-course-number">A1.4</span>
+                <span class="book-course-title">感知算法与地图基础</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/nuscenes-dataset.html">
+                <span class="book-course-number">A1.5</span>
+                <span class="book-course-title">nuScenes 数据集与数据任务</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+
+        <details class="book-chapter">
+          <summary><span>DL</span><strong>深度学习与计算机视觉</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/learn/deep-learning/training-loop.html">
+                <span class="book-course-number">DL.1</span>
+                <span class="book-course-title">深度学习：第一个完整训练闭环</span>
+                <small class="book-course-state state-pilot">试点</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <span class="book-course-planned" aria-label="MLP、泛化与正则化，待建设">
+                <span class="book-course-number">DL.2</span>
+                <span class="book-course-title">MLP、泛化与正则化</span>
+                <small class="book-course-state state-planned">待建</small>
+              </span>
+
+            </li>
+
+            <li>
+
+              <span class="book-course-planned" aria-label="CNN、批量归一化与 ResNet，待建设">
+                <span class="book-course-number">DL.3</span>
+                <span class="book-course-title">CNN、批量归一化与 ResNet</span>
+                <small class="book-course-state state-planned">待建</small>
+              </span>
+
+            </li>
+
+            <li>
+
+              <span class="book-course-planned" aria-label="视觉数据、检测与分割基础，待建设">
+                <span class="book-course-number">DL.4</span>
+                <span class="book-course-title">视觉数据、检测与分割基础</span>
+                <small class="book-course-state state-planned">待建</small>
+              </span>
+
+            </li>
+
+            <li>
+
+              <span class="book-course-planned" aria-label="nuScenes-mini 视觉结课项目，待建设">
+                <span class="book-course-number">DL.5</span>
+                <span class="book-course-title">nuScenes-mini 视觉结课项目</span>
+                <small class="book-course-state state-planned">待建</small>
+              </span>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/gpu-workflow.html">
+                <span class="book-course-number">DL.6</span>
+                <span class="book-course-title">GPU 工作流程图</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+
+        <details class="book-chapter">
+          <summary><span>E1</span><strong>ROS 2 与 Autoware 拓展</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/planning-autoware.html">
+                <span class="book-course-number">E1.1</span>
+                <span class="book-course-title">规划控制与 Autoware</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/ros2-autoware-debugging.html">
+                <span class="book-course-number">E1.2</span>
+                <span class="book-course-title">沿 ROS 2 图谱排查数据链</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+
+        <details class="book-chapter">
+          <summary><span>E2</span><strong>车辆几何与控制拓展</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/ackermann-bicycle-model.html">
+                <span class="book-course-number">E2.1</span>
+                <span class="book-course-title">自行车与阿克曼模型推导</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/curvature-calculation.html">
+                <span class="book-course-number">E2.2</span>
+                <span class="book-course-title">曲率计算与数值工程</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/can-bus-interface.html">
+                <span class="book-course-number">E2.3</span>
+                <span class="book-course-title">CAN 总线与接口边界</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+
+        <details class="book-chapter">
+          <summary><span>P4</span><strong>工程交付与验证</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/perception-deployment-contracts.html">
+                <span class="book-course-number">P4.1</span>
+                <span class="book-course-title">感知部署契约</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/validation-closure.html">
+                <span class="book-course-number">P4.2</span>
+                <span class="book-course-title">验证闭环与工程交付</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+      </nav>
+
+
+      <div class="book-progress">
+        <label for="progress-probability-scene-split">本课学习状态</label>
+        <select id="progress-probability-scene-split" data-progress-select data-course-id="probability-scene-split">
+          <option value="not-started">未开始</option>
+          <option value="in-progress">学习中</option>
+          <option value="artifact-ready">产物已就绪</option>
+        </select>
+        <p>只保存在当前浏览器；“产物已就绪”仍需导师验收。</p>
+      </div>
+
+    </div>
+  </details>
+</aside>
+
+
+  <article class="reader-content course-content" id="lesson-content" tabindex="-1" aria-labelledby="lesson-title">
+    <header class="course-heading">
+      <nav class="course-breadcrumb" aria-label="当前位置">
+        <a href="/personal-knowledge-base/guide.html">学习指南</a>
+        <span aria-hidden="true">/</span>
+        <a href="/personal-knowledge-base/#stage-m1">M1 数学核心</a>
+      </nav>
+      <div class="course-top">
+        <span class="course-order">M1.3</span>
+        <span class="tag">核心必修</span>
+        <span class="tag">12–15 小时</span>
+      </div>
+      <h1 id="lesson-title">概率论：从随机性到场景切分</h1>
+      <p class="lead">掌握条件概率、期望方差、抽样、数据偏差、似然与交叉熵。</p>
+      <dl class="course-meta">
+        <div><dt>本课问题</dt><dd>怎样切分连续场景数据，才能避免泄漏并得到可信的模型评估？</dd></div>
+        <div><dt>先修</dt><dd><a href="/personal-knowledge-base/learn/math/diagnostic.html">数学入口诊断</a></dd></div>
+      </dl>
+      <div class="course-outcome"><strong>本课交付：</strong>场景级切分、泄漏检查与数据质量报告</div>
+    </header>
+
+    <section class="course-learning-cycle" aria-labelledby="course-learning-cycle-title">
+  <div class="learning-cycle-heading">
+    <p class="section-kicker">本课学习方法</p>
+    <h2 id="course-learning-cycle-title">先输出自己的想法，再接受页面给出的答案</h2>
+    <p>每一课都按同一条认知链完成；预测可以错，但不能跳过。最后要用新条件证明自己不是只会照抄。</p>
+  </div>
+  <ol class="cognition-strip">
+    <li><span>1</span><strong>问题</strong><small>今天解决什么</small></li>
+    <li><span>2</span><strong>预测</strong><small>先写我怎么想</small></li>
+    <li><span>3</span><strong>直觉</strong><small>画图与看趋势</small></li>
+    <li><span>4</span><strong>形式化</strong><small>变量、公式、假设</small></li>
+    <li><span>5</span><strong>动手</strong><small>手算与最小代码</small></li>
+    <li><span>6</span><strong>反例</strong><small>故意破坏一个条件</small></li>
+    <li><span>7</span><strong>迁移留证</strong><small>换条件独立完成</small></li>
+  </ol>
+  <a class="learning-cycle-link" href="/personal-knowledge-base/guide.html">查看完整学习指南 →</a>
+</section>
+
+
+    <div class="course-prose" data-course-prose>
+      <h2 id="为什么概率论要从数据切分开始落地" tabindex="-1">为什么概率论要从数据切分开始落地</h2>
+<p>概率论不是只为计算骰子。自动驾驶数据存在采样、噪声、缺失、长尾类别和天气差异，模型输出的也不是绝对真理，而是在给定数据和假设下的预测。</p>
+<p>对 nuScenes 这类时序数据，概率与统计最直接的工程作用包括：</p>
+<ul>
+<li>描述类别、天气、场景和传感器质量的分布；</li>
+<li>区分平均表现与波动，避免只报一个均值；</li>
+<li>设计训练、验证和测试集，使评估近似回答“对未见场景能否工作”；</li>
+<li>防止相邻帧或同一 scene 同时进入训练集和验证集造成数据泄漏；</li>
+<li>理解似然、Softmax 和交叉熵，为深度学习模块打基础；</li>
+<li>用失败样本和条件概率说明系统在哪些条件下表现变差。</li>
+</ul>
+<p>本课预计用时 $12$–$15$ 小时。完成后，你应能对一份 nuScenes 风格元数据进行描述统计，按 scene 进行可复现切分，检查泄漏，并说明切分的适用边界。</p>
+<h2 id="课前诊断" tabindex="-1">课前诊断</h2>
+<ol>
+<li>$100$ 帧中有 $25$ 帧雨天，随机抽到雨天帧的经验概率是多少？</li>
+<li>数据 $[10,10,10]$ 与 $[0,10,20]$ 的均值是否相同？哪组波动更大？</li>
+<li>$P(A\mid B)$ 与 $P(B\mid A)$ 是否一定相等？</li>
+<li>一段连续视频的相邻两帧通常是独立样本吗？为什么？</li>
+<li>如果先做数据增强，再把增强图随机分到训练集和验证集，可能发生什么？</li>
+<li>为什么不能根据测试集结果反复调整模型？</li>
+<li>训练集汽车占 $90%$、行人占 $10%$。只预测汽车的分类器准确率是多少？它是否有用？</li>
+<li>模型给真实类别的概率为 $0.9$ 与 $0.1$ 时，哪个样本的负对数似然更大？</li>
+</ol>
+<p>建议先能熟练使用 Python 列表、字典、集合、NumPy 数组和固定随机种子。</p>
+<h2 id="核心章节" tabindex="-1">核心章节</h2>
+<h3 id="1-样本空间事件与随机变量" tabindex="-1">1. 样本空间、事件与随机变量</h3>
+<p>一次试验所有可能结果构成样本空间 $\Omega$。事件是结果的集合。随机变量把结果映射为数值。</p>
+<p>例如从数据集中随机抽取一帧：</p>
+<ul>
+<li>“天气是雨天”是一个事件；</li>
+<li>“这一帧的目标数量”可以看作随机变量 $N$；</li>
+<li>“相机图像是否不合格”可以看作取值为 $0$ 或 $1$ 的 Bernoulli 随机变量。</li>
+</ul>
+<p>有限数据上的经验概率为</p>
+<p>$$
+\hat P(A)=\frac{\text{满足事件 }A\text{ 的样本数}}{\text{总样本数}}.
+$$</p>
+<p>帽子 $\hat P$ 提醒我们：这是从有限样本估计得到的概率，不是永恒不变的真值。</p>
+<h3 id="2-联合边缘与条件概率" tabindex="-1">2. 联合、边缘与条件概率</h3>
+<p>联合概率 $P(A,B)$ 表示 $A$ 与 $B$ 同时发生。条件概率为</p>
+<p>$$
+P(A\mid B)=\frac{P(A,B)}{P(B)},
+\qquad P(B)&gt;0.
+$$</p>
+<p>它回答“已知 $B$ 发生时，$A$ 发生的概率”。交换条件后问题就变了。</p>
+<p>贝叶斯公式为</p>
+<p>$$
+P(A\mid B)
+=\frac{P(B\mid A)P(A)}{P(B)}.
+$$</p>
+<p>若 $A$ 与 $B$ 独立，则</p>
+<p>$$
+P(A,B)=P(A)P(B),
+\qquad
+P(A\mid B)=P(A).
+$$</p>
+<p>相邻视频帧通常不独立，因为它们共享地点、天气、目标和相似像素。随机打散帧不能消除这种真实关联。</p>
+<div class="lesson-diagram" role="region" aria-label="课程图示，可横向滚动" tabindex="0"><pre class="mermaid">flowchart TD
+    accTitle: 联合概率与条件概率关系
+    accDescr: 展示两个事件如何形成联合概率并分别得到两个方向不同的条件概率
+    O[&quot;样本空间&quot;] --&gt; A[&quot;事件 A&quot;]
+    O --&gt; B[&quot;事件 B&quot;]
+    A --&gt; J[&quot;联合 P(A,B)&quot;]
+    B --&gt; J
+    J --&gt; AB[&quot;除以 P(B)&quot;]
+    AB --&gt; C1[&quot;P(A∣B)&quot;]
+    J --&gt; BA[&quot;除以 P(A)&quot;]
+    BA --&gt; C2[&quot;P(B∣A)&quot;]
+</pre></div><p><em>两个条件概率共享同一个联合事件，但因为分母不同，回答的是两个不同问题。</em></p>
+<h3 id="3-期望方差与标准差" tabindex="-1">3. 期望、方差与标准差</h3>
+<p>离散随机变量的期望为</p>
+<p>$$
+\mathbb E[X]=\sum_x xP(X=x).
+$$</p>
+<p>有限数据的均值为</p>
+<p>$$
+\bar x=\frac{1}{n}\sum_{i=1}^{n}x_i.
+$$</p>
+<p>方差描述数据围绕均值的波动：</p>
+<p>$$
+\operatorname{Var}(X)
+=\mathbb E\left[(X-\mathbb E[X])^2\right].
+$$</p>
+<p>标准差为</p>
+<p>$$
+\sigma=\sqrt{\operatorname{Var}(X)}.
+$$</p>
+<p>标准差与原变量单位相同，更容易解释。例如延迟均值为 $50,\mathrm{ms}$、标准差为 $2,\mathrm{ms}$，与标准差为 $30,\mathrm{ms}$ 代表完全不同的稳定性。</p>
+<p>两个变量共同变化可用协方差描述：</p>
+<p>$$
+\operatorname{Cov}(X,Y)
+=\mathbb E[(X-\mathbb E[X])(Y-\mathbb E[Y])].
+$$</p>
+<p>相关不等于因果。雨量与图像质量同时变化，可能由曝光、能见度或镜头水滴共同导致，不能只凭相关系数宣布因果关系。</p>
+<h3 id="4-只学任务需要的常见分布" tabindex="-1">4. 只学任务需要的常见分布</h3>
+<p>第一阶段只要求理解四类分布的用途：</p>
+<ul>
+<li>Bernoulli：一个二元结果，例如一帧是否缺失标注；</li>
+<li>Categorical：一个样本属于多个类别中的一个，例如汽车、行人、自行车；</li>
+<li>Binomial：固定次数 Bernoulli 试验中的成功次数；</li>
+<li>Gaussian：许多连续噪声的基础近似模型。</li>
+</ul>
+<p>不要求背诵“分布大全”。学习重点是：随机变量取什么值、参数是什么意思、假设是否合理、怎样采样验证直觉。</p>
+<h3 id="5-抽样偏差与大数定律直觉" tabindex="-1">5. 抽样、偏差与大数定律直觉</h3>
+<p>样本均值在独立同分布且样本量增加等条件下会趋近总体期望，这是大数定律的核心直觉。但它不保证“数据越多就一定越正确”。若采样机制有偏，更多同类偏差数据只会更稳定地得到错误结论。</p>
+<p>常见数据偏差包括：</p>
+<ul>
+<li>只采白天，无法代表夜间；</li>
+<li>城市道路占绝大多数，乡村道路成为长尾；</li>
+<li>标注流程更容易漏掉小目标；</li>
+<li>数据清洗把困难样本大量删除；</li>
+<li>同一路段被重复采集，样本数量看似很多但场景多样性有限。</li>
+</ul>
+<h3 id="6-训练验证与测试的角色" tabindex="-1">6. 训练、验证与测试的角色</h3>
+<ul>
+<li>训练集：用于更新模型参数；</li>
+<li>验证集：用于选择模型、阈值和超参数；</li>
+<li>测试集：只用于最后一次相对独立的评估。</li>
+</ul>
+<p>如果根据测试集表现不断调参，测试集就参与了模型选择，不再是独立评估。</p>
+<p>切分目标不是机械追求某个比例，而是构造合理的泛化问题。对时序自动驾驶数据，通常应按 scene 或更高层组进行切分：</p>
+<p>$$
+S_{\mathrm{train}}
+\cap S_{\mathrm{val}}
+=S_{\mathrm{train}}
+\cap S_{\mathrm{test}}
+=S_{\mathrm{val}}
+\cap S_{\mathrm{test}}
+=\varnothing.
+$$</p>
+<p>这里的集合元素是 scene 标识，而不是单帧标识。</p>
+<h3 id="7-为什么-nuscenes-要按-scene-切分" tabindex="-1">7. 为什么 nuScenes 要按 scene 切分</h3>
+<p>同一 scene 内的 sample 在时间上连续，共享道路、天气、车辆和大量相似目标。若按帧随机切分，训练集可能包含第 $t$ 帧，验证集包含非常相似的第 $t+1$ 帧。模型看似在“未见数据”上表现很好，实际可能只是利用了近重复信息。</p>
+<p>scene-level split 的基本原则是：同一 scene 的所有 sample、sample data、标注以及由它们派生的裁剪、增强样本必须跟随同一个 split。</p>
+<p>对正式 nuScenes benchmark 应优先使用官方定义的 split。只有做教学子集或内部任务时才自定义，并且要保存 scene 列表、随机种子和生成规则。</p>
+<div class="lesson-diagram" role="region" aria-label="课程图示，可横向滚动" tabindex="0"><pre class="mermaid">flowchart TB
+    accTitle: 按帧泄漏与按 scene 正确切分
+    accDescr: 同一连续场景按帧打散会让训练帧和相邻验证帧共享场景信息 按场景分组则让整场景只进入一个互斥集合
+    S[&quot;同一个连续 scene&quot;] --&gt; W[&quot;错误&lt;br/&gt;按帧随机打散&quot;]
+    W --&gt; L[&quot;训练含帧 t&lt;br/&gt;验证含相邻帧 t+1&quot;]
+    L --&gt; O[&quot;共享场景信息&lt;br/&gt;评估过于乐观&quot;]
+    S --&gt; R[&quot;正确&lt;br/&gt;按 scene 分组&quot;]
+    R --&gt; G[&quot;整场景只进入&lt;br/&gt;一个数据集合&quot;]
+    G --&gt; V[&quot;scene 集合互斥&lt;br/&gt;评估真正未见场景&quot;]
+</pre></div><p><em>按帧切分会让相邻帧跨集合并泄漏 scene 信息，按 scene 分组才让验证集代表真正未见场景。</em></p>
+<h3 id="8-从概率到似然与交叉熵" tabindex="-1">8. 从概率到似然与交叉熵</h3>
+<p>分类模型常输出每个类别的概率 $\hat p_k$，满足</p>
+<p>$$
+\hat p_k\ge0,
+\qquad
+\sum_{k=1}^{K}\hat p_k=1.
+$$</p>
+<p>Softmax 把任意实数 logits $z_k$ 转成概率：</p>
+<p>$$
+\hat p_k
+=\frac{e^{z_k}}{\sum_{j=1}^{K}e^{z_j}}.
+$$</p>
+<p>若真实类别是 $y$，单样本交叉熵为</p>
+<p>$$
+L=-\log\hat p_y.
+$$</p>
+<p>模型给真实类别的概率越小，损失越大。交叉熵是训练信号，不等于完整的模型评价；长尾类别还需要分类别指标和失败样本分析。</p>
+<h2 id="逐步例题一条件概率不能交换" tabindex="-1">逐步例题一：条件概率不能交换</h2>
+<p>有 $100$ 帧图像，其中 $20$ 帧是雨天。雨天中 $8$ 帧质量不合格；其余 $80$ 帧中有 $4$ 帧质量不合格。</p>
+<p>已知雨天，图像不合格的概率为</p>
+<p>$$
+P(\text{不合格}\mid\text{雨天})
+=\frac{8}{20}=0.4.
+$$</p>
+<p>全部不合格帧共有</p>
+<p>$$
+8+4=12.
+$$</p>
+<p>已知图像不合格，它来自雨天的概率为</p>
+<p>$$
+P(\text{雨天}\mid\text{不合格})
+=\frac{8}{12}
+=\frac{2}{3}.
+$$</p>
+<p>$0.4$ 与 $2/3$ 都正确，但回答的是不同问题。工程报告必须把条件写完整。</p>
+<h2 id="逐步例题二高准确率可能毫无意义" tabindex="-1">逐步例题二：高准确率可能毫无意义</h2>
+<p>假设验证集中有 $900$ 个汽车样本和 $100$ 个行人样本。一个模型始终预测汽车，则准确率为</p>
+<p>$$
+\operatorname{accuracy}
+=\frac{900}{1000}=0.9.
+$$</p>
+<p>但行人召回率为</p>
+<p>$$
+\operatorname{recall}_{\mathrm{pedestrian}}
+=\frac{0}{100}=0.
+$$</p>
+<p>所以 $90%$ 准确率并不能说明模型适合自动驾驶任务。必须查看类别分布、分类别指标和失败样本。</p>
+<h2 id="逐步例题三场景泄漏怎样发生" tabindex="-1">逐步例题三：场景泄漏怎样发生</h2>
+<p>假设 <code>scene-001</code> 有连续帧 $f_1,f_2,f_3,f_4$。按帧随机切分后：</p>
+<p>$$
+{f_1,f_2,f_4}\subset D_{\mathrm{train}},
+\qquad
+{f_3}\subset D_{\mathrm{val}}.
+$$</p>
+<p>虽然帧 token 没有重复，但场景信息泄漏了。正确做法是让整个 scene 只属于一个集合：</p>
+<p>$$
+\operatorname{split}(f_1)
+=\operatorname{split}(f_2)
+=\operatorname{split}(f_3)
+=\operatorname{split}(f_4).
+$$</p>
+<p>因此泄漏检查应比较 scene 集合，而不能只比较 sample token。</p>
+<h2 id="引导实验实现可复现的-scene-level-split" tabindex="-1">引导实验：实现可复现的 scene-level split</h2>
+<p>下面使用合成元数据，不需要先下载 nuScenes。</p>
+<pre><code class="language-python">from collections import Counter
+import numpy as np
+
+records = [
+    {&quot;scene&quot;: &quot;scene-001&quot;, &quot;sample&quot;: &quot;001-0&quot;, &quot;weather&quot;: &quot;dry&quot;,  &quot;label&quot;: &quot;car&quot;},
+    {&quot;scene&quot;: &quot;scene-001&quot;, &quot;sample&quot;: &quot;001-1&quot;, &quot;weather&quot;: &quot;dry&quot;,  &quot;label&quot;: &quot;car&quot;},
+    {&quot;scene&quot;: &quot;scene-002&quot;, &quot;sample&quot;: &quot;002-0&quot;, &quot;weather&quot;: &quot;rain&quot;, &quot;label&quot;: &quot;pedestrian&quot;},
+    {&quot;scene&quot;: &quot;scene-002&quot;, &quot;sample&quot;: &quot;002-1&quot;, &quot;weather&quot;: &quot;rain&quot;, &quot;label&quot;: &quot;car&quot;},
+    {&quot;scene&quot;: &quot;scene-003&quot;, &quot;sample&quot;: &quot;003-0&quot;, &quot;weather&quot;: &quot;dry&quot;,  &quot;label&quot;: &quot;bicycle&quot;},
+    {&quot;scene&quot;: &quot;scene-004&quot;, &quot;sample&quot;: &quot;004-0&quot;, &quot;weather&quot;: &quot;night&quot;, &quot;label&quot;: &quot;car&quot;},
+    {&quot;scene&quot;: &quot;scene-005&quot;, &quot;sample&quot;: &quot;005-0&quot;, &quot;weather&quot;: &quot;dry&quot;,  &quot;label&quot;: &quot;pedestrian&quot;},
+    {&quot;scene&quot;: &quot;scene-006&quot;, &quot;sample&quot;: &quot;006-0&quot;, &quot;weather&quot;: &quot;rain&quot;, &quot;label&quot;: &quot;car&quot;},
+    {&quot;scene&quot;: &quot;scene-007&quot;, &quot;sample&quot;: &quot;007-0&quot;, &quot;weather&quot;: &quot;night&quot;, &quot;label&quot;: &quot;bicycle&quot;},
+    {&quot;scene&quot;: &quot;scene-008&quot;, &quot;sample&quot;: &quot;008-0&quot;, &quot;weather&quot;: &quot;dry&quot;,  &quot;label&quot;: &quot;car&quot;},
+    {&quot;scene&quot;: &quot;scene-009&quot;, &quot;sample&quot;: &quot;009-0&quot;, &quot;weather&quot;: &quot;rain&quot;, &quot;label&quot;: &quot;pedestrian&quot;},
+    {&quot;scene&quot;: &quot;scene-010&quot;, &quot;sample&quot;: &quot;010-0&quot;, &quot;weather&quot;: &quot;dry&quot;,  &quot;label&quot;: &quot;car&quot;},
+]
+
+def split_by_scene(records, seed=42, train_ratio=0.7, val_ratio=0.15):
+    if train_ratio &lt;= 0 or val_ratio &lt; 0 or train_ratio + val_ratio &gt;= 1:
+        raise ValueError(&quot;ratios must leave a non-empty test fraction&quot;)
+
+    scenes = np.array(sorted({row[&quot;scene&quot;] for row in records}))
+    rng = np.random.default_rng(seed)
+    rng.shuffle(scenes)
+
+    n = len(scenes)
+    n_train = int(round(n * train_ratio))
+    n_val = int(round(n * val_ratio))
+    n_train = min(max(n_train, 1), n - 2)
+    n_val = min(max(n_val, 1), n - n_train - 1)
+
+    scene_sets = {
+        &quot;train&quot;: set(scenes[:n_train]),
+        &quot;val&quot;: set(scenes[n_train:n_train + n_val]),
+        &quot;test&quot;: set(scenes[n_train + n_val:]),
+    }
+
+    splits = {
+        name: [row for row in records if row[&quot;scene&quot;] in scene_set]
+        for name, scene_set in scene_sets.items()
+    }
+    return splits, scene_sets
+
+splits, scene_sets = split_by_scene(records, seed=42)
+
+assert scene_sets[&quot;train&quot;].isdisjoint(scene_sets[&quot;val&quot;])
+assert scene_sets[&quot;train&quot;].isdisjoint(scene_sets[&quot;test&quot;])
+assert scene_sets[&quot;val&quot;].isdisjoint(scene_sets[&quot;test&quot;])
+assert sum(len(rows) for rows in splits.values()) == len(records)
+
+for split_name, rows in splits.items():
+    label_counts = Counter(row[&quot;label&quot;] for row in rows)
+    weather_counts = Counter(row[&quot;weather&quot;] for row in rows)
+    print(split_name, len(rows), label_counts, weather_counts)
+</code></pre>
+<p>然后完成以下实验：</p>
+<ol>
+<li>使用同一个 seed 运行两次，确认 scene 列表完全一致；</li>
+<li>改变 seed，说明为什么结果变化但仍必须无泄漏；</li>
+<li>计算各 split 的类别比例和天气比例；</li>
+<li>构造一个按 sample 随机切分的错误版本，证明 <code>scene-001</code> 或 <code>scene-002</code> 可能跨集合；</li>
+<li>给每条记录增加 <code>source_file</code>，检查同一原始文件的派生样本没有跨 split；</li>
+<li>解释为什么只通过集合互斥检查仍不能保证类别和天气覆盖合理。</li>
+</ol>
+<h2 id="独立任务nuscenes-风格切分与质量报告" tabindex="-1">独立任务：nuScenes 风格切分与质量报告</h2>
+<p>使用 nuScenes-mini 或导师提供的脱敏 manifest，提交以下结果：</p>
+<ol>
+<li>
+<p>数据总量：scene、sample、sample data 和 annotation 数量；</p>
+</li>
+<li>
+<p>每个 scene 的 sample 数、天气/时段标签、主要类别数量；</p>
+</li>
+<li>
+<p>按官方 split 或自定义 scene-level split 生成不可变的 scene 清单；</p>
+</li>
+<li>
+<p>明确随机种子、比例、生成日期和代码版本；</p>
+</li>
+<li>
+<p>检查 scene、sample token、原始文件和派生样本是否跨 split；</p>
+</li>
+<li>
+<p>分别报告各 split 的类别、天气和场景长度分布；</p>
+</li>
+<li>
+<p>找出至少三个分布差异或长尾风险；</p>
+</li>
+<li>
+<p>对一个条件问题作答，例如</p>
+<p>$$
+P(\text{行人标注}\mid\text{夜间 scene})
+$$</p>
+<p>并写清分子、分母和样本量；</p>
+</li>
+<li>
+<p>设计一个只预测多数类的基线，说明准确率为什么不足；</p>
+</li>
+<li>
+<p>写出这份切分适合回答什么问题、不适合回答什么问题。</p>
+</li>
+</ol>
+<p>若使用官方 benchmark split，不要为了让分布更“漂亮”而改动；应报告观察到的差异。自定义 split 仅用于教学或明确的内部实验，并与官方结果分开。</p>
+<h2 id="常见错误案例" tabindex="-1">常见错误案例</h2>
+<h3 id="按帧随机切分连续数据" tabindex="-1">按帧随机切分连续数据</h3>
+<p>相邻帧高度相似，同一 scene 跨集合会导致验证结果过于乐观。应按 scene 或更高层组切分。</p>
+<h3 id="先增强再切分" tabindex="-1">先增强再切分</h3>
+<p>同一原图的两个增强版本可能分别进入训练集和验证集。正确顺序是先按原始组切分，再只在训练集内部增强。</p>
+<h3 id="只检查-token-不重复" tabindex="-1">只检查 token 不重复</h3>
+<p>不同 token 可能来自同一 scene、同一原始文件或相邻时刻。泄漏检查必须覆盖任务实际共享的信息源。</p>
+<h3 id="只追求-70-15-15-比例" tabindex="-1">只追求 $70/15/15$ 比例</h3>
+<p>样本数比例接近目标，不代表天气、类别、地点和场景长度合理。比例是约束之一，不是唯一目标。</p>
+<h3 id="没有保存随机种子和-scene-清单" tabindex="-1">没有保存随机种子和 scene 清单</h3>
+<p>无法复现的切分会让两次实验无法公平比较。必须保存 seed、算法和最终清单，而不只是口头写“随机划分”。</p>
+<h3 id="用测试集选择模型" tabindex="-1">用测试集选择模型</h3>
+<p>反复查看测试结果并调参，会让测试集参与训练决策。应使用验证集选择，测试集留到最终评估。</p>
+<h3 id="把相关关系当成因果关系" tabindex="-1">把相关关系当成因果关系</h3>
+<p>发现雨天与误检同时增加，只能先报告关联。确认因果还需要控制其他变量或设计额外实验。</p>
+<h3 id="忽略零样本和小样本" tabindex="-1">忽略零样本和小样本</h3>
+<p>某 split 中稀有类别为零时，比例和召回率可能不可解释。必须同时报告计数，不能只报百分比。</p>
+<h2 id="需要提交的证据" tabindex="-1">需要提交的证据</h2>
+<ul>
+<li>原始 manifest 或其可追溯生成说明；</li>
+<li>scene-level split 代码；</li>
+<li>seed、比例、最终 scene 清单；</li>
+<li>scene、sample、文件和派生样本的无泄漏断言；</li>
+<li>各 split 的计数、比例、均值和标准差；</li>
+<li>类别、天气和场景长度对比图；</li>
+<li>条件概率的分子、分母与样本量；</li>
+<li>多数类基线及其局限；</li>
+<li>至少三个偏差或泛化边界；</li>
+<li>一条从零开始复现报告的命令或 Notebook 运行说明。</li>
+</ul>
+<h2 id="03-级验收量表" tabindex="-1">0–3 级验收量表</h2>
+<div class="table-wrap" role="region" aria-label="数据表，可横向滚动" tabindex="0"><table><thead>
+<tr>
+<th style="text-align:right">等级</th>
+<th>概率与统计</th>
+<th>切分实现</th>
+<th>工程解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">0</td>
+<td>无法区分比例、均值和条件概率</td>
+<td>按帧随机切分且无检查</td>
+<td>用单一准确率宣布模型有效</td>
+</tr>
+<tr>
+<td style="text-align:right">1</td>
+<td>能在提示下计算，但会交换条件或忽略样本量</td>
+<td>能生成 split，不能保证复现或无泄漏</td>
+<td>只说明比例，不分析长尾和偏差</td>
+</tr>
+<tr>
+<td style="text-align:right">2</td>
+<td>能独立计算分布、方差和条件概率并解释含义</td>
+<td>scene 集合互斥，seed、清单和断言齐全</td>
+<td>能说明切分回答的问题、边界和失败风险</td>
+</tr>
+<tr>
+<td style="text-align:right">3</td>
+<td>能识别隐藏依赖、采样偏差和指标误导</td>
+<td>能设计组级、文件级和派生样本级验证</td>
+<td>能针对未见数据提出并验证合理的切分策略</td>
+</tr>
+</tbody>
+</table></div><p>通过门槛：三列均达到等级 2；scene 泄漏、不可复现切分、使用测试集调参任一项出现且未修复，都不能通过。</p>
+<h2 id="来源与延伸阅读" tabindex="-1">来源与延伸阅读</h2>
+<ul>
+<li><a href="https://zh-v2.d2l.ai/chapter_preliminaries/probability.html">《动手学深度学习》第二版：概率</a>：随机变量、联合概率、条件概率、贝叶斯公式、期望和方差的实践入口。</li>
+<li><a href="https://zh-v2.d2l.ai/chapter_linear-networks/softmax-regression.html">《动手学深度学习》第二版：Softmax 回归</a>：概率输出与多分类模型的连接。</li>
+<li><a href="https://zh-v2.d2l.ai/chapter_linear-networks/image-classification-dataset.html">《动手学深度学习》第二版：图像分类数据集</a>：批量数据与分类任务的基础示例。</li>
+<li><a href="https://www.nuscenes.org/tutorials/nuscenes_tutorial.html">nuScenes 官方教程</a>：数据表、scene、sample 和标注关系。</li>
+<li><a href="https://github.com/nutonomy/nuscenes-devkit/blob/master/python-sdk/nuscenes/utils/splits.py">nuScenes devkit：split 定义</a>：正式 benchmark 与 mini 数据的官方 scene 列表实现。</li>
+</ul>
+<p>本课使用 nuScenes 风格场景重新组织概率与数据切分知识。参考资料用于核对概念、数据结构和官方 split，不替代对内部数据采样机制的单独审查。</p>
+
+    </div>
+
+    <nav class="course-next" aria-label="课程前后导航" data-pagefind-ignore>
+      <a href="/personal-knowledge-base/learn/math/calculus-curvature.html"><span>上一课</span><strong>微积分：从变化率到曲率</strong></a>
+      <a class="next" href="/personal-knowledge-base/notes/autonomous-driving-overview.html"><span>下一课</span><strong>自动驾驶系统总览</strong></a>
+    </nav>
+  </article>
+  <aside class="reader-page-sidebar" aria-label="本页辅助导航" data-pagefind-ignore>
+  <details class="reader-disclosure page-disclosure" data-responsive-disclosure data-collapse-at="1240" open>
+    <summary>本页目录</summary>
+    <nav class="page-outline" aria-labelledby="page-outline-title">
+      <p class="page-outline-title" id="page-outline-title">本页目录</p>
+      <ol data-page-toc>
+        <li class="toc-loading">若目录未生成，请直接按正文标题阅读。</li>
+      </ol>
+      <a class="page-outline-top" href="#main-content">返回页首 ↑</a>
+    </nav>
+  </details>
+</aside>
+
+</div>
+
+  </main>
+  <footer class="site-footer" data-pagefind-ignore>
+  <div class="portal-wrap footer-grid">
+    <p><strong>个人知识库 · V2 试点</strong><br>公开站点只承载课程与模板；实习生作业、导师评价和内部证据保存在私有记录中。</p>
+    <a href="https://github.com/xqiang646-sudo/personal-knowledge-base">GitHub 仓库</a>
+  </div>
+</footer>
+
+  <script defer src="/personal-knowledge-base/assets/progress.js"></script>
+  <script defer src="/personal-knowledge-base/assets/reader.js"></script>
+</body>
+</html>

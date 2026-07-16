@@ -38,7 +38,11 @@ export default function (eleventyConfig) {
   };
 
   eleventyConfig.setLibrary("md", markdown);
-  eleventyConfig.addPassthroughCopy("assets");
+  // The repository root is also the GitHub Pages publish directory. Keep only
+  // legacy assets here as Eleventy inputs; V2 assets are sourced from src/assets
+  // and copied back to the root after a successful production build.
+  eleventyConfig.addPassthroughCopy("assets/knowledge.css");
+  eleventyConfig.addPassthroughCopy("assets/*.png");
   eleventyConfig.addPassthroughCopy("notes");
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
   eleventyConfig.addWatchTarget("assets");

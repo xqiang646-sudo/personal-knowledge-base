@@ -1,0 +1,908 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="从导数、参数曲线、梯度和积分进入曲率、状态方程与自动微分。">
+  <title>微积分：从变化率到曲率｜个人知识库</title>
+  <link rel="icon" href="/personal-knowledge-base/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/personal-knowledge-base/assets/knowledge.css">
+  <link rel="stylesheet" href="/personal-knowledge-base/assets/v2.css">
+  <link rel="stylesheet" href="/personal-knowledge-base/assets/cyrus-theme.css">
+  <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
+
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({
+      startOnLoad: true,
+      securityLevel: "strict",
+      theme: "base",
+      themeVariables: {
+        primaryColor: "#ffffff",
+        primaryTextColor: "#08090b",
+        primaryBorderColor: "#111111",
+        secondaryColor: "#e9edf3",
+        tertiaryColor: "#f4f6f9",
+        lineColor: "#656b76",
+        fontFamily: "Inter, Noto Sans SC, system-ui, sans-serif"
+      },
+      flowchart: { htmlLabels: false, curve: "basis", useMaxWidth: false }
+    });
+  </script>
+
+</head>
+<body class="course-body" data-theme="cyrus">
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <header class="v2-header" data-pagefind-ignore>
+  <div class="portal-wrap v2-header-inner">
+    <a class="site-brand" href="/personal-knowledge-base/">个人知识库</a>
+    <nav class="v2-nav" aria-label="知识库主导航">
+      <a href="/personal-knowledge-base/guide.html">学习指南</a>
+      <a href="/personal-knowledge-base/#learning-path">课程目录</a>
+      <a href="/personal-knowledge-base/topics.html">专题</a>
+      <a href="/personal-knowledge-base/search.html">搜索</a>
+      <a href="/personal-knowledge-base/mentor.html">导师面板</a>
+    </nav>
+  </div>
+</header>
+
+  <main id="main-content" tabindex="-1">
+
+
+
+
+
+
+
+<div class="portal-wrap reader-shell" data-pagefind-body>
+  <a class="reader-content-skip" href="#lesson-content">跳过目录，进入本课正文</a>
+  <aside class="reader-book-sidebar" aria-label="教材目录" data-pagefind-ignore>
+  <details class="reader-disclosure book-disclosure" data-responsive-disclosure data-collapse-at="860" open>
+    <summary>
+      <span>教材目录</span>
+      <strong>M1.2</strong>
+    </summary>
+    <div class="reader-disclosure-body">
+      <div class="book-heading">
+        <a class="book-home" href="/personal-knowledge-base/">自动驾驶学习系统</a>
+        <p>按章节学习，也按真实任务取用。</p>
+      </div>
+
+      <nav class="book-tree" aria-label="教材章节目录">
+        <a class="book-guide" href="/personal-knowledge-base/guide.html">
+          <span class="book-index">指南</span>
+          <span><strong>学习指南</strong><small>先学会怎样完成一课</small></span>
+        </a>
+
+
+
+        <details class="book-chapter">
+          <summary><span>P0</span><strong>起点诊断与数字工具</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/learn/math/diagnostic.html">
+                <span class="book-course-number">P0.1</span>
+                <span class="book-course-title">数学入口诊断</span>
+                <small class="book-course-state state-pilot">试点</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/foundations-bootcamp.html">
+                <span class="book-course-number">P0.2</span>
+                <span class="book-course-title">零基础预备课（现有内容）</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/engineering-toolkit.html">
+                <span class="book-course-number">P0.3</span>
+                <span class="book-course-title">远程运维与开发工具</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/evidence-first-engineering.html">
+                <span class="book-course-number">P0.4</span>
+                <span class="book-course-title">证据优先的工程排障</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+
+        <details class="book-chapter is-current" open>
+          <summary><span>M1</span><strong>数学核心</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/learn/math/linear-algebra-coordinate.html">
+                <span class="book-course-number">M1.1</span>
+                <span class="book-course-title">线性代数：从向量到坐标变换</span>
+                <small class="book-course-state state-pilot">试点</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/learn/math/calculus-curvature.html" class="is-active" aria-current="page">
+                <span class="book-course-number">M1.2</span>
+                <span class="book-course-title">微积分：从变化率到曲率</span>
+                <small class="book-course-state state-pilot">试点</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/learn/math/probability-scene-split.html">
+                <span class="book-course-number">M1.3</span>
+                <span class="book-course-title">概率论：从随机性到场景切分</span>
+                <small class="book-course-state state-pilot">试点</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+
+        <details class="book-chapter">
+          <summary><span>A1</span><strong>自动驾驶数据主线</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/autonomous-driving-overview.html">
+                <span class="book-course-number">A1.1</span>
+                <span class="book-course-title">自动驾驶系统总览</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/vehicle-hardware-network.html">
+                <span class="book-course-number">A1.2</span>
+                <span class="book-course-title">车辆硬件与车载网络</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/coordinate-transformations.html">
+                <span class="book-course-number">A1.3</span>
+                <span class="book-course-title">从线性代数到坐标系转换</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/perception-maps.html">
+                <span class="book-course-number">A1.4</span>
+                <span class="book-course-title">感知算法与地图基础</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/nuscenes-dataset.html">
+                <span class="book-course-number">A1.5</span>
+                <span class="book-course-title">nuScenes 数据集与数据任务</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+
+        <details class="book-chapter">
+          <summary><span>DL</span><strong>深度学习与计算机视觉</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/learn/deep-learning/training-loop.html">
+                <span class="book-course-number">DL.1</span>
+                <span class="book-course-title">深度学习：第一个完整训练闭环</span>
+                <small class="book-course-state state-pilot">试点</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <span class="book-course-planned" aria-label="MLP、泛化与正则化，待建设">
+                <span class="book-course-number">DL.2</span>
+                <span class="book-course-title">MLP、泛化与正则化</span>
+                <small class="book-course-state state-planned">待建</small>
+              </span>
+
+            </li>
+
+            <li>
+
+              <span class="book-course-planned" aria-label="CNN、批量归一化与 ResNet，待建设">
+                <span class="book-course-number">DL.3</span>
+                <span class="book-course-title">CNN、批量归一化与 ResNet</span>
+                <small class="book-course-state state-planned">待建</small>
+              </span>
+
+            </li>
+
+            <li>
+
+              <span class="book-course-planned" aria-label="视觉数据、检测与分割基础，待建设">
+                <span class="book-course-number">DL.4</span>
+                <span class="book-course-title">视觉数据、检测与分割基础</span>
+                <small class="book-course-state state-planned">待建</small>
+              </span>
+
+            </li>
+
+            <li>
+
+              <span class="book-course-planned" aria-label="nuScenes-mini 视觉结课项目，待建设">
+                <span class="book-course-number">DL.5</span>
+                <span class="book-course-title">nuScenes-mini 视觉结课项目</span>
+                <small class="book-course-state state-planned">待建</small>
+              </span>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/gpu-workflow.html">
+                <span class="book-course-number">DL.6</span>
+                <span class="book-course-title">GPU 工作流程图</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+
+        <details class="book-chapter">
+          <summary><span>E1</span><strong>ROS 2 与 Autoware 拓展</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/planning-autoware.html">
+                <span class="book-course-number">E1.1</span>
+                <span class="book-course-title">规划控制与 Autoware</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/ros2-autoware-debugging.html">
+                <span class="book-course-number">E1.2</span>
+                <span class="book-course-title">沿 ROS 2 图谱排查数据链</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+
+        <details class="book-chapter">
+          <summary><span>E2</span><strong>车辆几何与控制拓展</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/ackermann-bicycle-model.html">
+                <span class="book-course-number">E2.1</span>
+                <span class="book-course-title">自行车与阿克曼模型推导</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/curvature-calculation.html">
+                <span class="book-course-number">E2.2</span>
+                <span class="book-course-title">曲率计算与数值工程</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/can-bus-interface.html">
+                <span class="book-course-number">E2.3</span>
+                <span class="book-course-title">CAN 总线与接口边界</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+
+        <details class="book-chapter">
+          <summary><span>P4</span><strong>工程交付与验证</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/perception-deployment-contracts.html">
+                <span class="book-course-number">P4.1</span>
+                <span class="book-course-title">感知部署契约</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/validation-closure.html">
+                <span class="book-course-number">P4.2</span>
+                <span class="book-course-title">验证闭环与工程交付</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+      </nav>
+
+
+      <div class="book-progress">
+        <label for="progress-calculus-curvature">本课学习状态</label>
+        <select id="progress-calculus-curvature" data-progress-select data-course-id="calculus-curvature">
+          <option value="not-started">未开始</option>
+          <option value="in-progress">学习中</option>
+          <option value="artifact-ready">产物已就绪</option>
+        </select>
+        <p>只保存在当前浏览器；“产物已就绪”仍需导师验收。</p>
+      </div>
+
+    </div>
+  </details>
+</aside>
+
+
+  <article class="reader-content course-content" id="lesson-content" tabindex="-1" aria-labelledby="lesson-title">
+    <header class="course-heading">
+      <nav class="course-breadcrumb" aria-label="当前位置">
+        <a href="/personal-knowledge-base/guide.html">学习指南</a>
+        <span aria-hidden="true">/</span>
+        <a href="/personal-knowledge-base/#stage-m1">M1 数学核心</a>
+      </nav>
+      <div class="course-top">
+        <span class="course-order">M1.2</span>
+        <span class="tag">核心必修</span>
+        <span class="tag">14–17 小时</span>
+      </div>
+      <h1 id="lesson-title">微积分：从变化率到曲率</h1>
+      <p class="lead">从导数、参数曲线、梯度和积分进入曲率、状态方程与自动微分。</p>
+      <dl class="course-meta">
+        <div><dt>本课问题</dt><dd>怎样从位置的变化率推导曲率，并可靠计算一条离散轨迹的弯曲程度？</dd></div>
+        <div><dt>先修</dt><dd><a href="/personal-knowledge-base/learn/math/diagnostic.html">数学入口诊断</a>、<a href="/personal-knowledge-base/learn/math/linear-algebra-coordinate.html">线性代数：从向量到坐标变换</a></dd></div>
+      </dl>
+      <div class="course-outcome"><strong>本课交付：</strong>解析导数、有限差分、离散曲率与 autograd 对照</div>
+    </header>
+
+    <section class="course-learning-cycle" aria-labelledby="course-learning-cycle-title">
+  <div class="learning-cycle-heading">
+    <p class="section-kicker">本课学习方法</p>
+    <h2 id="course-learning-cycle-title">先输出自己的想法，再接受页面给出的答案</h2>
+    <p>每一课都按同一条认知链完成；预测可以错，但不能跳过。最后要用新条件证明自己不是只会照抄。</p>
+  </div>
+  <ol class="cognition-strip">
+    <li><span>1</span><strong>问题</strong><small>今天解决什么</small></li>
+    <li><span>2</span><strong>预测</strong><small>先写我怎么想</small></li>
+    <li><span>3</span><strong>直觉</strong><small>画图与看趋势</small></li>
+    <li><span>4</span><strong>形式化</strong><small>变量、公式、假设</small></li>
+    <li><span>5</span><strong>动手</strong><small>手算与最小代码</small></li>
+    <li><span>6</span><strong>反例</strong><small>故意破坏一个条件</small></li>
+    <li><span>7</span><strong>迁移留证</strong><small>换条件独立完成</small></li>
+  </ol>
+  <a class="learning-cycle-link" href="/personal-knowledge-base/guide.html">查看完整学习指南 →</a>
+</section>
+
+
+    <div class="course-prose" data-course-prose>
+      <h2 id="为什么从变化率学到曲率" tabindex="-1">为什么从变化率学到曲率</h2>
+<p>自动驾驶系统处理的不是静止数字，而是随时间和空间变化的量：车辆位置在变化、航向角在变化、轨迹的弯曲程度在变化，模型损失也会随参数变化。</p>
+<p>微积分给这些变化一个可计算的语言：</p>
+<ul>
+<li>一阶导数描述“变化得多快”，例如速度和轨迹切线；</li>
+<li>二阶导数描述“变化率本身怎样变化”，例如加速度和弯曲趋势；</li>
+<li>偏导数与梯度描述多参数系统怎样调整，是深度学习训练的基础；</li>
+<li>积分描述变化量的累积，例如从速度恢复位移；</li>
+<li>曲率把一阶、二阶导数组合起来，描述轨迹在某一点弯得有多急。</li>
+</ul>
+<p>如果只背曲率公式，很容易在采样间隔、单位、左右转符号或噪声上出错。本课从差商和切线开始，推导解析曲率，再过渡到离散轨迹的数值计算。</p>
+<p>本课预计用时 $14$–$17$ 小时。完成后，你应能解释曲率公式每一项的来源，用 NumPy 实现两种离散曲率算法，并说明结果在哪些条件下不可靠。</p>
+<h2 id="课前诊断" tabindex="-1">课前诊断</h2>
+<ol>
+<li>若车辆在 $0.5,\mathrm s$ 内前进 $2,\mathrm m$，平均速度是多少？</li>
+<li>函数 $f(x)=x^2$ 在 $x=2$ 附近是上升还是下降？你如何从图像判断？</li>
+<li>写出 $\sin(0)$、$\cos(0)$，并说明角度输入应使用度还是弧度。</li>
+<li>点 $A=(0,0)$ 到点 $B=(3,4)$ 的距离是多少？</li>
+<li>如果轨迹是一条直线，你预计曲率是正数、负数还是零？</li>
+<li>半径分别为 $5,\mathrm m$ 和 $20,\mathrm m$ 的圆，哪一个弯得更急？</li>
+<li>为什么用相邻两个采样点做差会放大位置噪声？</li>
+<li>对损失 $L(w)=(w-3)^2$，当 $w=5$ 时，要让损失变小，$w$ 应增大还是减小？</li>
+</ol>
+<p>建议先通过数学入口诊断，并完成向量范数、坐标方向与 NumPy shape 的基础学习。</p>
+<h2 id="核心章节" tabindex="-1">核心章节</h2>
+<h3 id="1-函数与平均变化率" tabindex="-1">1. 函数与平均变化率</h3>
+<p>设位置是时间的函数 $x(t)$。从 $t$ 到 $t+\Delta t$ 的平均速度为</p>
+<p>$$
+\bar v=\frac{x(t+\Delta t)-x(t)}{\Delta t}.
+$$</p>
+<p>几何上，这是函数图像上两个点之间割线的斜率。$\Delta t$ 越小，割线越接近该点的切线，但实际数据中步长太小又会放大测量噪声，所以“越小越好”并不总成立。</p>
+<h3 id="2-极限与导数" tabindex="-1">2. 极限与导数</h3>
+<p>瞬时变化率定义为差商在步长趋近于零时的极限：</p>
+<p>$$
+f'(x)=\lim_{h\to0}\frac{f(x+h)-f(x)}{h}.
+$$</p>
+<p>常用求导规则包括：</p>
+<p>$$
+\frac{d}{dx}x^n=nx^{n-1},
+\qquad
+\frac{d}{dx}\sin x=\cos x,
+\qquad
+\frac{d}{dx}\cos x=-\sin x.
+$$</p>
+<p>复合函数使用链式法则：</p>
+<p>$$
+\frac{d}{dx}f(g(x))=f'(g(x))g'(x).
+$$</p>
+<p>链式法则不仅用于手算，也解释了神经网络反向传播为什么可以把复杂计算拆成局部导数相乘。</p>
+<div class="lesson-diagram" role="region" aria-label="课程图示，可横向滚动" tabindex="0"><pre class="mermaid">flowchart TB
+    accTitle: 从割线到曲率的概念链
+    accDescr: 两个采样点先给出割线 取极限得到切线与一阶导数 再结合二阶变化衡量切线方向变化并得到曲率
+    A[&quot;采样观察&lt;br/&gt;两个点 → 割线斜率&quot;] --&gt; B[&quot;取极限&lt;br/&gt;间隔趋近于零 → 切线斜率&quot;]
+    B --&gt; C[&quot;一阶导数&lt;br/&gt;得到切线方向&quot;]
+    C --&gt; D[&quot;继续求导&lt;br/&gt;得到二阶变化&quot;]
+    C --&gt; E[&quot;观察切线方向变化&quot;]
+    D --&gt; E
+    E --&gt; F[&quot;曲率&lt;br/&gt;单位弧长上的方向变化率&quot;]
+</pre></div><p><em>从割线极限到一阶导数，再结合二阶变化观察切线方向，最终得到单位弧长上的曲率。</em></p>
+<h3 id="3-一阶与二阶导数的物理意义" tabindex="-1">3. 一阶与二阶导数的物理意义</h3>
+<p>若 $x(t)$ 是一维位置，则</p>
+<p>$$
+v(t)=\frac{dx}{dt},
+\qquad
+a(t)=\frac{d^2x}{dt^2}.
+$$</p>
+<p>单位会随求导改变。位置单位是米，一阶时间导数单位为 $\mathrm{m/s}$，二阶时间导数单位为 $\mathrm{m/s^2}$。</p>
+<p>对于二维参数曲线</p>
+<p>$$
+\mathbf r(t)=
+\begin{bmatrix}
+x(t)\y(t)
+\end{bmatrix},
+$$</p>
+<p>速度和加速度向量分别为</p>
+<p>$$
+\mathbf r'(t)=
+\begin{bmatrix}
+x'(t)\y'(t)
+\end{bmatrix},
+\qquad
+\mathbf r''(t)=
+\begin{bmatrix}
+x''(t)\y''(t)
+\end{bmatrix}.
+$$</p>
+<p>轨迹的切线方向由 $\mathbf r'(t)$ 给出。若速度接近零，切线和曲率估计都会变得不稳定。</p>
+<h3 id="4-积分是变化量的累积" tabindex="-1">4. 积分是变化量的累积</h3>
+<p>如果已知速度，可以通过积分得到位移：</p>
+<p>$$
+x(t_1)-x(t_0)=\int_{t_0}^{t_1}v(t),dt.
+$$</p>
+<p>离散数据中常用求和或梯形法近似：</p>
+<p>$$
+\Delta x
+\approx
+\sum_{i=0}^{n-1}
+\frac{v_i+v_{i+1}}{2}\Delta t_i.
+$$</p>
+<p>车辆模型的离散仿真也使用相同思想。例如欧拉法把状态微分方程</p>
+<p>$$
+\dot{\mathbf x}=f(\mathbf x,\mathbf u)
+$$</p>
+<p>近似为</p>
+<p>$$
+\mathbf x_{k+1}
+=\mathbf x_k+\Delta t,f(\mathbf x_k,\mathbf u_k).
+$$</p>
+<h3 id="5-多元函数偏导数与梯度" tabindex="-1">5. 多元函数、偏导数与梯度</h3>
+<p>深度学习损失通常依赖很多参数。对</p>
+<p>$$
+L=L(w_1,w_2,\ldots,w_n),
+$$</p>
+<p>固定其他变量，只改变 $w_i$，得到偏导数</p>
+<p>$$
+\frac{\partial L}{\partial w_i}.
+$$</p>
+<p>把所有偏导数组合起来得到梯度：</p>
+<p>$$
+\nabla_{\mathbf w}L=
+\begin{bmatrix}
+\frac{\partial L}{\partial w_1}\
+\vdots\
+\frac{\partial L}{\partial w_n}
+\end{bmatrix}.
+$$</p>
+<p>梯度指向函数局部增长最快的方向，所以最基本的梯度下降使用</p>
+<p>$$
+\mathbf w_{k+1}
+=\mathbf w_k-\eta\nabla_{\mathbf w}L,
+$$</p>
+<p>其中 $\eta$ 是学习率。</p>
+<h3 id="6-曲率的几何含义" tabindex="-1">6. 曲率的几何含义</h3>
+<p>曲率描述单位弧长上切线方向变化得有多快。若曲线用弧长 $s$ 参数化，单位切向量为 $\mathbf T(s)$，则</p>
+<p>$$
+\kappa=\left\lVert\frac{d\mathbf T}{ds}\right\rVert.
+$$</p>
+<p>圆的曲率处处相同：</p>
+<p>$$
+\kappa=\frac{1}{R}.
+$$</p>
+<p>半径越小，曲率越大，转弯越急。曲率单位为 $\mathrm{m}^{-1}$。</p>
+<p>对一般二维参数曲线，带符号曲率可写成</p>
+<p>$$
+\kappa(t)=
+\frac{x'(t)y''(t)-y'(t)x''(t)}
+{\left(x'(t)^2+y'(t)^2\right)^{3/2}}.
+$$</p>
+<p>按本文约定，坐标系 $x$ 轴向前、$y$ 轴向左且参数沿行驶方向增加时，$\kappa&gt;0$ 表示左转，$\kappa&lt;0$ 表示右转。若只需要弯曲强度，可取 $|\kappa|$，但不要在需要左右方向的控制任务中提前丢掉符号。</p>
+<p>若曲线写成 $y=f(x)$，可得到</p>
+<p>$$
+\kappa(x)=
+\frac{f''(x)}{\left(1+f'(x)^2\right)^{3/2}}.
+$$</p>
+<h3 id="7-离散轨迹的三点曲率" tabindex="-1">7. 离散轨迹的三点曲率</h3>
+<p>真实轨迹往往只有采样点。取连续三点 $A$、$B$、$C$，定义边长</p>
+<p>$$
+a=\lVert B-C\rVert,
+\qquad
+b=\lVert C-A\rVert,
+\qquad
+c=\lVert A-B\rVert.
+$$</p>
+<p>二维叉积标量为</p>
+<p>$$
+z=(B-A)_x(C-A)_y-(B-A)_y(C-A)_x.
+$$</p>
+<p>三点不共线时，它们确定一个外接圆，带符号曲率为</p>
+<p>$$
+\kappa=\frac{2z}{abc}.
+$$</p>
+<p>当三点重合或某条边过短时，乘积 $abc$ 才会接近零；三点几乎共线时，主要问题是面积量 $z$ 很小，曲率符号容易被坐标噪声翻转。代码应分别设置最小边长阈值和随轨迹尺度变化的面积阈值：前者判定无效点，后者把数值上近似直线的三点稳定地视为零曲率。</p>
+<h3 id="8-数值导数与采样误差" tabindex="-1">8. 数值导数与采样误差</h3>
+<p>内部采样点常用中心差分：</p>
+<p>$$
+x'(t_i)\approx
+\frac{x(t_{i+1})-x(t_{i-1})}
+{t_{i+1}-t_{i-1}}.
+$$</p>
+<p>二阶导数对噪声更敏感。工程上要同时检查：</p>
+<ul>
+<li>采样间隔是否均匀；</li>
+<li>时间戳或弧长参数是否正确；</li>
+<li>是否存在重复点；</li>
+<li>是否需要先做有边界说明的平滑；</li>
+<li>端点采用了什么差分策略；</li>
+<li>曲率峰值是否来自真实道路还是测量噪声。</li>
+</ul>
+<div class="lesson-diagram" role="region" aria-label="课程图示，可横向滚动" tabindex="0"><pre class="mermaid">flowchart TB
+    accTitle: 离散三点曲率与数值敏感因素
+    accDescr: 三个采样点先检查边长 重复或过短边返回无效值 其余点再检查有向面积 近共线按零曲率处理 非近共线点计算有效曲率
+    A[&quot;三个采样点 A、B、C&lt;br/&gt;记录采样间隔与位置噪声&quot;] --&gt; CHECK[&quot;计算三条边长&lt;br/&gt;与有向面积量 z&quot;]
+    CHECK --&gt; SHORT{&quot;存在重复点&lt;br/&gt;或过短边？&quot;}
+    SHORT -- &quot;是&quot; --&gt; NAN[&quot;边长乘积接近零&lt;br/&gt;返回无效值 NaN&quot;]
+    SHORT -- &quot;否&quot; --&gt; STRAIGHT{&quot;有向面积量绝对值&lt;br/&gt;低于尺度相关阈值？&quot;}
+    STRAIGHT -- &quot;是&quot; --&gt; ZERO[&quot;数值上近似直线&lt;br/&gt;返回零曲率&quot;]
+    STRAIGHT -- &quot;否&quot; --&gt; K[&quot;用边长与 z&lt;br/&gt;计算候选曲率&quot;]
+    ZERO --&gt; OUT[&quot;输出曲率&lt;br/&gt;并说明数值边界&quot;]
+    K --&gt; OUT
+</pre></div><p><em>重复或过短边返回 <code>NaN</code>，近共线点按阈值视为零曲率，其余点才使用三点公式并保留采样与噪声边界。</em></p>
+<h2 id="逐步例题一圆的曲率为什么是-1-r" tabindex="-1">逐步例题一：圆的曲率为什么是 $1/R$</h2>
+<p>令半径为 $R$ 的圆参数化为</p>
+<p>$$
+x(t)=R\cos t,
+\qquad
+y(t)=R\sin t.
+$$</p>
+<p>一阶导数为</p>
+<p>$$
+x'(t)=-R\sin t,
+\qquad
+y'(t)=R\cos t.
+$$</p>
+<p>二阶导数为</p>
+<p>$$
+x''(t)=-R\cos t,
+\qquad
+y''(t)=-R\sin t.
+$$</p>
+<p>代入曲率分子：</p>
+<p>$$
+x'y''-y'x''
+=R^2\sin^2t+R^2\cos^2t
+=R^2.
+$$</p>
+<p>代入分母：</p>
+<p>$$
+\left(x'^2+y'^2\right)^{3/2}
+=\left(R^2\sin^2t+R^2\cos^2t\right)^{3/2}
+=R^3.
+$$</p>
+<p>因此</p>
+<p>$$
+\kappa=\frac{R^2}{R^3}=\frac{1}{R}.
+$$</p>
+<p>结果与参数 $t$ 无关，符合圆在每一点弯曲程度相同的直觉。</p>
+<h2 id="逐步例题二三个点的离散曲率" tabindex="-1">逐步例题二：三个点的离散曲率</h2>
+<p>取单位圆上的三点</p>
+<p>$$
+A=(1,0),\qquad B=(0,1),\qquad C=(-1,0).
+$$</p>
+<p>三条边长为</p>
+<p>$$
+a=\sqrt2,\qquad b=2,\qquad c=\sqrt2.
+$$</p>
+<p>叉积标量为</p>
+<p>$$
+z=(-1,1)\times(-2,0)=2.
+$$</p>
+<p>所以</p>
+<p>$$
+\kappa=\frac{2z}{abc}
+=\frac{4}{\sqrt2\cdot2\cdot\sqrt2}
+=1.
+$$</p>
+<p>单位圆半径 $R=1$，解析结果也是 $1/R=1$，三点法在这个例子中与解析结果一致。</p>
+<h2 id="逐步例题三损失函数的一次梯度更新" tabindex="-1">逐步例题三：损失函数的一次梯度更新</h2>
+<p>设只有一个样本 $x=2$、$y=6$，模型为 $\hat y=wx$，损失为</p>
+<p>$$
+L(w)=(wx-y)^2.
+$$</p>
+<p>由链式法则</p>
+<p>$$
+\frac{dL}{dw}=2(wx-y)x.
+$$</p>
+<p>当 $w=1$ 时，</p>
+<p>$$
+\frac{dL}{dw}=2(2-6)\cdot2=-16.
+$$</p>
+<p>若学习率 $\eta=0.1$，则</p>
+<p>$$
+w_{\mathrm{new}}
+=w-\eta\frac{dL}{dw}
+=1-0.1(-16)
+=2.6.
+$$</p>
+<p>负梯度使参数增大，模型输出从 $2$ 接近目标 $6$。这就是后续自动微分和神经网络训练最小闭环的数学原型。</p>
+<h2 id="引导实验解析曲率与离散曲率对照" tabindex="-1">引导实验：解析曲率与离散曲率对照</h2>
+<pre><code class="language-python">import numpy as np
+
+def signed_curvature_three_points(
+    a, b, c, length_eps=1e-12, area_rtol=1e-10
+):
+    a = np.asarray(a, dtype=float)
+    b = np.asarray(b, dtype=float)
+    c = np.asarray(c, dtype=float)
+
+    side_a = np.linalg.norm(b - c)
+    side_b = np.linalg.norm(c - a)
+    side_c = np.linalg.norm(a - b)
+    if min(side_a, side_b, side_c) &lt;= length_eps:
+        return np.nan
+
+    ab = b - a
+    ac = c - a
+    cross_z = ab[0] * ac[1] - ab[1] * ac[0]
+    scale = max(side_a, side_b, side_c)
+    if abs(cross_z) &lt;= area_rtol * scale**2:
+        return 0.0
+
+    denominator = side_a * side_b * side_c
+    return 2.0 * cross_z / denominator
+
+points = np.array([[1.0, 0.0],
+                   [0.0, 1.0],
+                   [-1.0, 0.0]])
+
+kappa = signed_curvature_three_points(*points)
+assert np.isclose(kappa, 1.0)
+
+def curvature_from_samples(t, x, y, eps=1e-12):
+    t = np.asarray(t, dtype=float)
+    x = np.asarray(x, dtype=float)
+    y = np.asarray(y, dtype=float)
+
+    dx = np.gradient(x, t)
+    dy = np.gradient(y, t)
+    ddx = np.gradient(dx, t)
+    ddy = np.gradient(dy, t)
+
+    numerator = dx * ddy - dy * ddx
+    denominator = (dx * dx + dy * dy) ** 1.5
+    kappa = np.full_like(numerator, np.nan)
+    valid = denominator &gt; eps
+    kappa[valid] = numerator[valid] / denominator[valid]
+    return kappa
+
+radius = 10.0
+t = np.linspace(0.0, np.pi / 2.0, 101)
+x = radius * np.cos(t)
+y = radius * np.sin(t)
+kappa_samples = curvature_from_samples(t, x, y)
+
+#端点差分精度较低，先检查内部区间。
+assert np.allclose(kappa_samples[2:-2], 1.0 / radius, atol=2e-4)
+</code></pre>
+<p>继续完成四项实验并记录表格：</p>
+<ol>
+<li>把采样点数改为 $11$、$21$、$51$、$101$，比较内部区间最大误差；</li>
+<li>给 $x,y$ 加入标准差分别为 $0.001,\mathrm m$、$0.01,\mathrm m$ 的高斯噪声，观察二阶导数和曲率；</li>
+<li>加入两个完全重复的点，确认函数不会返回无穷大；</li>
+<li>将点序反转，观察带符号曲率为什么改变符号。</li>
+</ol>
+<h2 id="独立任务轨迹曲率质量报告" tabindex="-1">独立任务：轨迹曲率质量报告</h2>
+<p>构造或读取一条不少于 $200$ 个点的二维轨迹，完成：</p>
+<ol>
+<li>说明坐标系、单位和点的顺序；</li>
+<li>使用参数曲线差分法计算曲率；</li>
+<li>使用滑动三点法计算曲率；</li>
+<li>画出轨迹和曲率随点序或弧长的变化；</li>
+<li>人为加入位置噪声，对比两种算法的变化；</li>
+<li>若使用平滑，必须同时给出窗口、边界处理和可能抹去真实急弯的风险；</li>
+<li>找出曲率绝对值最大的五个位置，判断它们是道路急弯、端点效应还是噪声；</li>
+<li>计算曲率半径 $R=1/|\kappa|$，对近似直线段说明为何不能直接除以零；</li>
+<li>写出这条曲率结果是否足以用于车辆控制，以及还缺少哪些验证。</li>
+</ol>
+<p>导师验收时会提供一条含重复点、非均匀采样和噪声的隐藏轨迹，要求独立诊断。</p>
+<h2 id="常见错误案例" tabindex="-1">常见错误案例</h2>
+<h3 id="把点序号当成真实时间或弧长" tabindex="-1">把点序号当成真实时间或弧长</h3>
+<p><code>np.gradient(x)</code> 默认相邻索引间隔为 $1$。若真实采样间隔不均匀，应传入时间戳或累计弧长，否则导数单位和数值都会错误。</p>
+<h3 id="只算一阶差分就称为曲率" tabindex="-1">只算一阶差分就称为曲率</h3>
+<p>一阶导数给切线方向；曲率还需要切线方向怎样变化，因此通常涉及二阶导数。</p>
+<h3 id="提前取绝对值" tabindex="-1">提前取绝对值</h3>
+<p>$|\kappa|$ 保留弯曲强度，却丢失左转与右转信息。是否取绝对值必须由任务决定。</p>
+<h3 id="忽略接近零的速度" tabindex="-1">忽略接近零的速度</h3>
+<p>参数曲率分母包含</p>
+<p>$$
+\left(x'^2+y'^2\right)^{3/2}.
+$$</p>
+<p>当速度接近零时会产生巨大或无效结果，必须设置有效掩码。</p>
+<h3 id="重复点导致三点法除零" tabindex="-1">重复点导致三点法除零</h3>
+<p>三点法分母是三条边长的乘积。任意两个点重合时必须返回无效标记，而不是伪造曲率 $0$。</p>
+<h3 id="采样越密就一定越准确" tabindex="-1">采样越密就一定越准确</h3>
+<p>无噪声时更密采样通常能减小截断误差；有测量噪声时，过小间隔会放大差分噪声。必须通过步长与噪声实验选择方法。</p>
+<h3 id="用训练损失下降证明模型有效" tabindex="-1">用训练损失下降证明模型有效</h3>
+<p>梯度下降只说明优化过程能降低当前损失，不代表模型对未见数据有良好泛化。概率和数据切分课程会处理这一边界。</p>
+<h2 id="需要提交的证据" tabindex="-1">需要提交的证据</h2>
+<ul>
+<li>圆曲率和三点曲率的手算推导；</li>
+<li>带单位的导数、曲率和曲率半径说明；</li>
+<li>可运行的两种曲率实现；</li>
+<li>解析值与数值值的误差表；</li>
+<li>采样密度、噪声和重复点实验；</li>
+<li>轨迹与曲率可视化；</li>
+<li>至少三个失败样例及防护策略；</li>
+<li>一段说明：曲率怎样进入自行车模型，梯度怎样进入深度学习训练。</li>
+</ul>
+<h2 id="03-级验收量表" tabindex="-1">0–3 级验收量表</h2>
+<div class="table-wrap" role="region" aria-label="数据表，可横向滚动" tabindex="0"><table><thead>
+<tr>
+<th style="text-align:right">等级</th>
+<th>数学理解</th>
+<th>数值实现</th>
+<th>工程判断</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">0</td>
+<td>无法区分位置、速度、加速度和曲率</td>
+<td>只能粘贴代码，结果不可复现</td>
+<td>不记录单位、采样或坐标方向</td>
+</tr>
+<tr>
+<td style="text-align:right">1</td>
+<td>能在提示下代公式，但不能解释分子、分母或符号</td>
+<td>可复现干净圆轨迹，遇到重复点或噪声即失败</td>
+<td>只看一张曲线就宣布正确</td>
+</tr>
+<tr>
+<td style="text-align:right">2</td>
+<td>能从导数解释曲率并完成圆与三点推导</td>
+<td>两种算法通过解析、往返式和失败用例检查</td>
+<td>能说明采样、噪声、端点、符号和零分母边界</td>
+</tr>
+<tr>
+<td style="text-align:right">3</td>
+<td>能诊断未见过的非均匀轨迹并选择合适参数化</td>
+<td>能量化误差来源、设计鲁棒测试并解释取舍</td>
+<td>能把曲率可靠衔接到车辆模型和数据验收</td>
+</tr>
+</tbody>
+</table></div><p>通过门槛：三列均达到等级 2；隐藏轨迹中不得出现未处理的无穷值，且必须正确保留左右转符号。</p>
+<h2 id="来源与延伸阅读" tabindex="-1">来源与延伸阅读</h2>
+<ul>
+<li><a href="https://zh-v2.d2l.ai/chapter_preliminaries/calculus.html">《动手学深度学习》第二版：微积分</a>：导数、偏导数、梯度和链式法则的实践入口。</li>
+<li><a href="https://zh-v2.d2l.ai/chapter_preliminaries/autograd.html">《动手学深度学习》第二版：自动微分</a>：把手推梯度连接到 PyTorch 计算图。</li>
+<li><a href="https://numpy.org/doc/stable/reference/generated/numpy.gradient.html">NumPy <code>gradient</code> 文档</a>：核对非均匀采样、边界和返回值行为。</li>
+<li><a href="https://numpy.org/doc/stable/reference/generated/numpy.trapezoid.html">NumPy <code>trapz</code>/<code>trapezoid</code> 文档</a>：离散积分实验的接口参考。</li>
+</ul>
+<p>本课中的轨迹、曲率与验收案例为自动驾驶场景下的重新组织，不复制参考资料的大段正文。公式必须结合参数、单位、方向和数值边界理解。</p>
+
+    </div>
+
+    <nav class="course-next" aria-label="课程前后导航" data-pagefind-ignore>
+      <a href="/personal-knowledge-base/learn/math/linear-algebra-coordinate.html"><span>上一课</span><strong>线性代数：从向量到坐标变换</strong></a>
+      <a class="next" href="/personal-knowledge-base/learn/math/probability-scene-split.html"><span>下一课</span><strong>概率论：从随机性到场景切分</strong></a>
+    </nav>
+  </article>
+  <aside class="reader-page-sidebar" aria-label="本页辅助导航" data-pagefind-ignore>
+  <details class="reader-disclosure page-disclosure" data-responsive-disclosure data-collapse-at="1240" open>
+    <summary>本页目录</summary>
+    <nav class="page-outline" aria-labelledby="page-outline-title">
+      <p class="page-outline-title" id="page-outline-title">本页目录</p>
+      <ol data-page-toc>
+        <li class="toc-loading">若目录未生成，请直接按正文标题阅读。</li>
+      </ol>
+      <a class="page-outline-top" href="#main-content">返回页首 ↑</a>
+    </nav>
+  </details>
+</aside>
+
+</div>
+
+  </main>
+  <footer class="site-footer" data-pagefind-ignore>
+  <div class="portal-wrap footer-grid">
+    <p><strong>个人知识库 · V2 试点</strong><br>公开站点只承载课程与模板；实习生作业、导师评价和内部证据保存在私有记录中。</p>
+    <a href="https://github.com/xqiang646-sudo/personal-knowledge-base">GitHub 仓库</a>
+  </div>
+</footer>
+
+  <script defer src="/personal-knowledge-base/assets/progress.js"></script>
+  <script defer src="/personal-knowledge-base/assets/reader.js"></script>
+</body>
+</html>

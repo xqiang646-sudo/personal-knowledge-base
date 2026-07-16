@@ -1,0 +1,1202 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="从张量、线性模型、损失、梯度和优化器建立 PyTorch 训练闭环。">
+  <title>深度学习：第一个完整训练闭环｜个人知识库</title>
+  <link rel="icon" href="/personal-knowledge-base/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/personal-knowledge-base/assets/knowledge.css">
+  <link rel="stylesheet" href="/personal-knowledge-base/assets/v2.css">
+  <link rel="stylesheet" href="/personal-knowledge-base/assets/cyrus-theme.css">
+  <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
+
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({
+      startOnLoad: true,
+      securityLevel: "strict",
+      theme: "base",
+      themeVariables: {
+        primaryColor: "#ffffff",
+        primaryTextColor: "#08090b",
+        primaryBorderColor: "#111111",
+        secondaryColor: "#e9edf3",
+        tertiaryColor: "#f4f6f9",
+        lineColor: "#656b76",
+        fontFamily: "Inter, Noto Sans SC, system-ui, sans-serif"
+      },
+      flowchart: { htmlLabels: false, curve: "basis", useMaxWidth: false }
+    });
+  </script>
+
+</head>
+<body class="course-body" data-theme="cyrus">
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <header class="v2-header" data-pagefind-ignore>
+  <div class="portal-wrap v2-header-inner">
+    <a class="site-brand" href="/personal-knowledge-base/">个人知识库</a>
+    <nav class="v2-nav" aria-label="知识库主导航">
+      <a href="/personal-knowledge-base/guide.html">学习指南</a>
+      <a href="/personal-knowledge-base/#learning-path">课程目录</a>
+      <a href="/personal-knowledge-base/topics.html">专题</a>
+      <a href="/personal-knowledge-base/search.html">搜索</a>
+      <a href="/personal-knowledge-base/mentor.html">导师面板</a>
+    </nav>
+  </div>
+</header>
+
+  <main id="main-content" tabindex="-1">
+
+
+
+
+
+
+
+<div class="portal-wrap reader-shell" data-pagefind-body>
+  <a class="reader-content-skip" href="#lesson-content">跳过目录，进入本课正文</a>
+  <aside class="reader-book-sidebar" aria-label="教材目录" data-pagefind-ignore>
+  <details class="reader-disclosure book-disclosure" data-responsive-disclosure data-collapse-at="860" open>
+    <summary>
+      <span>教材目录</span>
+      <strong>DL.1</strong>
+    </summary>
+    <div class="reader-disclosure-body">
+      <div class="book-heading">
+        <a class="book-home" href="/personal-knowledge-base/">自动驾驶学习系统</a>
+        <p>按章节学习，也按真实任务取用。</p>
+      </div>
+
+      <nav class="book-tree" aria-label="教材章节目录">
+        <a class="book-guide" href="/personal-knowledge-base/guide.html">
+          <span class="book-index">指南</span>
+          <span><strong>学习指南</strong><small>先学会怎样完成一课</small></span>
+        </a>
+
+
+
+        <details class="book-chapter">
+          <summary><span>P0</span><strong>起点诊断与数字工具</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/learn/math/diagnostic.html">
+                <span class="book-course-number">P0.1</span>
+                <span class="book-course-title">数学入口诊断</span>
+                <small class="book-course-state state-pilot">试点</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/foundations-bootcamp.html">
+                <span class="book-course-number">P0.2</span>
+                <span class="book-course-title">零基础预备课（现有内容）</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/engineering-toolkit.html">
+                <span class="book-course-number">P0.3</span>
+                <span class="book-course-title">远程运维与开发工具</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/evidence-first-engineering.html">
+                <span class="book-course-number">P0.4</span>
+                <span class="book-course-title">证据优先的工程排障</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+
+        <details class="book-chapter">
+          <summary><span>M1</span><strong>数学核心</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/learn/math/linear-algebra-coordinate.html">
+                <span class="book-course-number">M1.1</span>
+                <span class="book-course-title">线性代数：从向量到坐标变换</span>
+                <small class="book-course-state state-pilot">试点</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/learn/math/calculus-curvature.html">
+                <span class="book-course-number">M1.2</span>
+                <span class="book-course-title">微积分：从变化率到曲率</span>
+                <small class="book-course-state state-pilot">试点</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/learn/math/probability-scene-split.html">
+                <span class="book-course-number">M1.3</span>
+                <span class="book-course-title">概率论：从随机性到场景切分</span>
+                <small class="book-course-state state-pilot">试点</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+
+        <details class="book-chapter">
+          <summary><span>A1</span><strong>自动驾驶数据主线</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/autonomous-driving-overview.html">
+                <span class="book-course-number">A1.1</span>
+                <span class="book-course-title">自动驾驶系统总览</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/vehicle-hardware-network.html">
+                <span class="book-course-number">A1.2</span>
+                <span class="book-course-title">车辆硬件与车载网络</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/coordinate-transformations.html">
+                <span class="book-course-number">A1.3</span>
+                <span class="book-course-title">从线性代数到坐标系转换</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/perception-maps.html">
+                <span class="book-course-number">A1.4</span>
+                <span class="book-course-title">感知算法与地图基础</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/nuscenes-dataset.html">
+                <span class="book-course-number">A1.5</span>
+                <span class="book-course-title">nuScenes 数据集与数据任务</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+
+        <details class="book-chapter is-current" open>
+          <summary><span>DL</span><strong>深度学习与计算机视觉</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/learn/deep-learning/training-loop.html" class="is-active" aria-current="page">
+                <span class="book-course-number">DL.1</span>
+                <span class="book-course-title">深度学习：第一个完整训练闭环</span>
+                <small class="book-course-state state-pilot">试点</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <span class="book-course-planned" aria-label="MLP、泛化与正则化，待建设">
+                <span class="book-course-number">DL.2</span>
+                <span class="book-course-title">MLP、泛化与正则化</span>
+                <small class="book-course-state state-planned">待建</small>
+              </span>
+
+            </li>
+
+            <li>
+
+              <span class="book-course-planned" aria-label="CNN、批量归一化与 ResNet，待建设">
+                <span class="book-course-number">DL.3</span>
+                <span class="book-course-title">CNN、批量归一化与 ResNet</span>
+                <small class="book-course-state state-planned">待建</small>
+              </span>
+
+            </li>
+
+            <li>
+
+              <span class="book-course-planned" aria-label="视觉数据、检测与分割基础，待建设">
+                <span class="book-course-number">DL.4</span>
+                <span class="book-course-title">视觉数据、检测与分割基础</span>
+                <small class="book-course-state state-planned">待建</small>
+              </span>
+
+            </li>
+
+            <li>
+
+              <span class="book-course-planned" aria-label="nuScenes-mini 视觉结课项目，待建设">
+                <span class="book-course-number">DL.5</span>
+                <span class="book-course-title">nuScenes-mini 视觉结课项目</span>
+                <small class="book-course-state state-planned">待建</small>
+              </span>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/gpu-workflow.html">
+                <span class="book-course-number">DL.6</span>
+                <span class="book-course-title">GPU 工作流程图</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+
+        <details class="book-chapter">
+          <summary><span>E1</span><strong>ROS 2 与 Autoware 拓展</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/planning-autoware.html">
+                <span class="book-course-number">E1.1</span>
+                <span class="book-course-title">规划控制与 Autoware</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/ros2-autoware-debugging.html">
+                <span class="book-course-number">E1.2</span>
+                <span class="book-course-title">沿 ROS 2 图谱排查数据链</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+
+        <details class="book-chapter">
+          <summary><span>E2</span><strong>车辆几何与控制拓展</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/ackermann-bicycle-model.html">
+                <span class="book-course-number">E2.1</span>
+                <span class="book-course-title">自行车与阿克曼模型推导</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/curvature-calculation.html">
+                <span class="book-course-number">E2.2</span>
+                <span class="book-course-title">曲率计算与数值工程</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/can-bus-interface.html">
+                <span class="book-course-number">E2.3</span>
+                <span class="book-course-title">CAN 总线与接口边界</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+
+        <details class="book-chapter">
+          <summary><span>P4</span><strong>工程交付与验证</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/perception-deployment-contracts.html">
+                <span class="book-course-number">P4.1</span>
+                <span class="book-course-title">感知部署契约</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/validation-closure.html">
+                <span class="book-course-number">P4.2</span>
+                <span class="book-course-title">验证闭环与工程交付</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+      </nav>
+
+
+      <div class="book-progress">
+        <label for="progress-deep-learning-training-loop">本课学习状态</label>
+        <select id="progress-deep-learning-training-loop" data-progress-select data-course-id="deep-learning-training-loop">
+          <option value="not-started">未开始</option>
+          <option value="in-progress">学习中</option>
+          <option value="artifact-ready">产物已就绪</option>
+        </select>
+        <p>只保存在当前浏览器；“产物已就绪”仍需导师验收。</p>
+      </div>
+
+    </div>
+  </details>
+</aside>
+
+
+  <article class="reader-content course-content" id="lesson-content" tabindex="-1" aria-labelledby="lesson-title">
+    <header class="course-heading">
+      <nav class="course-breadcrumb" aria-label="当前位置">
+        <a href="/personal-knowledge-base/guide.html">学习指南</a>
+        <span aria-hidden="true">/</span>
+        <a href="/personal-knowledge-base/#stage-dl">DL 深度学习与计算机视觉</a>
+      </nav>
+      <div class="course-top">
+        <span class="course-order">DL.1</span>
+        <span class="tag">深度学习必修</span>
+        <span class="tag">8–10 小时</span>
+      </div>
+      <h1 id="lesson-title">深度学习：第一个完整训练闭环</h1>
+      <p class="lead">从张量、线性模型、损失、梯度和优化器建立 PyTorch 训练闭环。</p>
+      <dl class="course-meta">
+        <div><dt>本课问题</dt><dd>模型怎样利用数据、损失和梯度更新参数，并留下可复现的训练证据？</dd></div>
+        <div><dt>先修</dt><dd><a href="/personal-knowledge-base/learn/math/linear-algebra-coordinate.html">线性代数：从向量到坐标变换</a>、<a href="/personal-knowledge-base/learn/math/calculus-curvature.html">微积分：从变化率到曲率</a>、<a href="/personal-knowledge-base/learn/math/probability-scene-split.html">概率论：从随机性到场景切分</a></dd></div>
+      </dl>
+      <div class="course-outcome"><strong>本课交付：</strong>线性回归和 Softmax 训练脚本、曲线与失败分析</div>
+    </header>
+
+    <section class="course-learning-cycle" aria-labelledby="course-learning-cycle-title">
+  <div class="learning-cycle-heading">
+    <p class="section-kicker">本课学习方法</p>
+    <h2 id="course-learning-cycle-title">先输出自己的想法，再接受页面给出的答案</h2>
+    <p>每一课都按同一条认知链完成；预测可以错，但不能跳过。最后要用新条件证明自己不是只会照抄。</p>
+  </div>
+  <ol class="cognition-strip">
+    <li><span>1</span><strong>问题</strong><small>今天解决什么</small></li>
+    <li><span>2</span><strong>预测</strong><small>先写我怎么想</small></li>
+    <li><span>3</span><strong>直觉</strong><small>画图与看趋势</small></li>
+    <li><span>4</span><strong>形式化</strong><small>变量、公式、假设</small></li>
+    <li><span>5</span><strong>动手</strong><small>手算与最小代码</small></li>
+    <li><span>6</span><strong>反例</strong><small>故意破坏一个条件</small></li>
+    <li><span>7</span><strong>迁移留证</strong><small>换条件独立完成</small></li>
+  </ol>
+  <a class="learning-cycle-link" href="/personal-knowledge-base/guide.html">查看完整学习指南 →</a>
+</section>
+
+
+    <div class="course-prose" data-course-prose>
+      <h2 id="本课定位" tabindex="-1">本课定位</h2>
+<p>这一课只解决一个问题：<strong>模型到底是怎样从数据中学会参数的？</strong></p>
+<p>你会从一个只有一层的线性模型开始，亲手跑通一次完整的 PyTorch 训练闭环：</p>
+<p>$$
+\text{数据} \rightarrow \text{预测} \rightarrow \text{损失} \rightarrow \text{梯度} \rightarrow \text{更新参数} \rightarrow \text{重新预测}
+$$</p>
+<p>这条闭环是后续多层感知机、卷积神经网络、ResNet 和自动驾驶视觉模型共同的骨架。模型会变复杂，但训练的基本机制不会变。</p>
+<ul>
+<li>建议课时：$8\text{--}10$ 小时</li>
+<li>学习方式：先手算，再读代码，最后独立改写</li>
+<li>最终产物：一个可复现的 PyTorch 训练脚本、一张训练/验证损失曲线和一份实验说明</li>
+<li>本课边界：不展开 MLP、CNN、ResNet、目标检测或语义分割；它们是后续模块</li>
+</ul>
+<h2 id="为什么要学习训练闭环" tabindex="-1">为什么要学习训练闭环</h2>
+<p>当一个模型效果不好时，真正的问题不一定是“模型不够先进”。常见原因还包括：</p>
+<ul>
+<li>输入张量的 shape 不对；</li>
+<li>标签和样本没有对齐；</li>
+<li>忘记清空梯度或更新参数；</li>
+<li>训练集和验证集发生泄漏；</li>
+<li>只看训练损失，没有检查泛化能力；</li>
+<li>随机种子、数据切分或环境没有记录，导致结果无法复现。</li>
+</ul>
+<p>如果不理解训练闭环，就只能反复换模型和调参数；理解它之后，才能判断错误发生在数据、计算、优化还是验证环节。</p>
+<p>在后续 nuScenes 和感知数据任务中，这项能力会直接用于：</p>
+<ol>
+<li>检查一批图像、标签和类别编号能否被模型正确读取；</li>
+<li>判断训练集与验证集是否按 scene 隔离；</li>
+<li>解释 loss、梯度和评价指标为什么异常；</li>
+<li>保存可复现的配置、曲线、模型权重和失败样本。</li>
+</ol>
+<h2 id="学习目标" tabindex="-1">学习目标</h2>
+<p>完成本课后，你应当能够：</p>
+<ul>
+<li>说清标量、向量、矩阵和张量的关系；</li>
+<li>根据 <code>shape</code> 判断样本维、特征维和输出维；</li>
+<li>写出线性模型、均方误差和梯度下降的基本公式；</li>
+<li>解释 <code>loss.backward()</code> 和 <code>optimizer.step()</code> 分别做了什么；</li>
+<li>独立实现训练阶段和验证阶段；</li>
+<li>绘制并解读训练损失与验证损失曲线；</li>
+<li>识别过拟合、数据泄漏和不可复现等问题；</li>
+<li>提交足以让导师复现实验的证据。</li>
+</ul>
+<h2 id="先修知识" tabindex="-1">先修知识</h2>
+<p>本课不假设你学过深度学习，但需要能完成以下基础操作：</p>
+<ul>
+<li>Python：变量、函数、循环、列表、字典和 <code>import</code>；</li>
+<li>NumPy/PyTorch：创建数组或张量、索引、基本运算；</li>
+<li>线性代数：向量、矩阵乘法和转置的直观含义；</li>
+<li>微积分：导数表示函数对输入变化的敏感程度；</li>
+<li>概率统计：平均值，以及训练集和验证集的区别。</li>
+</ul>
+<p>如果暂时不能熟练手算矩阵乘法或导数，可以继续本课，但必须完成本页中的 shape 检查和有限差分实验后再进入独立任务。</p>
+<h2 id="课前诊断" tabindex="-1">课前诊断</h2>
+<p>先不要运行代码，独立回答下面的问题。</p>
+<ol>
+<li>有 $100$ 个样本，每个样本有 $4$ 个特征，输入矩阵 $X$ 的 shape 应是什么？</li>
+<li>若 $X$ 的 shape 是 $(32, 4)$，权重 $W$ 的 shape 是 $(4, 1)$，那么 $XW$ 的 shape 是什么？</li>
+<li>损失函数的作用是产生最终预测，还是衡量预测与目标之间的差异？</li>
+<li>为什么验证集不能参与参数更新？</li>
+<li><code>loss.backward()</code> 之后，模型参数会自动变好吗？</li>
+<li>设置随机种子能否证明实验结果一定正确？</li>
+</ol>
+<details>
+<summary>展开参考答案</summary>
+<ol>
+<li>$(100, 4)$。第一维通常是样本数，第二维是每个样本的特征数。</li>
+<li>$(32, 1)$。矩阵乘法的内维 $4$ 消去，保留外维 $32$ 和 $1$。</li>
+<li>损失函数衡量预测与目标之间的差异。</li>
+<li>验证集用于模拟“没见过的数据”。如果它参与更新，就无法客观评价泛化能力。</li>
+<li>不会。<code>backward()</code> 只计算梯度；还需要 <code>optimizer.step()</code> 才会更新参数。</li>
+<li>不能。随机种子只提高可复现性，不会修复错误的数据、模型或评价方法。</li>
+</ol>
+</details>
+<p>建议标准：答对至少 $4$ 题再进入实验。低于 $4$ 题时，先复习本页“张量与 shape”“损失、梯度与更新”两节。</p>
+<h2 id="先建立最小心智模型" tabindex="-1">先建立最小心智模型</h2>
+<p>一次监督学习至少包含六个对象：</p>
+<div class="table-wrap" role="region" aria-label="数据表，可横向滚动" tabindex="0"><table><thead>
+<tr>
+<th>对象</th>
+<th>符号</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>输入</td>
+<td>$X$</td>
+<td>模型看到的数据</td>
+</tr>
+<tr>
+<td>标签</td>
+<td>$y$</td>
+<td>希望模型给出的正确答案</td>
+</tr>
+<tr>
+<td>模型</td>
+<td>$f_\theta$</td>
+<td>将输入映射为预测的函数</td>
+</tr>
+<tr>
+<td>参数</td>
+<td>$\theta$</td>
+<td>模型要从数据中学到的数值</td>
+</tr>
+<tr>
+<td>预测</td>
+<td>$\hat{y}$</td>
+<td>模型当前给出的答案</td>
+</tr>
+<tr>
+<td>损失</td>
+<td>$L$</td>
+<td>预测与标签之间的差异</td>
+</tr>
+</tbody>
+</table></div><p>训练的目标不是让模型“记住一段代码”，而是寻找一组参数 $\theta$，使训练数据上的平均损失尽量小，同时在未参与训练的数据上仍能工作：</p>
+<p>$$
+\theta^* = \arg\min_\theta \frac{1}{N}\sum_{i=1}^{N} \ell\left(f_\theta(x_i), y_i\right)
+$$</p>
+<p>其中，$N$ 是样本数，$\ell$ 是单个样本的损失函数。</p>
+<h2 id="张量与-shape" tabindex="-1">张量与 shape</h2>
+<h3 id="从标量到张量" tabindex="-1">从标量到张量</h3>
+<ul>
+<li>标量：一个数，例如温度 $23.5$；</li>
+<li>向量：一列数，例如二维位置 $(x,y)$；</li>
+<li>矩阵：按行列排列的数，例如“样本 $\times$ 特征”；</li>
+<li>张量：对以上概念的统一扩展，可以具有任意多个维度。</li>
+</ul>
+<p>在 PyTorch 中，它们都由 <code>torch.Tensor</code> 表示：</p>
+<pre><code class="language-python">import torch
+
+scalar = torch.tensor(3.0)                 # shape: ()
+vector = torch.tensor([1.0, 2.0, 3.0])     # shape: (3,)
+matrix = torch.zeros(5, 3)                 # shape: (5, 3)
+images = torch.zeros(8, 3, 224, 224)       # shape: (8, 3, 224, 224)
+</code></pre>
+<p>最后一个例子通常表示 $8$ 张图像，每张图像有 $3$ 个通道，高和宽均为 $224$。不要只记数字，要为每一维写出语义：</p>
+<p>$$
+(N,C,H,W)=(8,3,224,224)
+$$</p>
+<h3 id="线性模型中的-shape" tabindex="-1">线性模型中的 shape</h3>
+<p>假设一个 batch 有 $B$ 个样本，每个样本有 $d$ 个特征，模型输出 $m$ 个数：</p>
+<p>$$
+X \in \mathbb{R}^{B\times d},\qquad
+W \in \mathbb{R}^{d\times m},\qquad
+b \in \mathbb{R}^{m}
+$$</p>
+<p>线性模型为：</p>
+<p>$$
+\hat{Y}=XW+b
+$$</p>
+<p>因此：</p>
+<p>$$
+\hat{Y}\in\mathbb{R}^{B\times m}
+$$</p>
+<div class="lesson-diagram" role="region" aria-label="课程图示，可横向滚动" tabindex="0"><pre class="mermaid">flowchart TB
+    accTitle: 张量形状从输入到预测
+    accDescr: 一个批次含 B 个样本，每个样本有 d 个特征；输入与权重相乘并加上偏置后，得到 B 乘 m 的预测。
+    X[&quot;输入 X&lt;br/&gt;(B × d)&quot;] --&gt; M[&quot;矩阵乘法&quot;]
+    W[&quot;权重 W&lt;br/&gt;(d × m)&quot;] --&gt; M
+    M --&gt; A[&quot;加偏置&quot;]
+    B[&quot;偏置 b&lt;br/&gt;(m)&quot;] --&gt; A
+    A --&gt; Y[&quot;预测 Ŷ&lt;br/&gt;(B × m)&quot;]
+</pre></div><p><em>先检查矩阵乘法的内维 $d$ 是否一致，再确认预测保留了 batch 维 $B$。</em></p>
+<p>偏置 $b$ 会沿 batch 维广播。广播很方便，但也可能掩盖错误，所以训练前应主动检查：</p>
+<pre><code class="language-python">assert X.ndim == 2
+assert y.ndim == 2
+assert X.shape[0] == y.shape[0]
+assert X.shape[1] == model.in_features
+assert y.shape[1] == model.out_features
+</code></pre>
+<p>对于本课的一维回归任务：</p>
+<p>$$
+X:(B,1),\qquad y:(B,1),\qquad \hat{y}:(B,1)
+$$</p>
+<p>如果把 $y$ 写成 $(B,)$，PyTorch 有时会广播而不立即报错，却可能计算出不是你想要的损失。</p>
+<h2 id="线性模型最简单的可训练模型" tabindex="-1">线性模型：最简单的可训练模型</h2>
+<p>一维线性模型写作：</p>
+<p>$$
+\hat{y}=wx+b
+$$</p>
+<ul>
+<li>$x$ 是输入；</li>
+<li>$w$ 是斜率，也就是输入变化一个单位时预测大约变化多少；</li>
+<li>$b$ 是截距，也就是 $x=0$ 时的预测；</li>
+<li>$w$ 和 $b$ 是模型要学习的参数。</li>
+</ul>
+<p>如果真实数据近似满足：</p>
+<p>$$
+y=3x+2+\varepsilon
+$$</p>
+<p>其中 $\varepsilon$ 是噪声，那么训练良好的模型应得到接近 $w=3$、$b=2$ 的参数，但不会完全相等。</p>
+<p>线性模型虽然简单，却已经包含深度学习训练的全部基础部件：参数、前向计算、损失、反向传播和优化。</p>
+<h2 id="损失把预测得不好变成一个数" tabindex="-1">损失：把“预测得不好”变成一个数</h2>
+<p>回归任务常用均方误差：</p>
+<p>$$
+L(w,b)=\frac{1}{B}\sum_{i=1}^{B}\left(\hat{y}_i-y_i\right)^2
+$$</p>
+<p>损失越小，表示当前 batch 上的预测通常越接近标签。平方有三个作用：</p>
+<ol>
+<li>正误差和负误差不会互相抵消；</li>
+<li>大误差会受到更强惩罚；</li>
+<li>函数可导，便于计算梯度。</li>
+</ol>
+<p>损失和业务指标不是同一个概念。模型使用某个可优化的损失进行训练，最终还应使用适合任务的指标评价，例如 MAE、准确率、precision、recall 或 IoU。</p>
+<h2 id="梯度反向传播与参数更新" tabindex="-1">梯度、反向传播与参数更新</h2>
+<h3 id="梯度表示什么" tabindex="-1">梯度表示什么</h3>
+<p>导数表示一个变量发生小变化时，函数大约怎样变化。对多个参数求偏导并排列起来，就得到梯度：</p>
+<p>$$
+\nabla_\theta L=
+\begin{bmatrix}
+\frac{\partial L}{\partial \theta_1}\
+\frac{\partial L}{\partial \theta_2}\
+\vdots
+\end{bmatrix}
+$$</p>
+<p>梯度指向损失增大最快的方向，因此沿负梯度方向更新参数：</p>
+<p>$$
+\theta_{t+1}=\theta_t-\eta\nabla_\theta L(\theta_t)
+$$</p>
+<p>$\eta$ 是学习率：</p>
+<ul>
+<li>太小：训练很慢；</li>
+<li>太大：可能反复越过低点，甚至出现 <code>nan</code>；</li>
+<li>合适：损失总体下降并逐渐稳定。</li>
+</ul>
+<h3 id="前向传播和反向传播" tabindex="-1">前向传播和反向传播</h3>
+<p>前向传播按计算顺序得到预测和损失：</p>
+<p>$$
+x \rightarrow wx+b \rightarrow \hat{y} \rightarrow L(\hat{y},y)
+$$</p>
+<p>反向传播利用链式法则，从损失出发反向计算每个参数的梯度：</p>
+<h1>$$
+\frac{\partial L}{\partial w}</h1>
+<p>\frac{\partial L}{\partial \hat{y}}
+\frac{\partial \hat{y}}{\partial w}
+$$</p>
+<p>PyTorch 的自动微分会记录前向计算图。调用：</p>
+<pre><code class="language-python">loss.backward()
+</code></pre>
+<p>会把梯度写入各参数的 <code>.grad</code>，但不会修改参数本身。参数更新由优化器完成：</p>
+<pre><code class="language-python">optimizer.step()
+</code></pre>
+<p>PyTorch 默认会累加梯度，因此每个 batch 更新前还需要：</p>
+<pre><code class="language-python">optimizer.zero_grad()
+</code></pre>
+<p>正确顺序是：</p>
+<pre><code class="language-text">清空旧梯度 → 前向计算 → 计算损失 → 反向传播 → 更新参数
+</code></pre>
+<div class="lesson-diagram" role="region" aria-label="课程图示，可横向滚动" tabindex="0"><pre class="mermaid">flowchart TB
+    accTitle: 模型训练闭环
+    accDescr: 每个批次先清空旧梯度 再前向计算预测和损失 然后反向传播并更新参数 下一批次重新从清空旧梯度开始
+    D[&quot;当前批次&quot;] --&gt; FIRST[&quot;第 1 组&lt;br/&gt;① 清空旧梯度&lt;br/&gt;② 前向得到预测&lt;br/&gt;③ 计算损失&quot;]
+    FIRST --&gt; SECOND[&quot;第 2 组&lt;br/&gt;④ 反向传播&lt;br/&gt;⑤ 更新参数&quot;]
+    SECOND --&gt; N[&quot;下一批次&quot;]
+    N -. &quot;重复&quot; .-&gt; FIRST
+</pre></div><p><em>每个新批次都从清空旧梯度开始，再依次完成前向、损失、反向和更新；验证仍在训练闭环之外。</em></p>
+<h2 id="优化器" tabindex="-1">优化器</h2>
+<p>优化器负责按照梯度和更新规则修改参数。本课使用最基本的随机梯度下降 SGD：</p>
+<pre><code class="language-python">optimizer = torch.optim.SGD(model.parameters(), lr=0.05)
+</code></pre>
+<p>这里的“随机”来自每次只使用一小批样本估计总体梯度。一个小批次称为 batch，完整看过一次训练集称为一个 epoch。</p>
+<p>后续课程会比较动量法和 Adam。本课只要求理解：优化器不是模型，也不产生预测；它只根据参数梯度执行更新。</p>
+<h2 id="训练模式与验证模式" tabindex="-1">训练模式与验证模式</h2>
+<p>模型在训练和验证时扮演不同角色。</p>
+<h3 id="训练阶段" tabindex="-1">训练阶段</h3>
+<pre><code class="language-python">model.train()
+</code></pre>
+<p>训练阶段需要：</p>
+<ul>
+<li>启用梯度记录；</li>
+<li>计算损失；</li>
+<li>反向传播；</li>
+<li>更新参数。</li>
+</ul>
+<h3 id="验证阶段" tabindex="-1">验证阶段</h3>
+<pre><code class="language-python">model.eval()
+with torch.no_grad():
+    ...
+</code></pre>
+<p>验证阶段：</p>
+<ul>
+<li>不更新参数；</li>
+<li>不需要保存梯度计算图；</li>
+<li>应使用与训练集隔离的数据；</li>
+<li>应使用固定、可比较的数据处理流程。</li>
+</ul>
+<p><code>model.eval()</code> 会让 Dropout、BatchNorm 等层切换到推理行为；<code>torch.no_grad()</code> 则关闭梯度记录、减少内存开销。两者作用不同，后续模型中通常都要使用。</p>
+<p>虽然本课的 <code>nn.Linear</code> 没有 Dropout 或 BatchNorm，仍然从第一天就养成显式切换模式的习惯。</p>
+<h2 id="最小-pytorch-训练闭环" tabindex="-1">最小 PyTorch 训练闭环</h2>
+<p>下面的程序只使用合成数据，可以在 CPU 上运行。请先逐段阅读，再完整执行。</p>
+<pre><code class="language-python">import random
+
+import matplotlib.pyplot as plt
+import numpy as np
+import torch
+from torch import nn
+from torch.utils.data import DataLoader, TensorDataset
+
+
+SEED = 42
+
+
+def set_seed(seed: int) -&gt; None:
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+
+
+set_seed(SEED)
+device = torch.device(&quot;cpu&quot;)
+
+# 1. 构造数据：y = 3x + 2 + noise
+num_samples = 1000
+X = torch.randn(num_samples, 1)
+noise = 0.2 * torch.randn(num_samples, 1)
+y = 3.0 * X + 2.0 + noise
+
+assert X.shape == (num_samples, 1)
+assert y.shape == (num_samples, 1)
+
+# 2. 用固定随机序列切分数据，验证集不参与训练
+split_generator = torch.Generator().manual_seed(SEED)
+indices = torch.randperm(num_samples, generator=split_generator)
+train_indices = indices[:800]
+val_indices = indices[800:]
+
+X_train, y_train = X[train_indices], y[train_indices]
+X_val, y_val = X[val_indices], y[val_indices]
+
+train_dataset = TensorDataset(X_train, y_train)
+val_dataset = TensorDataset(X_val, y_val)
+
+loader_generator = torch.Generator().manual_seed(SEED)
+train_loader = DataLoader(
+    train_dataset,
+    batch_size=32,
+    shuffle=True,
+    generator=loader_generator,
+)
+val_loader = DataLoader(val_dataset, batch_size=64, shuffle=False)
+
+# 3. 定义模型、损失函数和优化器
+model = nn.Linear(in_features=1, out_features=1).to(device)
+loss_fn = nn.MSELoss()
+optimizer = torch.optim.SGD(model.parameters(), lr=0.05)
+
+
+def train_one_epoch() -&gt; float:
+    model.train()
+    total_loss = 0.0
+    total_samples = 0
+
+    for batch_X, batch_y in train_loader:
+        batch_X = batch_X.to(device)
+        batch_y = batch_y.to(device)
+
+        optimizer.zero_grad()
+        predictions = model(batch_X)
+        loss = loss_fn(predictions, batch_y)
+        loss.backward()
+        optimizer.step()
+
+        batch_size = batch_X.shape[0]
+        total_loss += loss.item() * batch_size
+        total_samples += batch_size
+
+    return total_loss / total_samples
+
+
+def evaluate() -&gt; float:
+    model.eval()
+    total_loss = 0.0
+    total_samples = 0
+
+    with torch.no_grad():
+        for batch_X, batch_y in val_loader:
+            batch_X = batch_X.to(device)
+            batch_y = batch_y.to(device)
+
+            predictions = model(batch_X)
+            loss = loss_fn(predictions, batch_y)
+
+            batch_size = batch_X.shape[0]
+            total_loss += loss.item() * batch_size
+            total_samples += batch_size
+
+    return total_loss / total_samples
+
+
+# 4. 重复“训练一次 + 验证一次”，并保存曲线数据
+epochs = 30
+train_losses = []
+val_losses = []
+
+for epoch in range(epochs):
+    train_loss = train_one_epoch()
+    val_loss = evaluate()
+    train_losses.append(train_loss)
+    val_losses.append(val_loss)
+
+    print(
+        f&quot;epoch={epoch + 1:02d} &quot;
+        f&quot;train_loss={train_loss:.6f} &quot;
+        f&quot;val_loss={val_loss:.6f}&quot;
+    )
+
+# 5. 查看学到的参数
+learned_weight = model.weight.detach().cpu().item()
+learned_bias = model.bias.detach().cpu().item()
+print(f&quot;learned_weight={learned_weight:.3f}&quot;)
+print(f&quot;learned_bias={learned_bias:.3f}&quot;)
+
+# 6. 绘制训练/验证损失曲线
+plt.plot(range(1, epochs + 1), train_losses, label=&quot;train&quot;)
+plt.plot(range(1, epochs + 1), val_losses, label=&quot;validation&quot;)
+plt.xlabel(&quot;epoch&quot;)
+plt.ylabel(&quot;MSE loss&quot;)
+plt.legend()
+plt.grid(alpha=0.3)
+plt.tight_layout()
+plt.show()
+</code></pre>
+<p>正常情况下，你应观察到：</p>
+<ul>
+<li>训练损失和验证损失在前几个 epoch 明显下降；</li>
+<li>两条曲线最终稳定在相近范围；</li>
+<li>学到的权重接近 $3$；</li>
+<li>学到的偏置接近 $2$。</li>
+</ul>
+<p>不要把某个精确数值当作唯一答案。随机数据、PyTorch 版本和计算设备都可能造成小幅差异；更重要的是趋势、参数范围和可复现证据。</p>
+<h2 id="怎样阅读训练曲线" tabindex="-1">怎样阅读训练曲线</h2>
+<p>训练曲线是诊断工具，不是装饰图。</p>
+<h3 id="正常学习" tabindex="-1">正常学习</h3>
+<ul>
+<li>训练损失总体下降；</li>
+<li>验证损失也下降；</li>
+<li>两者逐渐稳定；</li>
+<li>训练损失通常略低于验证损失。</li>
+</ul>
+<h3 id="欠拟合" tabindex="-1">欠拟合</h3>
+<ul>
+<li>训练损失和验证损失都较高；</li>
+<li>两条曲线可能都没有充分下降。</li>
+</ul>
+<p>可能原因包括训练时间不足、学习率不合适、输入信息不足或模型表达能力不足。</p>
+<h3 id="过拟合" tabindex="-1">过拟合</h3>
+<ul>
+<li>训练损失持续下降；</li>
+<li>验证损失先下降后上升；</li>
+<li>训练和验证之间的差距越来越大。</li>
+</ul>
+<p>这表示模型越来越适应训练样本，却没有提高对新数据的能力。后续课程会学习正则化、数据增广和更合理的模型选择。</p>
+<h3 id="曲线异常但不一定是模型问题" tabindex="-1">曲线异常但不一定是模型问题</h3>
+<ul>
+<li>损失突然为 <code>nan</code>：检查学习率、数据范围和非法值；</li>
+<li>损失完全不变：检查梯度、参数更新和数据是否有变化；</li>
+<li>验证结果好得不合理：优先排查数据泄漏；</li>
+<li>每次运行差异巨大：检查种子、切分、shuffle、环境和非确定性算子。</li>
+</ul>
+<h2 id="三条必须守住的数据边界" tabindex="-1">三条必须守住的数据边界</h2>
+<div class="lesson-diagram" role="region" aria-label="课程图示，可横向滚动" tabindex="0"><pre class="mermaid">flowchart TB
+    accTitle: 正确的数据边界与泄漏错误
+    accDescr: 正确路径按场景切出互斥的训练 验证和测试集合并分离三种用途 错误路径让同一场景跨集合并造成验证结果失真
+    A[&quot;原始数据&quot;] --&gt; S[&quot;正确路径&lt;br/&gt;先按 scene 切分&quot;]
+    S --&gt; USE[&quot;三个互斥集合&lt;br/&gt;训练：更新参数&lt;br/&gt;验证：选择方案&lt;br/&gt;测试：最终评估&quot;]
+    USE --&gt; OK[&quot;集合互斥&lt;br/&gt;职责分离&quot;]
+    A --&gt; X[&quot;错误路径&lt;br/&gt;同一 scene 跨集合&quot;]
+    X --&gt; L[&quot;训练帧与验证帧&lt;br/&gt;共享场景信息&quot;]
+    L --&gt; BAD[&quot;信息泄漏&lt;br/&gt;验证结果失真&quot;]
+</pre></div><p><em>正确路径同时隔离数据集合与使用职责；错误路径只要让同一 scene 跨集合，就会产生泄漏。</em></p>
+<h3 id="训练集和验证集不能泄漏" tabindex="-1">训练集和验证集不能泄漏</h3>
+<p>数据泄漏是指训练过程直接或间接使用了本应只用于验证的信息。例如：</p>
+<ul>
+<li>同一 scene 的相邻帧同时进入训练集和验证集；</li>
+<li>先使用全量数据计算均值和方差，再切分数据；</li>
+<li>根据验证集表现反复人工修改标签；</li>
+<li>训练时错误地遍历了验证 <code>DataLoader</code>；</li>
+<li>文件重复、样本 ID 重复或增强版本跨集合出现。</li>
+</ul>
+<p>自动驾驶连续帧高度相似，因此 nuScenes 等数据集通常需要按 scene 切分，而不是随机按单帧切分。</p>
+<h3 id="随机种子不是正确性证明" tabindex="-1">随机种子不是“正确性证明”</h3>
+<p>设置种子能让随机初始化、数据切分和 shuffle 更容易复现，但不能保证：</p>
+<ul>
+<li>数据没有错误；</li>
+<li>算法没有 bug；</li>
+<li>所有设备上的浮点结果完全一致；</li>
+<li>模型具有泛化能力。</li>
+</ul>
+<p>种子必须与依赖版本、设备、数据版本和配置一起记录。</p>
+<h3 id="验证集不能被当成训练集反复使用" tabindex="-1">验证集不能被当成训练集反复使用</h3>
+<p>如果不断根据验证集选择参数，验证集信息也会逐渐渗入开发过程。正式项目还需要独立测试集；测试集只在方案基本确定后使用。</p>
+<h2 id="引导实验" tabindex="-1">引导实验</h2>
+<h3 id="实验-a验证梯度真的存在" tabindex="-1">实验 A：验证梯度真的存在</h3>
+<p>在第一次 <code>loss.backward()</code> 后、<code>optimizer.step()</code> 前打印：</p>
+<pre><code class="language-python">print(model.weight.grad)
+print(model.bias.grad)
+</code></pre>
+<p>完成以下记录：</p>
+<ol>
+<li>两个梯度的 shape；</li>
+<li>梯度是否为 <code>None</code>；</li>
+<li>执行 <code>optimizer.step()</code> 前后的参数差值；</li>
+<li>解释为什么差值方向通常与梯度方向相反。</li>
+</ol>
+<h3 id="实验-b用有限差分检查自动微分" tabindex="-1">实验 B：用有限差分检查自动微分</h3>
+<p>对一个简单标量函数：</p>
+<p>$$
+f(w)=(w-3)^2
+$$</p>
+<p>解析导数为：</p>
+<p>$$
+f'(w)=2(w-3)
+$$</p>
+<p>有限差分近似为：</p>
+<p>$$
+f'(w)\approx\frac{f(w+h)-f(w-h)}{2h}
+$$</p>
+<p>请在 $w=1$、$h=10^{-4}$ 时，对比解析导数、有限差分和 PyTorch 自动微分。三者应当接近，但浮点误差使它们不必完全相同。</p>
+<h3 id="实验-c改变学习率" tabindex="-1">实验 C：改变学习率</h3>
+<p>分别使用：</p>
+<pre><code class="language-text">0.0001、0.05、1.0
+</code></pre>
+<p>每次都从相同随机种子重新初始化模型，绘制三组曲线并回答：</p>
+<ul>
+<li>哪个学习率收敛太慢？</li>
+<li>哪个学习率较稳定？</li>
+<li>哪个学习率可能震荡或发散？</li>
+<li>为什么比较学习率时必须重置模型？</li>
+</ul>
+<h3 id="实验-d制造一次泄漏" tabindex="-1">实验 D：制造一次泄漏</h3>
+<p>仅在隔离实验中，故意让验证集等于训练集并观察验证损失。然后恢复正确切分，并写下：</p>
+<ul>
+<li>泄漏后的曲线为什么“漂亮”；</li>
+<li>为什么漂亮的指标反而可能是风险信号；</li>
+<li>在真实 nuScenes 任务中如何通过 scene token 检查交集。</li>
+</ul>
+<p>禁止把故意泄漏的结果作为正式实验结论。</p>
+<h2 id="独立迁移任务" tabindex="-1">独立迁移任务</h2>
+<p>在不照抄本页回归代码的前提下，完成一个二维二分类线性模型：</p>
+<ol>
+<li>生成两类二维点，输入 shape 为 $(N,2)$；</li>
+<li>固定随机种子，并独立切分训练集和验证集；</li>
+<li>使用 <code>nn.Linear(2, 2)</code> 输出两个类别的 logits；</li>
+<li>使用 <code>nn.CrossEntropyLoss()</code>；</li>
+<li>完成训练和验证函数；</li>
+<li>记录训练/验证损失与准确率；</li>
+<li>绘制损失曲线；</li>
+<li>保存模型参数和实验配置；</li>
+<li>至少诊断一次你真实遇到的错误。</li>
+</ol>
+<p>注意：<code>CrossEntropyLoss</code> 接收未经 softmax 的 logits，标签通常应是 shape 为 $(N,)$ 的整数类别编号，dtype 为 <code>torch.long</code>。不要在模型输出后自行重复调用 softmax。</p>
+<p>最低完成条件：验证准确率达到合理水平不是唯一标准；还必须证明没有样本 ID 交集、代码能够从空环境重新运行，并能解释每一步为何存在。</p>
+<h2 id="常见错误案例" tabindex="-1">常见错误案例</h2>
+<div class="table-wrap" role="region" aria-label="数据表，可横向滚动" tabindex="0"><table><thead>
+<tr>
+<th>现象</th>
+<th>常见原因</th>
+<th>先检查什么</th>
+<th>修复方向</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>shape 报错</td>
+<td>矩阵内维不匹配</td>
+<td>打印每个张量的 shape</td>
+<td>明确 batch/feature/output 维</td>
+</tr>
+<tr>
+<td>没报错但 loss 奇怪</td>
+<td>标签被意外广播</td>
+<td>比较预测和标签 shape</td>
+<td>用 <code>assert</code> 强制一致</td>
+</tr>
+<tr>
+<td>loss 不下降</td>
+<td>忘记 <code>backward()</code> 或 <code>step()</code></td>
+<td>检查 <code>.grad</code> 和参数变化</td>
+<td>恢复完整更新顺序</td>
+</tr>
+<tr>
+<td>梯度越来越大</td>
+<td>学习率过高或输入尺度异常</td>
+<td>梯度范数、输入范围</td>
+<td>降低学习率、检查数据</td>
+</tr>
+<tr>
+<td>显存或内存持续增加</td>
+<td>验证时保留计算图</td>
+<td>是否使用 <code>no_grad()</code></td>
+<td>验证阶段关闭梯度</td>
+</tr>
+<tr>
+<td>验证结果异常优秀</td>
+<td>数据泄漏或重复样本</td>
+<td>样本/scene ID 交集</td>
+<td>重新按数据边界切分</td>
+</tr>
+<tr>
+<td>每次结果差异很大</td>
+<td>种子或切分未固定</td>
+<td>记录随机状态和索引</td>
+<td>统一种子并保存 split</td>
+</tr>
+<tr>
+<td>设备不一致报错</td>
+<td>模型和数据位于不同设备</td>
+<td>打印 <code>.device</code></td>
+<td>模型、输入、标签移到同一设备</td>
+</tr>
+<tr>
+<td>验证结果不稳定</td>
+<td>忘记 <code>model.eval()</code></td>
+<td>检查当前模式</td>
+<td>验证前切换 eval 模式</td>
+</tr>
+<tr>
+<td>指标正确但样本错位</td>
+<td>特征与标签排序不同</td>
+<td>抽样显示 ID、输入和标签</td>
+<td>用稳定主键进行对齐</td>
+</tr>
+</tbody>
+</table></div><p>面对错误时，不要先“多训练几轮”。先保留报错、输入 shape、样本 ID、参数梯度和最小复现，再定位故障层次。</p>
+<h2 id="应提交的学习证据" tabindex="-1">应提交的学习证据</h2>
+<p>请提交一个目录，至少包含：</p>
+<pre><code class="language-text">training-loop-evidence/
+├── README.md
+├── train.py
+├── config.json
+├── split.json
+├── metrics.json
+├── loss-curve.png
+├── model.pt
+└── error-note.md
+</code></pre>
+<p>证据要求：</p>
+<ul>
+<li><code>README.md</code>：环境、运行命令、任务定义和结果解释；</li>
+<li><code>train.py</code>：可从头训练和验证，不依赖 Notebook 隐藏状态；</li>
+<li><code>config.json</code>：随机种子、epoch、batch size、学习率和数据版本；</li>
+<li><code>split.json</code>：训练/验证样本 ID，能够证明两者无交集；</li>
+<li><code>metrics.json</code>：每个 epoch 的训练和验证指标；</li>
+<li><code>loss-curve.png</code>：图例、横纵轴和标题完整；</li>
+<li><code>model.pt</code>：通过 <code>state_dict</code> 保存的模型参数；</li>
+<li><code>error-note.md</code>：一次真实错误的现象、假设、证据、修复和复测结果。</li>
+</ul>
+<p>导师应能够仅根据这些文件复现实验，不需要询问“你当时点了哪个单元格”。</p>
+<h2 id="03-级验收量表" tabindex="-1">0–3 级验收量表</h2>
+<div class="table-wrap" role="region" aria-label="数据表，可横向滚动" tabindex="0"><table><thead>
+<tr>
+<th>维度</th>
+<th>0：未建立</th>
+<th>1：跟随完成</th>
+<th>2：独立完成</th>
+<th>3：迁移与诊断</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>机制理解</td>
+<td>无法区分模型、损失、梯度和优化器</td>
+<td>能复述步骤但解释不清因果</td>
+<td>能用公式和 shape 解释完整闭环</td>
+<td>能推导简单梯度并解释链式法则</td>
+</tr>
+<tr>
+<td>独立实现</td>
+<td>代码无法运行</td>
+<td>依赖逐行提示才能运行</td>
+<td>能独立写出训练和验证函数</td>
+<td>能迁移到新的线性分类任务</td>
+</tr>
+<tr>
+<td>数据边界</td>
+<td>不区分训练与验证</td>
+<td>知道要切分但无法证明隔离</td>
+<td>能保存 split 并检查 ID 无交集</td>
+<td>能识别 scene 级泄漏和重复样本</td>
+</tr>
+<tr>
+<td>诊断能力</td>
+<td>只会重跑或调 epoch</td>
+<td>能读取报错但不会缩小范围</td>
+<td>能检查 shape、梯度、参数和曲线</td>
+<td>能设计最小实验区分多个假设</td>
+</tr>
+<tr>
+<td>证据与复现</td>
+<td>无运行记录</td>
+<td>有截图但缺配置</td>
+<td>产物完整，固定种子，可重新运行</td>
+<td>能说明跨设备差异和复现边界</td>
+</tr>
+</tbody>
+</table></div><p>通过标准：</p>
+<ul>
+<li>五个维度均达到 $2$ 级；</li>
+<li>“数据边界”必须达到 $3$ 级；</li>
+<li>独立任务能够重新运行；</li>
+<li>导师随机删除模型文件后，学习者能够从配置重新训练并解释结果差异。</li>
+</ul>
+<h2 id="本课之后学什么" tabindex="-1">本课之后学什么</h2>
+<p>完成本课后，按照以下顺序继续，不要把所有模型堆进这一页：</p>
+<ol>
+<li><strong>多层感知机与泛化</strong>：隐藏层、激活函数、欠拟合、过拟合、权重衰减和 Dropout；</li>
+<li><strong>卷积神经网络</strong>：图像张量、卷积核、通道、padding、stride 和 pooling；</li>
+<li><strong>现代卷积网络与 ResNet</strong>：BatchNorm、残差连接、迁移学习；</li>
+<li><strong>计算机视觉数据任务</strong>：图像增广、边界框、IoU、NMS、检测与分割数据集；</li>
+<li><strong>nuScenes 小项目</strong>：按 scene 切分、标注投影、数据质检、微调、指标和失败样本分析。</li>
+</ol>
+<p>本课是这些模块的共同先修课，不替代它们。</p>
+<h2 id="来源与延伸阅读" tabindex="-1">来源与延伸阅读</h2>
+<p>本页以训练闭环为教学目标进行原创组织和示例编写，参考以下官方资料；延伸阅读时建议只选择 PyTorch 路线：</p>
+<ul>
+<li><a href="https://zh-v2.d2l.ai/chapter_preliminaries/index.html">《动手学深度学习》第二版：预备知识</a></li>
+<li><a href="https://zh-v2.d2l.ai/chapter_preliminaries/autograd.html">《动手学深度学习》第二版：自动微分</a></li>
+<li><a href="https://zh-v2.d2l.ai/chapter_linear-networks/index.html">《动手学深度学习》第二版：线性神经网络</a></li>
+<li><a href="https://zh-v2.d2l.ai/chapter_multilayer-perceptrons/index.html">《动手学深度学习》第二版：多层感知机</a></li>
+<li><a href="https://docs.pytorch.org/tutorials/beginner/basics/optimization_tutorial.html">PyTorch 官方教程：Optimization Loop</a></li>
+<li><a href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html">PyTorch 官方文档：<code>torch.nn.Module</code></a></li>
+<li><a href="https://docs.pytorch.org/docs/stable/generated/torch.no_grad.html">PyTorch 官方文档：<code>torch.no_grad</code></a></li>
+</ul>
+
+    </div>
+
+    <nav class="course-next" aria-label="课程前后导航" data-pagefind-ignore>
+      <a href="/personal-knowledge-base/notes/nuscenes-dataset.html"><span>上一课</span><strong>nuScenes 数据集与数据任务</strong></a>
+      <a class="next" href="/personal-knowledge-base/notes/gpu-workflow.html"><span>下一课</span><strong>GPU 工作流程图</strong></a>
+    </nav>
+  </article>
+  <aside class="reader-page-sidebar" aria-label="本页辅助导航" data-pagefind-ignore>
+  <details class="reader-disclosure page-disclosure" data-responsive-disclosure data-collapse-at="1240" open>
+    <summary>本页目录</summary>
+    <nav class="page-outline" aria-labelledby="page-outline-title">
+      <p class="page-outline-title" id="page-outline-title">本页目录</p>
+      <ol data-page-toc>
+        <li class="toc-loading">若目录未生成，请直接按正文标题阅读。</li>
+      </ol>
+      <a class="page-outline-top" href="#main-content">返回页首 ↑</a>
+    </nav>
+  </details>
+</aside>
+
+</div>
+
+  </main>
+  <footer class="site-footer" data-pagefind-ignore>
+  <div class="portal-wrap footer-grid">
+    <p><strong>个人知识库 · V2 试点</strong><br>公开站点只承载课程与模板；实习生作业、导师评价和内部证据保存在私有记录中。</p>
+    <a href="https://github.com/xqiang646-sudo/personal-knowledge-base">GitHub 仓库</a>
+  </div>
+</footer>
+
+  <script defer src="/personal-knowledge-base/assets/progress.js"></script>
+  <script defer src="/personal-knowledge-base/assets/reader.js"></script>
+</body>
+</html>

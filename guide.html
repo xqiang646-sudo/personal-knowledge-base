@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="面向零基础实习生。每次学习都从一个可检查的问题开始，先写下已有认识，再建立直觉、学习正式表达、完成最小实验、主动制造失败，最后独立迁移并保存证据。">
+  <title>学习指南：让自己的预测越来越可靠｜个人知识库</title>
+  <link rel="icon" href="/personal-knowledge-base/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/personal-knowledge-base/assets/knowledge.css">
+  <link rel="stylesheet" href="/personal-knowledge-base/assets/v2.css">
+  <link rel="stylesheet" href="/personal-knowledge-base/assets/cyrus-theme.css">
+
+
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({
+      startOnLoad: true,
+      securityLevel: "strict",
+      theme: "base",
+      themeVariables: {
+        primaryColor: "#ffffff",
+        primaryTextColor: "#08090b",
+        primaryBorderColor: "#111111",
+        secondaryColor: "#e9edf3",
+        tertiaryColor: "#f4f6f9",
+        lineColor: "#656b76",
+        fontFamily: "Inter, Noto Sans SC, system-ui, sans-serif"
+      },
+      flowchart: { htmlLabels: false, curve: "basis", useMaxWidth: false }
+    });
+  </script>
+
+</head>
+<body class="course-body" data-theme="cyrus">
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <header class="v2-header" data-pagefind-ignore>
+  <div class="portal-wrap v2-header-inner">
+    <a class="site-brand" href="/personal-knowledge-base/">个人知识库</a>
+    <nav class="v2-nav" aria-label="知识库主导航">
+      <a href="/personal-knowledge-base/guide.html" aria-current="page">学习指南</a>
+      <a href="/personal-knowledge-base/#learning-path">课程目录</a>
+      <a href="/personal-knowledge-base/topics.html">专题</a>
+      <a href="/personal-knowledge-base/search.html">搜索</a>
+      <a href="/personal-knowledge-base/mentor.html">导师面板</a>
+    </nav>
+  </div>
+</header>
+
+  <main id="main-content" tabindex="-1">
+    <div class="portal-wrap reader-shell guide-reader-shell" data-pagefind-body>
+  <a class="reader-content-skip" href="#lesson-content">跳过目录，进入学习指南正文</a>
+  <aside class="reader-book-sidebar" aria-label="教材目录" data-pagefind-ignore>
+  <details class="reader-disclosure book-disclosure" data-responsive-disclosure data-collapse-at="860" open>
+    <summary>
+      <span>教材目录</span>
+      <strong>7 阶段</strong>
+    </summary>
+    <div class="reader-disclosure-body">
+      <div class="book-heading">
+        <a class="book-home" href="/personal-knowledge-base/">自动驾驶学习系统</a>
+        <p>按章节学习，也按真实任务取用。</p>
+      </div>
+
+      <nav class="book-tree" aria-label="教材章节目录">
+        <a class="book-guide is-active" href="/personal-knowledge-base/guide.html" aria-current="page">
+          <span class="book-index">指南</span>
+          <span><strong>学习指南</strong><small>先学会怎样完成一课</small></span>
+        </a>
+
+
+
+        <details class="book-chapter" open>
+          <summary><span>P0</span><strong>起点诊断与数字工具</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/learn/math/diagnostic.html">
+                <span class="book-course-number">P0.1</span>
+                <span class="book-course-title">数学入口诊断</span>
+                <small class="book-course-state state-pilot">试点</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/foundations-bootcamp.html">
+                <span class="book-course-number">P0.2</span>
+                <span class="book-course-title">零基础预备课（现有内容）</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/engineering-toolkit.html">
+                <span class="book-course-number">P0.3</span>
+                <span class="book-course-title">远程运维与开发工具</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/evidence-first-engineering.html">
+                <span class="book-course-number">P0.4</span>
+                <span class="book-course-title">证据优先的工程排障</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+
+        <details class="book-chapter">
+          <summary><span>M1</span><strong>数学核心</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/learn/math/linear-algebra-coordinate.html">
+                <span class="book-course-number">M1.1</span>
+                <span class="book-course-title">线性代数：从向量到坐标变换</span>
+                <small class="book-course-state state-pilot">试点</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/learn/math/calculus-curvature.html">
+                <span class="book-course-number">M1.2</span>
+                <span class="book-course-title">微积分：从变化率到曲率</span>
+                <small class="book-course-state state-pilot">试点</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/learn/math/probability-scene-split.html">
+                <span class="book-course-number">M1.3</span>
+                <span class="book-course-title">概率论：从随机性到场景切分</span>
+                <small class="book-course-state state-pilot">试点</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+
+        <details class="book-chapter">
+          <summary><span>A1</span><strong>自动驾驶数据主线</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/autonomous-driving-overview.html">
+                <span class="book-course-number">A1.1</span>
+                <span class="book-course-title">自动驾驶系统总览</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/vehicle-hardware-network.html">
+                <span class="book-course-number">A1.2</span>
+                <span class="book-course-title">车辆硬件与车载网络</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/coordinate-transformations.html">
+                <span class="book-course-number">A1.3</span>
+                <span class="book-course-title">从线性代数到坐标系转换</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/perception-maps.html">
+                <span class="book-course-number">A1.4</span>
+                <span class="book-course-title">感知算法与地图基础</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/nuscenes-dataset.html">
+                <span class="book-course-number">A1.5</span>
+                <span class="book-course-title">nuScenes 数据集与数据任务</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+
+        <details class="book-chapter">
+          <summary><span>DL</span><strong>深度学习与计算机视觉</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/learn/deep-learning/training-loop.html">
+                <span class="book-course-number">DL.1</span>
+                <span class="book-course-title">深度学习：第一个完整训练闭环</span>
+                <small class="book-course-state state-pilot">试点</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <span class="book-course-planned" aria-label="MLP、泛化与正则化，待建设">
+                <span class="book-course-number">DL.2</span>
+                <span class="book-course-title">MLP、泛化与正则化</span>
+                <small class="book-course-state state-planned">待建</small>
+              </span>
+
+            </li>
+
+            <li>
+
+              <span class="book-course-planned" aria-label="CNN、批量归一化与 ResNet，待建设">
+                <span class="book-course-number">DL.3</span>
+                <span class="book-course-title">CNN、批量归一化与 ResNet</span>
+                <small class="book-course-state state-planned">待建</small>
+              </span>
+
+            </li>
+
+            <li>
+
+              <span class="book-course-planned" aria-label="视觉数据、检测与分割基础，待建设">
+                <span class="book-course-number">DL.4</span>
+                <span class="book-course-title">视觉数据、检测与分割基础</span>
+                <small class="book-course-state state-planned">待建</small>
+              </span>
+
+            </li>
+
+            <li>
+
+              <span class="book-course-planned" aria-label="nuScenes-mini 视觉结课项目，待建设">
+                <span class="book-course-number">DL.5</span>
+                <span class="book-course-title">nuScenes-mini 视觉结课项目</span>
+                <small class="book-course-state state-planned">待建</small>
+              </span>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/gpu-workflow.html">
+                <span class="book-course-number">DL.6</span>
+                <span class="book-course-title">GPU 工作流程图</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+
+        <details class="book-chapter">
+          <summary><span>E1</span><strong>ROS 2 与 Autoware 拓展</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/planning-autoware.html">
+                <span class="book-course-number">E1.1</span>
+                <span class="book-course-title">规划控制与 Autoware</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/ros2-autoware-debugging.html">
+                <span class="book-course-number">E1.2</span>
+                <span class="book-course-title">沿 ROS 2 图谱排查数据链</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+
+        <details class="book-chapter">
+          <summary><span>E2</span><strong>车辆几何与控制拓展</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/ackermann-bicycle-model.html">
+                <span class="book-course-number">E2.1</span>
+                <span class="book-course-title">自行车与阿克曼模型推导</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/curvature-calculation.html">
+                <span class="book-course-number">E2.2</span>
+                <span class="book-course-title">曲率计算与数值工程</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/can-bus-interface.html">
+                <span class="book-course-number">E2.3</span>
+                <span class="book-course-title">CAN 总线与接口边界</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+
+        <details class="book-chapter">
+          <summary><span>P4</span><strong>工程交付与验证</strong></summary>
+          <ol>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/perception-deployment-contracts.html">
+                <span class="book-course-number">P4.1</span>
+                <span class="book-course-title">感知部署契约</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+            <li>
+
+              <a href="/personal-knowledge-base/notes/validation-closure.html">
+                <span class="book-course-number">P4.2</span>
+                <span class="book-course-title">验证闭环与工程交付</span>
+                <small class="book-course-state state-legacy">现有</small>
+              </a>
+
+            </li>
+
+          </ol>
+        </details>
+
+      </nav>
+
+
+    </div>
+  </details>
+</aside>
+
+
+  <article class="reader-content guide-content" id="lesson-content" tabindex="-1" aria-labelledby="guide-title">
+    <header class="guide-heading">
+      <p class="eyebrow">LEARNING GUIDE · 从人的认知出发</p>
+      <h1 id="guide-title">学习指南：让自己的预测越来越可靠</h1>
+      <p class="lead">面向零基础实习生。每次学习都从一个可检查的问题开始，先写下已有认识，再建立直觉、学习正式表达、完成最小实验、主动制造失败，最后独立迁移并保存证据。</p>
+      <div class="guide-heading-actions">
+        <a class="button button-primary" href="/personal-knowledge-base/learn/math/diagnostic.html">从数学入口诊断开始</a>
+        <a class="button button-quiet" href="/personal-knowledge-base/#learning-path">查看 7 阶段路线</a>
+      </div>
+    </header>
+
+    <div class="course-prose" data-course-prose>
+      <h2 id="先理解这套系统怎么工作" tabindex="-1">先理解这套系统怎么工作</h2>
+<p>这不是一组按顺序点开的知识卡，也不是要求一次读完的百科全书。它是一套任务驱动的教材：你先遇到一个真实问题，再只学习解决这个问题所需的最小知识，最终用新条件下的独立结果证明自己真的掌握了。</p>
+<p>第一次来时，先记住三条规则：</p>
+<ol>
+<li>不要先看答案。先写下你现在怎么想，以及你预测会发生什么。</li>
+<li>不要一开始运行完整数据集。先让一个公式、三个点、两帧数据或一个 batch 工作起来。</li>
+<li>“代码能跑”不是完成。能解释一次失败、换条件独立完成并保存证据，才是产物已就绪。</li>
+</ol>
+<blockquote>
+<p><strong>安全边界：</strong>“反例”和“故意犯错”只允许在纸面、Notebook、沙箱、复制数据或离线回放中进行。不要在真实车辆、生产数据、公司主机、在线 ROS 图或 CAN 硬件接口上制造故障；这类环境只做课程明确允许的只读检查。</p>
+</blockquote>
+<div class="lesson-diagram" role="region" aria-label="课程图示，可横向滚动" tabindex="0"><pre class="mermaid">flowchart LR
+    accTitle: 一次完整学习的七步认知闭环
+    accDescr: 学习从一个可检查的问题开始 经过预测 直觉 形式化 动手和主动制造反例 最后完成迁移并留存证据
+    A[&quot;问题&lt;br/&gt;今天解决什么&quot;] --&gt; B[&quot;预测&lt;br/&gt;我认为会怎样&quot;]
+    B --&gt; C[&quot;直觉&lt;br/&gt;图 方向 数量级&quot;]
+    C --&gt; D[&quot;形式化&lt;br/&gt;变量 公式 假设&quot;]
+    D --&gt; E[&quot;动手&lt;br/&gt;手算 最小代码&quot;]
+    E --&gt; F[&quot;反例&lt;br/&gt;故意破坏条件&quot;]
+    F --&gt; G[&quot;迁移留证&lt;br/&gt;换条件独立完成&quot;]
+    G -. &quot;结果不符时更新认识&quot; .-&gt; B
+</pre></div><p><em>学习不是把答案搬进记忆，而是让“预测—观察—修正”的循环越来越可靠。</em></p>
+<h2 id="一节课的七步认知闭环" tabindex="-1">一节课的七步认知闭环</h2>
+<div class="table-wrap" role="region" aria-label="数据表，可横向滚动" tabindex="0"><table><thead>
+<tr>
+<th>步骤</th>
+<th>你要问自己的问题</th>
+<th>页面上的动作</th>
+<th>完成证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. 问题</td>
+<td>今天到底要解释、计算或判断什么？</td>
+<td>把本课目标改写成一个可检查的问题</td>
+<td>一句话的问题定义</td>
+</tr>
+<tr>
+<td>2. 预测</td>
+<td>在看答案前，我认为结果会怎样？为什么？</td>
+<td>有课前诊断时先完成；否则直接写已有认识和不确定点</td>
+<td>一条带理由的预测</td>
+</tr>
+<tr>
+<td>3. 直觉</td>
+<td>改变方向、大小或极端条件，趋势会怎样？</td>
+<td>看图、画图、估数量级，用自己的话讲一遍</td>
+<td>一张草图或口头讲回</td>
+</tr>
+<tr>
+<td>4. 形式化</td>
+<td>每个符号代表什么？单位、坐标系和假设是什么？</td>
+<td>阅读定义与推导，把公式翻译成自然语言</td>
+<td>符号、输入、输出和边界说明</td>
+</tr>
+<tr>
+<td>5. 动手</td>
+<td>最小例子能否与手算结果一致？</td>
+<td>先手算，再运行最小代码</td>
+<td>输入、命令、输出与对照结果</td>
+</tr>
+<tr>
+<td>6. 反例</td>
+<td>破坏一条假设后，错误怎样传播？</td>
+<td>故意交换顺序、混用单位、制造泄漏或改错 shape</td>
+<td>失败样本、原因与检查方法</td>
+</tr>
+<tr>
+<td>7. 迁移留证</td>
+<td>换一个条件后，我还能独立完成吗？</td>
+<td>移除逐步提示，用新数据或参数重做</td>
+<td>可复现产物与认识更新</td>
+</tr>
+</tbody>
+</table></div><p>预测可以错，但不能省略。错误预测会暴露真正的认知缺口；直接照着答案操作，只能证明你能跟做。</p>
+<blockquote>
+<p>推荐句式：我认为 ______；当 ______ 改变时，我预测 ______，因为 ______。</p>
+</blockquote>
+<h3 id="可复制的学习卡" tabindex="-1">可复制的学习卡</h3>
+<p>每次学习只维护一张卡：</p>
+<ul>
+<li>本课问题：</li>
+<li>我现在认为：</li>
+<li>我的预测与理由：</li>
+<li>直觉图、方向或数量级：</li>
+<li>正式定义、公式与假设：</li>
+<li>最小实验及输入：</li>
+<li>我故意改错了：</li>
+<li>错误为何发生、怎样更早发现：</li>
+<li>我更换了什么条件：</li>
+<li>证据保存在哪里：</li>
+<li>这次更新了什么认识：</li>
+</ul>
+<h2 id="适用时使用双轨动手从零实现再用工具实现" tabindex="-1">适用时使用双轨动手：从零实现，再用工具实现</h2>
+<p>本系统借鉴 <a href="https://zh-v2.d2l.ai/">《动手学深度学习》中文教材</a> 的章节式学习和“从零实现—简洁实现”思路，也参考其<a href="https://courses.d2l.ai/zh-v2/">在线课程</a>把算法、PyTorch 与真实数据实践结合起来。数学、坐标、曲率、数据算法和模型课程适合采用下面的双轨方法；系统总览、硬件网络、证据方法和只读排障课程则以画清契约、复现观察和解释证据为主，不要求“从零实现”系统。</p>
+<div class="table-wrap" role="region" aria-label="数据表，可横向滚动" tabindex="0"><table><thead>
+<tr>
+<th>第一遍：看清机制</th>
+<th>第二遍：接近工程</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>用手算、少量点或 NumPy 写出最小过程</td>
+<td>用 PyTorch、nuScenes SDK 或工程工具重做</td>
+</tr>
+<tr>
+<td>每一步都能解释输入和输出</td>
+<td>记录版本、配置、运行命令和产物</td>
+</tr>
+<tr>
+<td>适合发现矩阵顺序、符号和梯度来源</td>
+<td>适合检查数据契约、性能与复现性</td>
+</tr>
+</tbody>
+</table></div><p>两遍结果必须能对照。工具实现更短，不代表可以跳过机制；从零实现更透明，也不代表它就是最终工程方案。</p>
+<h2 id="一次-4560-分钟怎样安排" tabindex="-1">一次 45–60 分钟怎样安排</h2>
+<div class="table-wrap" role="region" aria-label="数据表，可横向滚动" tabindex="0"><table><thead>
+<tr>
+<th>时间</th>
+<th>动作</th>
+<th>不可删除的输出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0–5 分钟</td>
+<td>明确今天只解决的一个问题</td>
+<td>问题定义</td>
+</tr>
+<tr>
+<td>5–10 分钟</td>
+<td>不查答案，写已有认识与预测</td>
+<td>预测与理由</td>
+</tr>
+<tr>
+<td>10–17 分钟</td>
+<td>看图、方向、趋势和数量级</td>
+<td>一句直觉解释</td>
+</tr>
+<tr>
+<td>17–27 分钟</td>
+<td>学定义、公式、变量和假设</td>
+<td>符号翻译与边界</td>
+</tr>
+<tr>
+<td>27–40 分钟</td>
+<td>手算一次，再运行最小实验</td>
+<td>输入、代码、输出</td>
+</tr>
+<tr>
+<td>40–47 分钟</td>
+<td>故意破坏一个条件</td>
+<td>失败现象与原因</td>
+</tr>
+<tr>
+<td>47–55 分钟</td>
+<td>换条件独立完成</td>
+<td>迁移结果</td>
+</tr>
+<tr>
+<td>55–60 分钟</td>
+<td>保存证据并复盘</td>
+<td>认识更新</td>
+</tr>
+</tbody>
+</table></div><p>如果只有 45 分钟，可以缩小阅读范围和实验规模，但不要删除“预测、反例、迁移、留证”四个环节。复杂课程由多次这样的学习单元组成，不要求一次看完。</p>
+<h2 id="7-阶段25-门课程怎样使用" tabindex="-1">7 阶段、25 门课程怎样使用</h2>
+<p>主线是：</p>
+<blockquote>
+<p>P0 起点与工具 → M1 数学核心 → A1 自动驾驶数据 → DL 深度学习 → P4 工程交付</p>
+</blockquote>
+<p>E1 ROS 2 与 Autoware、E2 车辆几何与控制是按任务进入的拓展线。课程编号表示教材组织方式，不代表必须从第一门串行读到最后一门；选择下一课时，要同时看先修关系和当前任务需要的交付物。</p>
+<div class="table-wrap" role="region" aria-label="数据表，可横向滚动" tabindex="0"><table><thead>
+<tr>
+<th>阶段</th>
+<th>作用</th>
+<th>学完后能留下什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P0 起点诊断与数字工具</td>
+<td>找到缺口，建立安全、可复现的工作方式</td>
+<td>诊断清单、最小脚本、证据卡</td>
+</tr>
+<tr>
+<td>M1 数学核心</td>
+<td>给坐标、曲率、数据切分和训练建立共同语言</td>
+<td>手算、NumPy 验证与误差解释</td>
+</tr>
+<tr>
+<td>A1 自动驾驶数据主线</td>
+<td>把数学落到传感器、坐标链和 nuScenes 任务</td>
+<td>inventory、split、QC、可视化、dataset card</td>
+</tr>
+<tr>
+<td>DL 深度学习与计算机视觉</td>
+<td>从训练闭环走向视觉数据项目</td>
+<td>训练脚本、曲线、指标与失败样本</td>
+</tr>
+<tr>
+<td>E1 ROS 2 与 Autoware</td>
+<td>理解运行图和数据断链</td>
+<td>只读断链报告</td>
+</tr>
+<tr>
+<td>E2 车辆几何与控制</td>
+<td>推导曲率、车辆模型与接口边界</td>
+<td>轨迹仿真、数值边界分析与离线 CAN 解码</td>
+</tr>
+<tr>
+<td>P4 工程交付与验证</td>
+<td>把结果组织成别人可复现的交付</td>
+<td>manifest、验证报告与限制说明</td>
+</tr>
+</tbody>
+</table></div><p>课程状态也有明确含义：</p>
+<ul>
+<li><strong>V2 试点</strong>：可直接按完整认知闭环学习；</li>
+<li><strong>现有内容</strong>：知识可以使用，但需要主动补齐预测、反例、迁移和证据；</li>
+<li><strong>待建设</strong>：当前只展示依赖与交付目标，不能视为完整课程。</li>
+</ul>
+<h2 id="导师与实习生的一周" tabindex="-1">导师与实习生的一周</h2>
+<div class="lesson-diagram" role="region" aria-label="课程图示，可横向滚动" tabindex="0"><pre class="mermaid">flowchart LR
+    accTitle: 导师与实习生的一周学习循环
+    accDescr: 周初共同确定一个可验收问题 学习者先预测并完成最小实验 周中讲回和制造失败 后半周独立迁移 周末按证据验收并决定补缺或进入下一任务
+    A[&quot;周初&lt;br/&gt;定一个问题与验收条件&quot;] --&gt; B[&quot;第一次尝试&lt;br/&gt;学习者先预测&quot;]
+    B --&gt; C[&quot;周中&lt;br/&gt;讲回机制并制造失败&quot;]
+    C --&gt; D[&quot;后半周&lt;br/&gt;换条件独立迁移&quot;]
+    D --&gt; E[&quot;周末&lt;br/&gt;按证据验收&quot;]
+    E --&gt;|&quot;通过&quot;| F[&quot;进入下一项能力&quot;]
+    E --&gt;|&quot;未通过&quot;| G[&quot;只补最小缺口&quot;]
+    G --&gt; B
+</pre></div><p><em>导师负责确定问题、安全边界和验收条件；学习者必须先预测、再实验，最后用证据讲回。</em></p>
+<h3 id="周初只定一项能力" tabindex="-1">周初：只定一项能力</h3>
+<p>不要把目标写成“学完一章”。写成“本周能独立完成一次 sensor→ego 坐标变换，并用往返测试发现矩阵方向错误”这类可观察结果，同时约定交付物、允许使用的数据和安全边界。</p>
+<h3 id="周中讲回与主动失败" tabindex="-1">周中：讲回与主动失败</h3>
+<p>学习者不用课文，用自己的话解释机制，然后故意破坏一条假设。导师重点追问：错误出现在哪里，为什么输出仍可能看起来合理，哪条检查能更早发现它。</p>
+<h3 id="周末证据验收" tabindex="-1">周末：证据验收</h3>
+<p>固定检查四项：机制理解、独立实现、证据复现、失败分析。产物已就绪不等于导师已通过；未通过也不需要推倒重学，只保留已有证据并补最小缺口。</p>
+<h2 id="前四周的零基础起步路线" tabindex="-1">前四周的零基础起步路线</h2>
+<p>下面按每周约 8–10 个、每个 45–60 分钟的学习单元安排。每周列的是主要焦点，不表示必须在一周内完成整门长课；线性代数、微积分和概率论可以跨周推进。若可用时间更少，就顺延，不压缩认知闭环。</p>
+<h3 id="第-1-周知道自己从哪里开始" tabindex="-1">第 1 周：知道自己从哪里开始</h3>
+<ul>
+<li>课程：数学入口诊断；零基础预备课中与诊断缺口对应的部分。</li>
+<li>核心问题：哪些单位、函数、数组和 Python 基础会阻塞后续数据任务？</li>
+<li>产物：诊断 Notebook、个人补课清单、第一张学习卡。</li>
+</ul>
+<h3 id="第-2-周让别人复现一次最小数据操作" tabindex="-1">第 2 周：让别人复现一次最小数据操作</h3>
+<ul>
+<li>课程：远程运维与开发工具、证据优先的工程排障中与本周任务直接相关的章节。</li>
+<li>核心问题：脚本除了“运行成功”，还要留下什么，别人才能复现？</li>
+<li>产物：沙箱中的最小脚本、输入输出与环境记录、一次故意路径或版本错误。</li>
+</ul>
+<h3 id="第-3-周开始建立坐标变换地基" tabindex="-1">第 3 周：开始建立坐标变换地基</h3>
+<ul>
+<li>课程：开始“线性代数：从向量到坐标变换”；长课未完成时延续到下一周。</li>
+<li>核心问题：同一个点为什么会有不同坐标？传感器点怎样进入车辆坐标？</li>
+<li>阶段产物：一次手算、最小 NumPy 变换函数、一次正逆往返测试，以及沙箱中的矩阵顺序或角度单位错误实验。</li>
+</ul>
+<h3 id="第-4-周继续坐标地基并开始理解数据切分" tabindex="-1">第 4 周：继续坐标地基，并开始理解数据切分</h3>
+<ul>
+<li>课程：完成线性代数当前最小迁移任务；开始“概率论：从随机性到场景切分”。</li>
+<li>核心问题：为什么连续自动驾驶数据不能简单按帧随机切分？</li>
+<li>阶段产物：一版最小 scene-level split、随机种子和集合互斥检查；在复制元数据中完成一次故意泄漏实验。完整数据质量报告可在后续学习单元继续完善。</li>
+</ul>
+<p>四周结束只是完成起步，不代表数学核心已经通过。后续按真实依赖推进：</p>
+<ul>
+<li>线性代数完成后即可进入正式坐标转换，不必等待微积分；</li>
+<li>nuScenes 数据任务还需要概率论、坐标转换，以及“自动驾驶系统总览 → 感知算法与地图基础”；</li>
+<li>深度学习训练闭环需要线性代数、微积分与概率论三门数学核心。</li>
+</ul>
+<h2 id="怎样判断自己真的完成了" tabindex="-1">怎样判断自己真的完成了</h2>
+<p>阅读页面只表示接触过知识；跑通示例只表示完成跟做；在新条件下独立完成、解释一次故意错误并留下可复查证据，才表示“产物已就绪”。导师验收通过后，这项能力才进入下一阶段。</p>
+<p>学习方法可以公开，但实习生姓名、作业、评分、内部数据和工程证据必须保存在私有位置。</p>
+
+
+      <section class="guide-finish" aria-labelledby="guide-finish-title">
+        <p class="section-kicker">现在开始</p>
+        <h2 id="guide-finish-title">第一次只完成“诊断—预测—留证”</h2>
+        <p>不要一次打开很多课程。先完成数学入口诊断，写下自己的预测和补课清单，再根据先修关系选择下一课。</p>
+        <a class="button button-primary" href="/personal-knowledge-base/learn/math/diagnostic.html">进入数学入口诊断</a>
+      </section>
+    </div>
+  </article>
+  <aside class="reader-page-sidebar" aria-label="本页辅助导航" data-pagefind-ignore>
+  <details class="reader-disclosure page-disclosure" data-responsive-disclosure data-collapse-at="1240" open>
+    <summary>本页目录</summary>
+    <nav class="page-outline" aria-labelledby="page-outline-title">
+      <p class="page-outline-title" id="page-outline-title">本页目录</p>
+      <ol data-page-toc>
+        <li class="toc-loading">若目录未生成，请直接按正文标题阅读。</li>
+      </ol>
+      <a class="page-outline-top" href="#main-content">返回页首 ↑</a>
+    </nav>
+  </details>
+</aside>
+
+</div>
+
+  </main>
+  <footer class="site-footer" data-pagefind-ignore>
+  <div class="portal-wrap footer-grid">
+    <p><strong>个人知识库 · V2 试点</strong><br>公开站点只承载课程与模板；实习生作业、导师评价和内部证据保存在私有记录中。</p>
+    <a href="https://github.com/xqiang646-sudo/personal-knowledge-base">GitHub 仓库</a>
+  </div>
+</footer>
+
+  <script defer src="/personal-knowledge-base/assets/progress.js"></script>
+  <script defer src="/personal-knowledge-base/assets/reader.js"></script>
+</body>
+</html>
