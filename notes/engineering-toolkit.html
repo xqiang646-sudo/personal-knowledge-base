@@ -8,11 +8,13 @@
   <link rel="stylesheet" href="../assets/knowledge.css">
 </head>
 <body>
-  <nav class="topbar"><div class="wrap"><a class="back" href="autonomous-driving-index.html">← 返回自动驾驶目录</a></div></nav>
+  <nav class="topbar"><div class="wrap"><a class="back" href="../index.html#learning-path">← 返回零基础学习路线</a></div></nav>
   <article class="page wrap">
     <div class="meta">自动驾驶工程实践 · 工具篇</div>
     <h1>远程运维与开发工具</h1>
     <p class="lead">车载工控机通常安装在车辆内部。工程师需要通过 SSH、NoMachine、VS Code 和文件传输工具远程查看、调试和管理系统。</p>
+
+    <div class="warning"><p><strong>练习边界：</strong>先在个人沙箱或导师指定的教学主机练习。SSH 登录、SCP 上传、<code>git pull</code> 和服务管理都会接触或改变远程状态；连接共享环境前必须确认授权、目标主机、目标路径、影响范围和回滚方式。</p></div>
 
     <div class="toc">
       <a href="#hosts">先分清主机</a><a href="#ssh">SSH</a><a href="#scp">SCP</a><a href="#remote">远程桌面</a><a href="#git">Git</a><a href="#linux">Linux</a><a href="#network">网络排障</a><a href="#logs">日志与版本</a>
@@ -165,7 +167,7 @@ code .                      # VS Code 打开当前目录</code></pre>
       </ol>
     </section>
 
-    <div class="related"><a href="autonomous-driving-index.html">返回自动驾驶知识目录 →</a></div>
+    <div class="related"><a href="evidence-first-engineering.html">下一课：证据优先的工程排障 →</a></div>
   </article>
 </body>
 </html>

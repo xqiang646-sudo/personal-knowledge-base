@@ -3,100 +3,167 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="导师补充课程目录：工程证据、nuScenes 数据任务、坐标变换、车辆模型和曲率的可授课基础知识。">
-  <title>导师补充知识｜我的个人知识库</title>
+  <meta name="description" content="自动驾驶基础课程带教面板：保留导师模块 M01 至 M08，并映射到唯一零基础学习路线，提供课前诊断、课中讲解和课后验收方法。">
+  <title>自动驾驶基础课程带教面板｜我的个人知识库</title>
   <link rel="stylesheet" href="../assets/knowledge.css">
 </head>
 <body>
-  <nav class="topbar"><div class="wrap"><a class="back" href="autonomous-driving-index.html">← 返回自动驾驶目录</a></div></nav>
+  <nav class="topbar"><div class="wrap"><a class="back" href="../index.html">← 返回零基础首页</a></div></nav>
   <main class="page wrap">
-    <div class="meta">导师补充 · 工程方法、数据与几何基础</div>
-    <h1>导师补充知识</h1>
-    <p class="lead">这组内容按课程组织：先给学习目标和先修知识，再做概念推导、数值实验、工程任务与验收。目标不是让实习生记术语，而是能独立完成一次可追溯的数据或几何任务。</p>
+    <div class="meta">导师工具 · M01–M08 课程归属与带教执行 · 复核于 2026-07-16</div>
+    <h1>自动驾驶基础课程带教面板</h1>
+    <p class="lead">这里帮助导师备课、讲解和验收。M01–M08 是课程内容的归属编号，不是第二套学习顺序；实习生始终按首页的统一主线学习。</p>
+
+    <a class="link-card" href="../index.html#learning-path">
+      <span class="tag">唯一学习主线</span><span class="tag">实习生入口</span>
+      <h3>打开完整零基础学习路线</h3>
+      <p>查看各阶段先后关系，并从当前课程回到统一的上一课、下一课和验收路径。</p>
+    </a>
+
+    <nav class="toc" aria-label="带教面板快速跳转">
+      <a href="#mapping">课程映射</a>
+      <a href="#before">课前诊断</a>
+      <a href="#during">课中讲解</a>
+      <a href="#after">课后验收</a>
+      <a href="#record">带教记录</a>
+    </nav>
 
     <div class="warning">
-      <p><strong>公开边界：</strong>所有示例都使用占位符和通用流程，不包含真实账号、密码、IP、车辆标识、内部仓库路径或未公开指标。项目相关结论仍需回到当前主机、版本、配置和运行证据重新确认。</p>
-    </div>
-
-    <div class="flow" role="img" aria-label="证据优先工程闭环">
-      <div class="flow-row">
-        <div class="node">问题与范围</div><div class="arrow">→</div>
-        <div class="node accent">现场证据</div><div class="arrow">→</div>
-        <div class="node">机制解释</div><div class="arrow">→</div>
-        <div class="node accent">最小改动</div><div class="arrow">→</div>
-        <div class="node">验证与沉淀</div>
-      </div>
+      <p><strong>公开边界：</strong>所有示例都使用占位符和通用流程，不包含真实账号、密码、IP、车辆标识、内部仓库路径或未公开指标。项目结论仍需回到当前主机、版本、配置和运行证据重新确认。</p>
     </div>
 
     <div class="panel provenance">
-      <p><strong>贡献角色：</strong>导师原创整理　<strong>对象：</strong>自动驾驶工程入门学习者　<strong>最后复核：</strong>2026-07-16</p>
-      <p><strong>内容状态：</strong>可授课的通用课程、练习与公式推导；项目版本、接口、参数和验收结论必须结合当前官方文档与目标环境证据重新确认。</p>
+      <p><strong>贡献角色：</strong>导师原创整理　<strong>带教对象：</strong>自动驾驶工程入门学习者　<strong>课程编号：</strong>M01–M08</p>
+      <p><strong>统一规则：</strong>模块编号用于备课、作业和验收记录；页面展示顺序以首页学习主线为准，不能把本页拆成另一条并行课程线。</p>
     </div>
 
-    <h2>工程方法 M01–M04</h2>
-    <div class="grid">
-      <a class="link-card" href="evidence-first-engineering.html">
-        <span class="tag">M01 方法</span><span class="tag">证据</span>
-        <h3>证据优先的工程排障</h3>
-        <p>区分源码事实、部署配置和实时运行状态；把现象、假设、证据和结论分开。</p>
-      </a>
-      <a class="link-card" href="ros2-autoware-debugging.html">
-        <span class="tag">M02 ROS 2</span><span class="tag">Autoware</span>
-        <h3>沿 ROS 2 图谱排查数据链</h3>
-        <p>从进程、节点、话题、QoS、时间戳、TF 到消息语义，证明数据在哪一层中断。</p>
-      </a>
-      <a class="link-card" href="perception-deployment-contracts.html">
-        <span class="tag">M03 感知</span><span class="tag">部署</span>
-        <h3>训练到部署的契约</h3>
-        <p>对齐数据、坐标、尺寸、标定、类别、精度、前后处理和端到端时延。</p>
-      </a>
-      <a class="link-card" href="validation-closure.html">
-        <span class="tag">M04 验证</span><span class="tag">闭环</span>
-        <h3>从候选结果到正式结论</h3>
-        <p>明确环境、场景、指标、证据、例外和回归条件，让“通过”可以复查和复现。</p>
-      </a>
-    </div>
+    <section id="mapping">
+      <h2>M01–M08 怎样映射到统一路线</h2>
+      <p>M01 位于阶段 2“工程工具与证据”，M02 位于阶段 4“Autoware 与 ROS 2 运行时”，M03–M04 位于阶段 6“工程交付”；M05–M06 位于阶段 3“坐标、感知与数据”，M07–M08 位于阶段 5“车辆运动与控制”。</p>
 
-    <h2>数据与几何基础 M05–M08</h2>
-    <div class="grid">
-      <a class="link-card" href="nuscenes-dataset.html">
-        <span class="tag">M05 nuScenes</span><span class="tag">数据任务</span>
-        <h3>nuScenes 数据集与数据任务入门</h3>
-        <p>从数据关系走到盘点、索引、QC、scene split、标签合同、统计和可追溯交付。</p>
-      </a>
-      <a class="link-card" href="coordinate-transformations.html">
-        <span class="tag">M06 坐标系</span><span class="tag">SLAM 十四讲</span>
-        <h3>从线性代数到坐标系转换</h3>
-        <p>沿《视觉 SLAM 十四讲》的学习路线，从基和换基推导 SO(3)、SE(3)、四元数和传感器坐标链。</p>
-      </a>
-      <a class="link-card" href="ackermann-bicycle-model.html">
-        <span class="tag">M07 车辆模型</span><span class="tag">推导</span>
-        <h3>阿克曼转向与自行车模型完整推导</h3>
-        <p>从叉积、刚体点速度和无侧滑约束推到 ICR、内外轮转角、运动方程与倒车符号。</p>
-      </a>
-      <a class="link-card" href="curvature-calculation.html">
-        <span class="tag">M08 曲率</span><span class="tag">微积分</span>
-        <h3>从微积分和线性代数推导曲率</h3>
-        <p>从行列式、导数、链式法则和弧长推出连续与离散曲率，并用实验理解噪声和采样。</p>
-      </a>
-    </div>
+      <h3>工程方法 M01–M04</h3>
+      <div class="grid">
+        <a class="link-card" href="evidence-first-engineering.html">
+          <span class="tag">M01 方法</span><span class="tag">主线阶段 2 · 工具与证据</span>
+          <h3>证据优先的工程排障</h3>
+          <p>训练学习者区分源码事实、部署配置和实时运行状态，并把现象、假设、证据与结论分开。</p>
+        </a>
+        <a class="link-card" href="ros2-autoware-debugging.html">
+          <span class="tag">M02 ROS 2</span><span class="tag">主线阶段 4 · Autoware 运行时</span>
+          <h3>沿 ROS 2 图谱排查数据链</h3>
+          <p>训练学习者从进程、节点、话题、QoS、时间戳、TF 和消息语义证明中断位置。</p>
+        </a>
+        <a class="link-card" href="perception-deployment-contracts.html">
+          <span class="tag">M03 感知部署</span><span class="tag">主线阶段 6 · 工程交付</span>
+          <h3>训练到部署的契约</h3>
+          <p>训练学习者逐项对齐数据、坐标、尺寸、标定、类别、精度、前后处理和时延。</p>
+        </a>
+        <a class="link-card" href="validation-closure.html">
+          <span class="tag">M04 验证</span><span class="tag">主线阶段 6 · 工程交付</span>
+          <h3>从候选结果到正式结论</h3>
+          <p>训练学习者写清环境、场景、指标、证据、例外与回归条件，使结论可复查、可复现。</p>
+        </a>
+      </div>
 
-    <h2>推荐学习路线</h2>
-    <div class="grid">
-      <div class="panel"><h3>工程证据线</h3><p>M01 事实层 → M02 ROS 2 图谱 → M03 部署契约 → M04 验证与交接。</p></div>
-      <div class="panel"><h3>数据与几何线</h3><p>M05 数据任务 → M06 线性代数与坐标变换 → M07 刚体速度与车辆模型 → M08 微积分与曲率。</p></div>
-    </div>
+      <h3>数据与几何基础 M05–M08</h3>
+      <div class="grid">
+        <a class="link-card" href="nuscenes-dataset.html">
+          <span class="tag">M05 nuScenes</span><span class="tag">主线阶段 3 · 坐标、感知与数据</span>
+          <h3>nuScenes 数据集与数据任务入门</h3>
+          <p>训练学习者完成数据盘点、索引、QC、scene split、标签合同、统计和可追溯交付。</p>
+        </a>
+        <a class="link-card" href="coordinate-transformations.html">
+          <span class="tag">M06 坐标系</span><span class="tag">主线阶段 3 · 坐标、感知与数据</span>
+          <h3>从线性代数到坐标系转换</h3>
+          <p>训练学习者从基和换基推出旋转、平移、四元数、齐次变换和传感器坐标链。</p>
+        </a>
+        <a class="link-card" href="ackermann-bicycle-model.html">
+          <span class="tag">M07 车辆模型</span><span class="tag">主线阶段 5 · 车辆运动与控制</span>
+          <h3>阿克曼转向与自行车模型完整推导</h3>
+          <p>训练学习者从刚体点速度和无侧滑约束推出 ICR、轮角、运动方程与倒车符号。</p>
+        </a>
+        <a class="link-card" href="curvature-calculation.html">
+          <span class="tag">M08 曲率</span><span class="tag">主线阶段 5 · 车辆运动与控制</span>
+          <h3>从微积分和线性代数推导曲率</h3>
+          <p>训练学习者推出连续与离散曲率，并解释方向、单位、采样、噪声和车辆约束。</p>
+        </a>
+      </div>
+    </section>
 
-    <h2>带教使用方式</h2>
-    <div class="grid three">
-      <div class="panel"><h3>课前诊断</h3><p>先做页面中的先修小题；不会的概念先补，不把数学缺口藏在公式后面。</p></div>
-      <div class="panel"><h3>课中推导</h3><p>遮住最终公式，让学习者按定义、假设和中间量自己推出结果，再用数值例子验证。</p></div>
-      <div class="panel"><h3>课后交付</h3><p>完成实验产物和边界测试，口头解释失败模式，并按页面验收表逐项检查。</p></div>
-    </div>
+    <section id="before">
+      <h2>课前诊断：先确认缺口，再决定怎样讲</h2>
+      <div class="grid three">
+        <div class="panel">
+          <h3>1. 口头重建</h3>
+          <p>让学习者不用术语表，先说出当前问题的输入、输出、参考点、单位和她认为的数据流。</p>
+        </div>
+        <div class="panel">
+          <h3>2. 先修小题</h3>
+          <p>M01–M04 检查事实层、ROS 图谱和验证意识；M05–M08 检查向量、矩阵、弧度、导数和坐标约定。</p>
+        </div>
+        <div class="panel">
+          <h3>3. 记录基线</h3>
+          <p>只记录“能独立解释、提示后完成、尚不会”三种状态，明确本课要补的最小知识缺口。</p>
+        </div>
+      </div>
+      <div class="key"><p><strong>开课条件：</strong>学习者能说清本课对象和基本符号；若先修缺口会阻断推导，先补基础，不把不会的概念藏在最终公式或命令后面。</p></div>
+    </section>
 
-    <div class="key"><p><strong>掌握标准：</strong>能解释、能独立推导、能算一个新例子、能指出失败模式并给出验证证据；只会认术语、背公式或背命令还不算掌握。</p></div>
+    <section id="during">
+      <h2>课中讲解：从机制到证据，不从答案倒背</h2>
+      <div class="flow" role="img" aria-label="课中讲解从问题边界到学习者复述的流程">
+        <div class="flow-row">
+          <div class="node">问题与边界</div><div class="arrow">→</div>
+          <div class="node accent">定义与假设</div><div class="arrow">→</div>
+          <div class="node">逐步推导</div><div class="arrow">→</div>
+          <div class="node accent">数值或现场验证</div><div class="arrow">→</div>
+          <div class="node">学习者复述</div>
+        </div>
+      </div>
+      <div class="grid three">
+        <div class="panel"><h3>先问为什么</h3><p>先让学习者预测结果和符号，再公开定义、约定、参考点和适用边界。</p></div>
+        <div class="panel"><h3>遮住最终答案</h3><p>由学习者写中间量、矩阵链或排障证据；导师只在推理断点处给最小提示。</p></div>
+        <div class="panel"><h3>立即做反例</h3><p>改变方向、单位、参考点、采样或运行条件，确认她理解机制而不是记住一个例子。</p></div>
+      </div>
+    </section>
 
-    <div class="related"><a href="evidence-first-engineering.html">从第一篇开始：证据优先的工程排障 →</a></div>
+    <section id="after">
+      <h2>课后验收：用新任务证明已经掌握</h2>
+      <div class="grid three">
+        <div class="panel">
+          <h3>独立交付</h3>
+          <p>完成页面要求的手算、脚本、数据产物或证据记录，交付物必须带输入、版本、单位和结果。</p>
+        </div>
+        <div class="panel">
+          <h3>边界测试</h3>
+          <p>至少覆盖正常、退化和符号反转场景；出现失败时能定位是假设、数据、实现还是环境问题。</p>
+        </div>
+        <div class="panel">
+          <h3>反向讲解</h3>
+          <p>让学习者向导师讲一遍推理链，并回答“参考点换了会怎样”“证据不足时能否下结论”。</p>
+        </div>
+      </div>
+      <div class="key"><p><strong>通过标准：</strong>能独立解释、推导或复现，能完成一个未见过的新例子，能指出失败模式并给出验证证据。只会认术语、背公式或背命令不算通过。</p></div>
+    </section>
+
+    <section id="record">
+      <h2>每次带教应留下什么记录</h2>
+      <div class="table-wrap" role="region" aria-label="带教记录最小字段" tabindex="0">
+        <table>
+          <caption>记录学习证据，不记录笼统印象</caption>
+          <thead><tr><th scope="col">字段</th><th scope="col">必须回答</th><th scope="col">示例状态</th></tr></thead>
+          <tbody>
+            <tr><td>模块与日期</td><td>本次对应 M 几、统一路线哪个阶段？</td><td>M06 · 阶段 3 坐标、感知与数据</td></tr>
+            <tr><td>诊断缺口</td><td>哪一个先修概念阻断了任务？</td><td>旋转方向仍需提示</td></tr>
+            <tr><td>课堂证据</td><td>学习者独立完成了哪一步？</td><td>写对 B→A 的矩阵链</td></tr>
+            <tr><td>课后产物</td><td>文件、手算、实验或验证记录在哪里？</td><td>路径与复现命令已记录</td></tr>
+            <tr><td>未通过项</td><td>具体缺什么，怎样复测？</td><td>补逆变换边界题后复测</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="related"><a href="../index.html#learning-path">回到唯一学习主线，选择本次课程 →</a></div>
   </main>
 </body>
 </html>

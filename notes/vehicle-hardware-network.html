@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="../assets/knowledge.css">
 </head>
 <body>
-  <nav class="topbar"><div class="wrap"><a class="back" href="autonomous-driving-index.html">← 返回自动驾驶目录</a></div></nav>
+  <nav class="topbar"><div class="wrap"><a class="back" href="../index.html#learning-path">← 返回零基础学习路线</a></div></nav>
   <article class="page wrap">
     <div class="meta">自动驾驶基础 · 硬件与网络篇</div>
     <h1>车辆硬件与车载网络</h1>
@@ -98,6 +98,7 @@
         <div class="panel"><h3>5G 车载路由器</h3><p>连接不同网络，提供 5G、Wi-Fi、网关、远程监控、日志上传或远程驾驶链路。</p></div>
       </div>
       <p>一台 IPC 可以拥有多块物理网卡和多个 IP。给高带宽雷达分配独立网卡/子网，能降低拥塞、隔离故障并简化路由。调试时应先确认设备与对应网卡位于同一子网，再检查链路与流量。</p>
+      <div class="warning"><p><strong>练习边界：</strong>以下命令只允许在导师指定的教学主机或已授权环境中做只读检查。<code>tcpdump</code> 可能捕获敏感数据并增加系统负载，不要擅自在真实车辆运行，也不要公开原始抓包。</p></div>
       <pre><code>ip -br addr               # 查看网卡与地址
 ip route                  # 查看路由
 sudo ethtool &lt;网卡名&gt;    # 查看链路、速率、双工
@@ -166,7 +167,7 @@ GNSS + IMU → 组合导航 → Ethernet / RS232 / PPS → 定位与同步
       <div class="warning"><p><strong>安全提醒：</strong>急停、驾驶模式、制动和速度限制属于安全相关控制。实际操作必须遵守车辆操作规程，不可根据图片自行短接、改线或绕过保护逻辑。</p></div>
     </section>
 
-    <div class="related"><a href="perception-maps.html">下一篇：感知算法与地图基础 →</a></div>
+    <div class="related"><a href="gpu-workflow.html">下一课：GPU 工作流程图（自动驾驶版） →</a></div>
   </article>
 </body>
 </html>
