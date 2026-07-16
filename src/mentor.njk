@@ -1,0 +1,27 @@
+---
+layout: layouts/base.njk
+title: 导师面板
+description: 以诊断、证据、验收量表和复测管理实习生学习，而不是只看页面完成度。
+permalink: /mentor.html
+bodyClass: portal-body
+---
+<div class="portal-wrap directory-page">
+  <header class="directory-heading"><p class="section-kicker">导师视图</p><h1>进度由交付物更新，不由阅读时长更新</h1><p class="lead">公开面板只提供流程和课程映射。实习生姓名、作业、反馈、评分和内部证据必须保存在私有位置。</p></header>
+  <section class="portal-section mentor-workflow">
+    <div class="section-heading compact-heading"><p class="section-kicker">每周闭环</p><h2>带教流程</h2></div>
+    <ol class="learning-loop">
+      <li><span>1</span><strong>诊断</strong><p>确认先修缺口和安全边界。</p></li><li><span>2</span><strong>讲解</strong><p>围绕一个可观察的任务建立模型。</p></li><li><span>3</span><strong>跟做</strong><p>让学习者边解释边完成示例。</p></li><li><span>4</span><strong>迁移</strong><p>换数据、参数或错误条件独立完成。</p></li><li><span>5</span><strong>验收</strong><p>检查证据，决定通过或复测。</p></li>
+    </ol>
+  </section>
+  <section class="portal-section">
+    <div class="section-heading compact-heading"><p class="section-kicker">统一量表</p><h2>四个维度都达到 2 才通过</h2></div>
+    <div class="rubric-grid"><article class="panel"><h3>机制理解</h3><p>能说明定义、输入输出、假设和推导关系。</p></article><article class="panel"><h3>独立实现</h3><p>能在新数据或新参数下完成任务。</p></article><article class="panel"><h3>证据复现</h3><p>输入、环境、命令、输出和版本完整。</p></article><article class="panel"><h3>失败分析</h3><p>能说明至少一个边界并定位一个故意错误。</p></article></div>
+  </section>
+  <section class="portal-section">
+    <div class="section-heading compact-heading"><p class="section-kicker">课程映射</p><h2>每门课只维护一份元数据</h2></div>
+    <div class="table-wrap" tabindex="0" role="region" aria-label="导师课程映射表"><table class="mentor-table"><thead><tr><th>阶段</th><th>课程</th><th>状态</th><th>交付物</th><th>导师模块</th></tr></thead><tbody>
+      {% for course in curriculum.courses %}{% set stage = curriculum.stages | stageById(course.stage) %}<tr><td>{{ stage.code }}</td><td>{% if course.url %}<a href="{{ course.url | siteUrl }}">{{ course.title }}</a>{% else %}{{ course.title }}{% endif %}</td><td>{{ '待建设' if course.status == 'planned' else ('V2 试点' if course.status == 'pilot' else '现有内容') }}</td><td>{{ course.deliverable }}</td><td>{{ course.mentorModules | join('、') }}</td></tr>{% endfor %}
+    </tbody></table></div>
+  </section>
+  <section class="progress-tools panel" data-pagefind-ignore><h2>浏览器进度备份</h2><p>这里导出的只是当前设备上的自学状态，不包含导师验收结论。</p><div class="tool-actions"><button class="button button-solid" type="button" data-progress-export>导出进度 JSON</button><label class="button button-outline">导入进度 JSON<input type="file" accept="application/json" data-progress-import hidden></label><button class="button button-danger" type="button" data-progress-reset>重置本机进度</button></div><p class="tool-message" data-progress-message aria-live="polite"></p></section>
+</div>

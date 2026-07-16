@@ -1,0 +1,19 @@
+---
+layout: layouts/base.njk
+title: 搜索课程
+description: 搜索数学、nuScenes、坐标系、车辆模型、深度学习和工程验证知识。
+permalink: /search.html
+bodyClass: portal-body
+---
+<link href="{{ '/pagefind/pagefind-ui.css' | siteUrl }}" rel="stylesheet">
+<div class="portal-wrap directory-page">
+  <header class="directory-heading" data-pagefind-ignore><p class="section-kicker">全文搜索</p><h1>从术语直接回到课程上下文</h1><p class="lead">可尝试搜索：nuScenes、坐标系、曲率、阿克曼、交叉熵、梯度、ROS 2。</p></header>
+  <div id="search" class="search-box" data-pagefind-ignore></div>
+  <noscript><p class="warning">搜索需要浏览器启用 JavaScript。仍可通过学习路线和专题索引查阅。</p></noscript>
+</div>
+<script src="{{ '/pagefind/pagefind-ui.js' | siteUrl }}"></script>
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+  if (window.PagefindUI) new window.PagefindUI({element: "#search", showSubResults: true, translations: {placeholder: "搜索课程、公式或任务…", zero_results: "没有找到 [SEARCH_TERM]，可换一个更短的关键词。"}});
+});
+</script>
