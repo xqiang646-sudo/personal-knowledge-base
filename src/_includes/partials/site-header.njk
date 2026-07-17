@@ -1,13 +1,38 @@
 <header class="v2-header" data-pagefind-ignore>
   <div class="portal-wrap v2-header-inner">
-    <a class="site-brand" href="{{ '/' | siteUrl }}">{{ site.shortName }}</a>
+    <a class="site-brand" href="{{ '/' | siteUrl }}" aria-label="{{ site.name }}首页">
+      {% if homePage %}
+      <span class="site-brand-mark" aria-hidden="true">知</span>
+      <span class="site-brand-copy"><strong>{{ site.shortName }}</strong><small>Learning System</small></span>
+      {% else %}
+      {{ site.shortName }}
+      {% endif %}
+    </a>
     <nav class="v2-nav" aria-label="知识库主导航">
+      {% if homePage %}
+      <a href="{{ '/' | siteUrl }}" aria-current="page">首页</a>
+      <a href="#learning-path">课程目录</a>
+      <a href="{{ '/guide.html' | siteUrl }}">学习指南</a>
+      <a href="{{ '/update.html' | siteUrl }}">学习卡</a>
+      <a href="{{ '/mentor.html' | siteUrl }}">导师入口</a>
+      <a href="{{ '/search.html' | siteUrl }}">搜索</a>
+      {% else %}
       <a href="{{ '/' | siteUrl }}"{% if page.url == "/" or page.url == "/index.html" %} aria-current="page"{% endif %}>首页</a>
       <a href="{{ '/guide.html' | siteUrl }}"{% if guidePage %} aria-current="page"{% endif %}>今天学什么</a>
       <a href="{{ '/' | siteUrl }}#learning-path">全部课程</a>
       <a href="{{ '/update.html' | siteUrl }}"{% if learningUpdatePage %} aria-current="page"{% endif %}>学习卡</a>
       <a href="{{ '/guide.html#stuck' | siteUrl }}">我卡住了</a>
       <a href="{{ '/search.html' | siteUrl }}"{% if page.url == "/search.html" %} aria-current="page"{% endif %}>搜索</a>
+      {% endif %}
     </nav>
+    {% if homePage %}
+    {% set headerPilotCourseCount = curriculum.courses | countStatus('pilot') %}
+    {% set headerLegacyCourseCount = curriculum.courses | countStatus('legacy') %}
+    <div class="home-header-progress" aria-label="当前浏览器学习进度">
+      <span>已能独立做</span>
+      <span class="home-header-progress-track" role="progressbar" aria-label="已能独立完成的课程" aria-valuemin="0" aria-valuemax="{{ headerPilotCourseCount + headerLegacyCourseCount }}" aria-valuenow="0"><span data-progress-bar></span></span>
+      <strong data-progress-count>0 / {{ headerPilotCourseCount + headerLegacyCourseCount }}</strong>
+    </div>
+    {% endif %}
   </div>
 </header>

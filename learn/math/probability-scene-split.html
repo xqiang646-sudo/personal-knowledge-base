@@ -5,10 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="掌握条件概率、期望方差、抽样、数据偏差、似然与交叉熵。">
   <title>概率论：从随机性到场景切分｜个人知识库</title>
+
   <link rel="icon" href="/personal-knowledge-base/assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/personal-knowledge-base/assets/knowledge.css">
   <link rel="stylesheet" href="/personal-knowledge-base/assets/v2.css">
   <link rel="stylesheet" href="/personal-knowledge-base/assets/cyrus-theme.css">
+
 
   <script src="/personal-knowledge-base/assets/mathjax-config.js"></script>
   <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
@@ -38,15 +40,22 @@
   <a class="skip-link" href="#main-content">跳到主要内容</a>
   <header class="v2-header" data-pagefind-ignore>
   <div class="portal-wrap v2-header-inner">
-    <a class="site-brand" href="/personal-knowledge-base/">个人知识库</a>
+    <a class="site-brand" href="/personal-knowledge-base/" aria-label="零基础自动驾驶学习系统首页">
+
+      个人知识库
+
+    </a>
     <nav class="v2-nav" aria-label="知识库主导航">
+
       <a href="/personal-knowledge-base/">首页</a>
       <a href="/personal-knowledge-base/guide.html">今天学什么</a>
       <a href="/personal-knowledge-base/#learning-path">全部课程</a>
       <a href="/personal-knowledge-base/update.html">学习卡</a>
       <a href="/personal-knowledge-base/guide.html#stuck">我卡住了</a>
       <a href="/personal-knowledge-base/search.html">搜索</a>
+
     </nav>
+
   </div>
 </header>
 
@@ -502,18 +511,18 @@
 <li>“相机图像是否不合格”可以看作取值为 \(0\) 或 \(1\) 的 Bernoulli 随机变量。</li>
 </ul>
 <p>有限数据上的经验概率为</p>
-<div class="math-display">\[\hat P(A)=\frac{\text{满足事件 }A\text{ 的样本数}}{\text{总样本数}}.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\hat P(A)=\frac{\text{满足事件 }A\text{ 的样本数}}{\text{总样本数}}.\]</div>
 <p>帽子 \(\hat P\) 提醒我们：这是从有限样本估计得到的概率，不是永恒不变的真值。</p>
 <h3 id="2-联合边缘与条件概率" tabindex="-1">2. 联合、边缘与条件概率</h3>
 <p>联合概率 \(P(A,B)\) 表示 \(A\) 与 \(B\) 同时发生。条件概率为</p>
-<div class="math-display">\[P(A\mid B)=\frac{P(A,B)}{P(B)},
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[P(A\mid B)=\frac{P(A,B)}{P(B)},
 \qquad P(B)&gt;0.\]</div>
 <p>它回答“已知 \(B\) 发生时，\(A\) 发生的概率”。交换条件后问题就变了。</p>
 <p>贝叶斯公式为</p>
-<div class="math-display">\[P(A\mid B)
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[P(A\mid B)
 =\frac{P(B\mid A)P(A)}{P(B)}.\]</div>
 <p>若 \(A\) 与 \(B\) 独立，则</p>
-<div class="math-display">\[P(A,B)=P(A)P(B),
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[P(A,B)=P(A)P(B),
 \qquad
 P(A\mid B)=P(A).\]</div>
 <p>相邻视频帧通常不独立，因为它们共享地点、天气、目标和相似像素。随机打散帧不能消除这种真实关联。</p>
@@ -531,17 +540,17 @@ P(A\mid B)=P(A).\]</div>
 </pre></div><p><em>两个条件概率共享同一个联合事件，但因为分母不同，回答的是两个不同问题。</em></p>
 <h3 id="3-期望方差与标准差" tabindex="-1">3. 期望、方差与标准差</h3>
 <p>离散随机变量的期望为</p>
-<div class="math-display">\[\mathbb E[X]=\sum_x xP(X=x).\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\mathbb E[X]=\sum_x xP(X=x).\]</div>
 <p>有限数据的均值为</p>
-<div class="math-display">\[\bar x=\frac{1}{n}\sum_{i=1}^{n}x_i.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\bar x=\frac{1}{n}\sum_{i=1}^{n}x_i.\]</div>
 <p>方差描述数据围绕均值的波动：</p>
-<div class="math-display">\[\operatorname{Var}(X)
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\operatorname{Var}(X)
 =\mathbb E\left[(X-\mathbb E[X])^2\right].\]</div>
 <p>标准差为</p>
-<div class="math-display">\[\sigma=\sqrt{\operatorname{Var}(X)}.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\sigma=\sqrt{\operatorname{Var}(X)}.\]</div>
 <p>标准差与原变量单位相同，更容易解释。例如延迟均值为 \(50\,\mathrm{ms}\)、标准差为 \(2\,\mathrm{ms}\)，与标准差为 \(30\,\mathrm{ms}\) 代表完全不同的稳定性。</p>
 <p>两个变量共同变化可用协方差描述：</p>
-<div class="math-display">\[\operatorname{Cov}(X,Y)
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\operatorname{Cov}(X,Y)
 =\mathbb E[(X-\mathbb E[X])(Y-\mathbb E[Y])].\]</div>
 <p>相关不等于因果。雨量与图像质量同时变化，可能由曝光、能见度或镜头水滴共同导致，不能只凭相关系数宣布因果关系。</p>
 <h3 id="4-只学任务需要的常见分布" tabindex="-1">4. 只学任务需要的常见分布</h3>
@@ -571,7 +580,7 @@ P(A\mid B)=P(A).\]</div>
 </ul>
 <p>如果根据测试集表现不断调参，测试集就参与了模型选择，不再是独立评估。</p>
 <p>切分目标不是机械追求某个比例，而是构造合理的泛化问题。对时序自动驾驶数据，通常应按 scene 或更高层组进行切分：</p>
-<div class="math-display">\[S_{\mathrm{train}}
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[S_{\mathrm{train}}
 \cap S_{\mathrm{val}}
 =S_{\mathrm{train}}
 \cap S_{\mathrm{test}}
@@ -595,42 +604,42 @@ P(A\mid B)=P(A).\]</div>
 </pre></div><p><em>按帧切分会让相邻帧跨集合并泄漏 scene 信息，按 scene 分组才让验证集代表真正未见场景。</em></p>
 <h3 id="8-从概率到似然与交叉熵" tabindex="-1">8. 从概率到似然与交叉熵</h3>
 <p>分类模型常输出每个类别的概率 \(\hat p_k\)，满足</p>
-<div class="math-display">\[\hat p_k\ge0,
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\hat p_k\ge0,
 \qquad
 \sum_{k=1}^{K}\hat p_k=1.\]</div>
 <p>Softmax 把任意实数 logits \(z_k\) 转成概率：</p>
-<div class="math-display">\[\hat p_k
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\hat p_k
 =\frac{e^{z_k}}{\sum_{j=1}^{K}e^{z_j}}.\]</div>
 <p>若真实类别是 \(y\)，单样本交叉熵为</p>
-<div class="math-display">\[L=-\log\hat p_y.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[L=-\log\hat p_y.\]</div>
 <p>模型给真实类别的概率越小，损失越大。交叉熵是训练信号，不等于完整的模型评价；长尾类别还需要分类别指标和失败样本分析。</p>
 <h2 id="逐步例题一条件概率不能交换" tabindex="-1">逐步例题一：条件概率不能交换</h2>
 <p>有 \(100\) 帧图像，其中 \(20\) 帧是雨天。雨天中 \(8\) 帧质量不合格；其余 \(80\) 帧中有 \(4\) 帧质量不合格。</p>
 <p>已知雨天，图像不合格的概率为</p>
-<div class="math-display">\[P(\text{不合格}\mid\text{雨天})
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[P(\text{不合格}\mid\text{雨天})
 =\frac{8}{20}=0.4.\]</div>
 <p>全部不合格帧共有</p>
-<div class="math-display">\[8+4=12.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[8+4=12.\]</div>
 <p>已知图像不合格，它来自雨天的概率为</p>
-<div class="math-display">\[P(\text{雨天}\mid\text{不合格})
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[P(\text{雨天}\mid\text{不合格})
 =\frac{8}{12}
 =\frac{2}{3}.\]</div>
 <p>\(0.4\) 与 \(2/3\) 都正确，但回答的是不同问题。工程报告必须把条件写完整。</p>
 <h2 id="逐步例题二高准确率可能毫无意义" tabindex="-1">逐步例题二：高准确率可能毫无意义</h2>
 <p>假设验证集中有 \(900\) 个汽车样本和 \(100\) 个行人样本。一个模型始终预测汽车，则准确率为</p>
-<div class="math-display">\[\operatorname{accuracy}
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\operatorname{accuracy}
 =\frac{900}{1000}=0.9.\]</div>
 <p>但行人召回率为</p>
-<div class="math-display">\[\operatorname{recall}_{\mathrm{pedestrian}}
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\operatorname{recall}_{\mathrm{pedestrian}}
 =\frac{0}{100}=0.\]</div>
 <p>所以 \(90\%\) 准确率并不能说明模型适合自动驾驶任务。必须查看类别分布、分类别指标和失败样本。</p>
 <h2 id="逐步例题三场景泄漏怎样发生" tabindex="-1">逐步例题三：场景泄漏怎样发生</h2>
 <p>假设 <code>scene-001</code> 有连续帧 \(f_1,f_2,f_3,f_4\)。按帧随机切分后：</p>
-<div class="math-display">\[\{f_1,f_2,f_4\}\subset D_{\mathrm{train}},
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\{f_1,f_2,f_4\}\subset D_{\mathrm{train}},
 \qquad
 \{f_3\}\subset D_{\mathrm{val}}.\]</div>
 <p>虽然帧 token 没有重复，但场景信息泄漏了。正确做法是让整个 scene 只属于一个集合：</p>
-<div class="math-display">\[\operatorname{split}(f_1)
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\operatorname{split}(f_1)
 =\operatorname{split}(f_2)
 =\operatorname{split}(f_3)
 =\operatorname{split}(f_4).\]</div>
@@ -728,7 +737,7 @@ for split_name, rows in splits.items():
 </li>
 <li>
 <p>对一个条件问题作答，例如</p>
-<div class="math-display">\[P(\text{行人标注}\mid\text{夜间 scene})\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[P(\text{行人标注}\mid\text{夜间 scene})\]</div>
 <p>并写清分子、分母和样本量；</p>
 </li>
 <li>

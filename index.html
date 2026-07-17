@@ -5,108 +5,290 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="从数学、数据与深度学习开始，构建面向自动驾驶数据实习生的可验收学习路线。">
   <title>零基础自动驾驶学习系统｜个人知识库</title>
+
+  <link rel="canonical" href="https://xqiang646-sudo.github.io/personal-knowledge-base/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:title" content="不会没关系，我们从第一步开始">
+  <meta property="og:description" content="从数学、数据与深度学习开始，构建面向自动驾驶数据实习生的可验收学习路线。">
+  <meta property="og:url" content="https://xqiang646-sudo.github.io/personal-knowledge-base/">
+  <meta property="og:image" content="https://xqiang646-sudo.github.io/personal-knowledge-base/assets/og-home.png">
+  <meta property="og:image:width" content="1731">
+  <meta property="og:image:height" content="909">
+  <meta property="og:image:alt" content="零基础自动驾驶学习系统：不会没关系，我们从第一步开始">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="不会没关系，我们从第一步开始">
+  <meta name="twitter:description" content="从数学、数据与深度学习开始，构建面向自动驾驶数据实习生的可验收学习路线。">
+  <meta name="twitter:image" content="https://xqiang646-sudo.github.io/personal-knowledge-base/assets/og-home.png">
+
   <link rel="icon" href="/personal-knowledge-base/assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/personal-knowledge-base/assets/knowledge.css">
   <link rel="stylesheet" href="/personal-knowledge-base/assets/v2.css">
   <link rel="stylesheet" href="/personal-knowledge-base/assets/cyrus-theme.css">
+  <link rel="stylesheet" href="/personal-knowledge-base/assets/home-textbook.css">
 
 
 </head>
-<body class="portal-body" data-theme="cyrus">
+<body class="portal-body textbook-home-body" data-theme="cyrus">
   <a class="skip-link" href="#main-content">跳到主要内容</a>
   <header class="v2-header" data-pagefind-ignore>
   <div class="portal-wrap v2-header-inner">
-    <a class="site-brand" href="/personal-knowledge-base/">个人知识库</a>
+    <a class="site-brand" href="/personal-knowledge-base/" aria-label="零基础自动驾驶学习系统首页">
+
+      <span class="site-brand-mark" aria-hidden="true">知</span>
+      <span class="site-brand-copy"><strong>个人知识库</strong><small>Learning System</small></span>
+
+    </a>
     <nav class="v2-nav" aria-label="知识库主导航">
+
       <a href="/personal-knowledge-base/" aria-current="page">首页</a>
-      <a href="/personal-knowledge-base/guide.html">今天学什么</a>
-      <a href="/personal-knowledge-base/#learning-path">全部课程</a>
+      <a href="#learning-path">课程目录</a>
+      <a href="/personal-knowledge-base/guide.html">学习指南</a>
       <a href="/personal-knowledge-base/update.html">学习卡</a>
-      <a href="/personal-knowledge-base/guide.html#stuck">我卡住了</a>
+      <a href="/personal-knowledge-base/mentor.html">导师入口</a>
       <a href="/personal-knowledge-base/search.html">搜索</a>
+
     </nav>
+
+
+
+    <div class="home-header-progress" aria-label="当前浏览器学习进度">
+      <span>已能独立做</span>
+      <span class="home-header-progress-track" role="progressbar" aria-label="已能独立完成的课程" aria-valuemin="0" aria-valuemax="21" aria-valuenow="0"><span data-progress-bar></span></span>
+      <strong data-progress-count>0 / 21</strong>
+    </div>
+
   </div>
 </header>
 
   <main id="main-content" tabindex="-1">
 
-<section class="v2-hero">
-  <div class="portal-wrap v2-hero-grid">
-    <div>
-      <p class="eyebrow">写给第一次接触自动驾驶数据的你</p>
-      <h1>不会没关系，我们从第一步开始</h1>
-      <p class="hero-intro">如果你看到矩阵、坐标系、nuScenes 或神经网络会发懵，这很正常。这里会先用生活里的画面讲明白，再带你看公式、手算一个例子，最后才运行代码。</p>
-      <div class="hero-actions">
-        <a class="button" href="#start-here">带我走第一步</a>
-        <a class="button button-secondary" href="#learning-path">我想先看看有哪些课</a>
-      </div>
-    </div>
-    <aside class="hero-card progress-overview" aria-label="当前浏览器学习进度">
-      <span class="hero-card-label">你自己的学习记录</span>
-      <strong data-progress-summary>先选一条最适合你的起步路线</strong>
-      <div class="progress-track" aria-hidden="true"><span data-progress-bar></span></div>
-      <a class="continue-link" data-continue-link href="/personal-knowledge-base/guide.html">先花 5 分钟认识怎么学 →</a>
-      <p>不会就是起点，不是缺点。这里不公开姓名、作业或评分。</p>
-    </aside>
-  </div>
-</section>
-<div class="portal-wrap portal-main">
-  <section class="portal-section beginner-entry" id="start-here">
-    <div class="section-heading"><p class="section-kicker">先选你现在的状态</p><h2>不用研究整张路线，只回答“我现在最需要什么”</h2><p>下面没有正确答案。选一个最像你的情况，先走一小步；走错了也随时可以回来换。</p></div>
-    <div class="beginner-choice-grid">
-      <a class="beginner-choice" href="/personal-knowledge-base/guide.html">
-        <span class="choice-number">01</span><h3>我第一次来，什么都不熟</h3>
-        <p>先看一个 5 分钟说明，知道这里怎么读、卡住时怎么办，以及今天只需要完成什么。</p>
-        <strong>从学习指南开始 →</strong>
-      </a>
-      <a class="beginner-choice" href="/personal-knowledge-base/notes/nuscenes-dataset.html">
-        <span class="choice-number">02</span><h3>我已经接到 nuScenes 数据任务</h3>
-        <p>先把数据集想成一本“多传感器行车记录册”，认识 scene、sample 和 token，再决定补哪块数学。</p>
-        <strong>先听懂数据集在说什么 →</strong>
-      </a>
-      <a class="beginner-choice" href="/personal-knowledge-base/learn/math/diagnostic.html">
-        <span class="choice-number">03</span><h3>我一看到公式就不知道从哪下手</h3>
-        <p>这不是考试。用几个小问题找出真正卡住你的地方，只补当前需要的那一小块。</p>
-        <strong>看看我适合从哪里开始 →</strong>
-      </a>
-    </div>
-  </section>
-  <section class="portal-section" id="orientation">
-    <div class="section-heading"><p class="section-kicker">每一课都有人带路</p><h2>先听懂人话，再看图，再碰公式</h2><p>你不需要第一遍就记住全部内容。页面会提醒你每一步在做什么，也会告诉你看不懂时可以先跳到哪里。</p></div>
-    <ol class="learning-loop">
-      <li><span>1</span><strong>说清问题</strong><p>今天只弄懂一件事。</p></li>
-      <li><span>2</span><strong>先猜一下</strong><p>猜错没关系，要说理由。</p></li>
-      <li><span>3</span><strong>先看图</strong><p>看方向、远近和变化趋势。</p></li>
-      <li><span>4</span><strong>翻译公式</strong><p>每个符号都换成人话。</p></li>
-      <li><span>5</span><strong>算一个</strong><p>先手算最小例子，再跑代码。</p></li>
-      <li><span>6</span><strong>故意改错</strong><p>看看错误会从哪里冒出来。</p></li>
-      <li><span>7</span><strong>讲给别人</strong><p>换个数字，再用自己的话讲。</p></li>
+
+
+
+
+
+<div class="textbook-home-shell" id="top">
+  <aside class="home-chapter-nav" id="chapters" aria-labelledby="catalog-title">
+    <p class="home-catalog-kicker">Learning map · 25 courses</p>
+    <h2 class="home-catalog-title" id="catalog-title">学习目录</h2>
+    <ol class="home-catalog-list">
+
+
+      <li class="is-active">
+        <a class="home-chapter-link" href="#stage-p0">
+          <span class="home-chapter-code">P0</span>
+          <span class="home-chapter-name">起点导航与数字工具</span>
+          <span class="home-chapter-count">04</span>
+        </a>
+
+        <ol class="home-subchapter-list" aria-label="起点导航与数字工具课程">
+
+
+          <li>
+            <a href="/personal-knowledge-base/learn/math/diagnostic.html" aria-current="step">
+              01 数学起点导航
+            </a>
+          </li>
+
+
+
+          <li>
+            <a href="/personal-knowledge-base/notes/foundations-bootcamp.html">
+              02 零基础预备课
+            </a>
+          </li>
+
+
+
+          <li>
+            <a href="/personal-knowledge-base/notes/engineering-toolkit.html">
+              03 远程运维与开发工具
+            </a>
+          </li>
+
+
+
+
+        </ol>
+
+      </li>
+
+
+      <li>
+        <a class="home-chapter-link" href="#stage-m1">
+          <span class="home-chapter-code">M1</span>
+          <span class="home-chapter-name">数学核心</span>
+          <span class="home-chapter-count">03</span>
+        </a>
+
+      </li>
+
+
+      <li>
+        <a class="home-chapter-link" href="#stage-a1">
+          <span class="home-chapter-code">A1</span>
+          <span class="home-chapter-name">自动驾驶数据主线</span>
+          <span class="home-chapter-count">05</span>
+        </a>
+
+      </li>
+
+
+      <li>
+        <a class="home-chapter-link" href="#stage-dl">
+          <span class="home-chapter-code">DL</span>
+          <span class="home-chapter-name">深度学习与计算机视觉</span>
+          <span class="home-chapter-count">06</span>
+        </a>
+
+      </li>
+
+
+      <li>
+        <a class="home-chapter-link" href="#stage-e1">
+          <span class="home-chapter-code">E1</span>
+          <span class="home-chapter-name">ROS 2 与 Autoware 拓展</span>
+          <span class="home-chapter-count">02</span>
+        </a>
+
+      </li>
+
+
+      <li>
+        <a class="home-chapter-link" href="#stage-e2">
+          <span class="home-chapter-code">E2</span>
+          <span class="home-chapter-name">车辆几何与控制拓展</span>
+          <span class="home-chapter-count">03</span>
+        </a>
+
+      </li>
+
+
+      <li>
+        <a class="home-chapter-link" href="#stage-p4">
+          <span class="home-chapter-code">P4</span>
+          <span class="home-chapter-name">工程交付与验证</span>
+          <span class="home-chapter-count">02</span>
+        </a>
+
+      </li>
+
     </ol>
-    <p class="orientation-link"><a href="/personal-knowledge-base/guide.html">看一个完整示范：一小时到底怎么学一小节 →</a></p>
-  </section>
-  <section class="portal-section milestones" id="milestones">
-    <div class="section-heading"><p class="section-kicker">学一点，就能开始帮上忙</p><h2>不用等所有课程学完，能力会一段一段长出来</h2></div>
-    <div class="grid three">
-      <article class="panel"><span class="milestone-label">先走 25–40 小时</span><h3>能帮忙整理数据</h3><p>看懂目录和文件格式，做基础统计，把结果画出来，并说明自己检查了什么。</p></article>
-      <article class="panel"><span class="milestone-label">继续到 80–120 小时</span><h3>能独立完成一个小任务</h3><p>理解坐标、标定和场景切分，完成一份 nuScenes mini 数据报告。</p></article>
-      <article class="panel"><span class="milestone-label">完成核心路线后</span><h3>能解释一次模型实验</h3><p>运行小型 PyTorch 训练，读懂曲线，找出失败样本，而不只是说“代码跑通了”。</p></article>
+    <div class="home-catalog-foot">
+      <strong>不用按目录硬学</strong>
+      <p>目录是地图，不是任务清单。遇到真实任务时，从最相关的一章进入就好。</p>
     </div>
+  </aside>
+
+  <section class="home-hero-paper" aria-labelledby="hero-title">
+    <p class="home-crumb">首页 <span>/</span> 起点导航 <span>/</span> 第一步</p>
+    <p class="home-eyebrow">写给第一次接触自动驾驶数据的你</p>
+    <h1 id="hero-title">不会没关系，<br>我们从第一步开始</h1>
+    <p class="home-hero-intro">看到矩阵、坐标系、nuScenes 或神经网络会发懵，很正常。这里先用生活里的画面讲明白，再看公式、手算一个例子，最后才运行代码。</p>
+    <div class="home-continue-row">
+      <a class="home-primary-action" data-continue-link href="/personal-knowledge-base/learn/math/diagnostic.html">继续上次学习</a>
+      <span class="home-resume-meta"><strong>默认从“数学起点导航”开始</strong>已经学过时，会自动接回上次的位置</span>
+    </div>
+
+    <p class="home-entry-label">或者，按你此刻的情况进入：</p>
+    <nav class="home-entry-list" id="start-here" aria-label="按当前情况选择起点">
+      <a class="home-entry" href="/personal-knowledge-base/guide.html">
+        <span class="home-entry-number">01</span><strong>第一次来</strong><small>先花 5 分钟认识怎么学</small>
+      </a>
+      <a class="home-entry" href="/personal-knowledge-base/notes/nuscenes-dataset.html">
+        <span class="home-entry-number">02</span><strong>接到 nuScenes 数据任务</strong><small>先听懂数据集在说什么</small>
+      </a>
+      <a class="home-entry" href="/personal-knowledge-base/learn/math/diagnostic.html">
+        <span class="home-entry-number">03</span><strong>一看到公式就发懵</strong><small>只补眼前真正缺的基础</small>
+      </a>
+    </nav>
   </section>
-  <div class="v2-stats course-overview-stats" aria-label="课程体系规模">
-    <div><strong>7</strong><span>个阶段，按需要进入</span></div>
-    <div><strong>25</strong><span>门课，不要求一次学完</span></div>
-    <div><strong>3</strong><span>门数学课，都从直觉开始</span></div>
-    <div><strong>1</strong><span>份最后能讲清楚的作品</span></div>
-  </div>
-  <section class="portal-section" id="learning-path">
-    <div class="section-heading"><p class="section-kicker">完整课程地图</p><h2>课很多，但你每次只需要决定“下一门”</h2><p>“可以开始”表示页面会一步步带你学；“可以阅读”表示知识已经完整，但讲解方式还会继续优化；“正在准备”只让你提前知道以后会学什么。</p></div>
-    <nav class="stage-nav" aria-label="学习阶段快捷导航"><a href="#stage-p0">P0 起点导航与数字工具</a><a href="#stage-m1">M1 数学核心</a><a href="#stage-a1">A1 自动驾驶数据主线</a><a href="#stage-dl">DL 深度学习与计算机视觉</a><a href="#stage-e1">E1 ROS 2 与 Autoware 拓展</a><a href="#stage-e2">E2 车辆几何与控制拓展</a><a href="#stage-p4">P4 工程交付与验证</a></nav>
-    <ol class="stage-list">
+
+  <aside class="home-today-note" id="today" aria-labelledby="today-title">
+    <span class="home-note-label">Today · 一次只学一点</span>
+    <h2 id="today-title">今天只做<br>一件事</h2>
+    <p class="home-today-lead">不是“学会数学”，只是找到现在卡住你的那个符号。</p>
+    <div class="home-one-task">
+      <span>当前小任务</span>
+      <strong>用自己的话说出：函数到底是在做什么？</strong>
+      <p>先猜，再看解释。猜错不会扣分。</p>
+    </div>
+    <ul class="home-status-list" aria-label="当前学习状态">
+      <li><span>当前阶段</span><strong>P0 · 起点</strong></li>
+      <li><span>可学习课程</span><strong>21 门</strong></li>
+      <li><span>我的进度</span><strong data-progress-summary>还没有开始也没关系</strong></li>
+    </ul>
+    <a class="home-learning-card-link" href="/personal-knowledge-base/update.html">
+      <span>My learning card</span>
+      <strong>记下我刚刚理解的东西 →</strong>
+    </a>
+    <a class="home-stuck-link" href="/personal-knowledge-base/guide.html#stuck">卡住了？先看这里，不用自己硬撑 →</a>
+    <p class="home-encouragement">“不知道”也是一个有效答案，它会告诉我们下一步该去哪。</p>
+  </aside>
+
+  <section class="home-learning-loop" id="learning-loop" aria-labelledby="loop-title">
+    <div class="home-loop-heading">
+      <div>
+        <p class="home-section-kicker">First-principles learning loop</p>
+        <h2 id="loop-title">每一课，都按同一条路走</h2>
+      </div>
+      <p>不要求第一遍记住全部。先建立直觉，再让公式和代码替你检查理解。</p>
+    </div>
+    <ol class="home-loop-list">
+      <li><span class="home-step-number">Step 01</span><strong>说清问题</strong><small>今天只弄懂一件事</small></li>
+      <li><span class="home-step-number">Step 02</span><strong>先猜一下</strong><small>猜错没关系，要说理由</small></li>
+      <li><span class="home-step-number">Step 03</span><strong>看图建直觉</strong><small>先看方向、远近与变化</small></li>
+      <li><span class="home-step-number">Step 04</span><strong>翻译公式</strong><small>每个符号都换成人话</small></li>
+      <li><span class="home-step-number">Step 05</span><strong>算一个例子</strong><small>先手算，再运行代码</small></li>
+      <li><span class="home-step-number">Step 06</span><strong>故意改错</strong><small>找出假设与失败边界</small></li>
+      <li><span class="home-step-number">Step 07</span><strong>讲给别人</strong><small>换个条件，再独立解释</small></li>
+    </ol>
+    <a class="home-loop-guide" href="/personal-knowledge-base/guide.html">看一个完整示范：一小时怎样学完一小节 →</a>
+  </section>
+
+  <div class="home-lower-content">
+    <section class="portal-section home-milestones" id="milestones">
+      <div class="section-heading">
+        <p class="section-kicker">学一点，就能开始帮上忙</p>
+        <h2>能力会一段一段长出来</h2>
+        <p>不必等所有课程学完。先完成一个能交付的小任务，再把缺少的知识补回来。</p>
+      </div>
+      <div class="grid three">
+        <article class="panel"><span class="milestone-label">先走 25–40 小时</span><h3>能帮忙整理数据</h3><p>看懂目录和文件格式，做基础统计，把结果画出来，并说明自己检查了什么。</p></article>
+        <article class="panel"><span class="milestone-label">继续到 80–120 小时</span><h3>能独立完成一个小任务</h3><p>理解坐标、标定和场景切分，完成一份 nuScenes mini 数据报告。</p></article>
+        <article class="panel"><span class="milestone-label">完成核心路线后</span><h3>能解释一次模型实验</h3><p>运行小型 PyTorch 训练，读懂曲线，找出失败样本，而不只是说“代码跑通了”。</p></article>
+      </div>
+    </section>
+
+    <div class="v2-stats course-overview-stats" aria-label="课程体系规模">
+      <div><strong>7</strong><span>个阶段，按需要进入</span></div>
+      <div><strong>25</strong><span>门课，不要求一次学完</span></div>
+      <div><strong>3</strong><span>门数学核心课，从直觉开始</span></div>
+      <div><strong>1</strong><span>份最后能讲清楚的作品</span></div>
+    </div>
+
+    <section class="portal-section" id="learning-path">
+      <div class="section-heading">
+        <p class="section-kicker">完整课程地图</p>
+        <h2>课很多，但每次只决定“下一门”</h2>
+        <p>“可以开始”表示页面会一步步带你学；“可以阅读”表示知识已经完整；“正在准备”只是提前告诉你以后会学什么。</p>
+      </div>
+      <nav class="stage-nav" aria-label="学习阶段快捷导航">
+        <a href="#stage-p0">P0 起点导航与数字工具</a><a href="#stage-m1">M1 数学核心</a><a href="#stage-a1">A1 自动驾驶数据主线</a><a href="#stage-dl">DL 深度学习与计算机视觉</a><a href="#stage-e1">E1 ROS 2 与 Autoware 拓展</a><a href="#stage-e2">E2 车辆几何与控制拓展</a><a href="#stage-p4">P4 工程交付与验证</a>
+      </nav>
+      <ol class="stage-list">
 
 
-      <li class="learning-stage" id="stage-p0">
-        <div class="stage-summary"><span class="stage-number">P0</span><h3>起点导航与数字工具</h3><p>看看你已经会什么、下一小步补什么，并建立安全、可复现的数据工作方式。</p><p class="stage-time">大约需要 27–38 小时</p><div class="stage-gate"><strong>学到这里，你应该能：</strong>能在沙箱中运行 Python 数据脚本，说明输入、输出、环境和失败边界。</div></div>
-        <div class="course-grid">
+        <li class="learning-stage" id="stage-p0">
+          <div class="stage-summary">
+            <span class="stage-number">P0</span>
+            <h3>起点导航与数字工具</h3>
+            <p>看看你已经会什么、下一小步补什么，并建立安全、可复现的数据工作方式。</p>
+            <p class="stage-time">大约需要 27–38 小时</p>
+            <div class="stage-gate"><strong>学到这里，你应该能：</strong>能在沙箱中运行 Python 数据脚本，说明输入、输出、环境和失败边界。</div>
+          </div>
+          <div class="course-grid">
 
   <a class="course-card v2-course-card" href="/personal-knowledge-base/learn/math/diagnostic.html" data-course-card="math-diagnostic">
     <div class="course-top">
@@ -167,12 +349,18 @@
   </a>
 
 </div>
-      </li>
+        </li>
 
 
-      <li class="learning-stage" id="stage-m1">
-        <div class="stage-summary"><span class="stage-number">M1</span><h3>数学核心</h3><p>用线性代数、微积分和概率论支撑坐标、轨迹、数据质量与深度学习。</p><p class="stage-time">大约需要 36–44 小时</p><div class="stage-gate"><strong>学到这里，你应该能：</strong>每个数学对象都能手算、编码验证，并映射到一个自动驾驶任务。</div></div>
-        <div class="course-grid">
+        <li class="learning-stage" id="stage-m1">
+          <div class="stage-summary">
+            <span class="stage-number">M1</span>
+            <h3>数学核心</h3>
+            <p>用线性代数、微积分和概率论支撑坐标、轨迹、数据质量与深度学习。</p>
+            <p class="stage-time">大约需要 36–44 小时</p>
+            <div class="stage-gate"><strong>学到这里，你应该能：</strong>每个数学对象都能手算、编码验证，并映射到一个自动驾驶任务。</div>
+          </div>
+          <div class="course-grid">
 
   <a class="course-card v2-course-card" href="/personal-knowledge-base/learn/math/linear-algebra-coordinate.html" data-course-card="linear-algebra-coordinate">
     <div class="course-top">
@@ -218,12 +406,18 @@
   </a>
 
 </div>
-      </li>
+        </li>
 
 
-      <li class="learning-stage" id="stage-a1">
-        <div class="stage-summary"><span class="stage-number">A1</span><h3>自动驾驶数据主线</h3><p>理解系统、传感器、坐标和 nuScenes 数据图，完成可追溯的数据任务。</p><p class="stage-time">大约需要 38–54 小时</p><div class="stage-gate"><strong>学到这里，你应该能：</strong>提交包含 inventory、scene split、QC、可视化和 dataset card 的 mini 数据包。</div></div>
-        <div class="course-grid">
+        <li class="learning-stage" id="stage-a1">
+          <div class="stage-summary">
+            <span class="stage-number">A1</span>
+            <h3>自动驾驶数据主线</h3>
+            <p>理解系统、传感器、坐标和 nuScenes 数据图，完成可追溯的数据任务。</p>
+            <p class="stage-time">大约需要 38–54 小时</p>
+            <div class="stage-gate"><strong>学到这里，你应该能：</strong>提交包含 inventory、scene split、QC、可视化和 dataset card 的 mini 数据包。</div>
+          </div>
+          <div class="course-grid">
 
   <a class="course-card v2-course-card" href="/personal-knowledge-base/notes/autonomous-driving-overview.html" data-course-card="autonomous-driving-overview">
     <div class="course-top">
@@ -299,12 +493,18 @@
   </a>
 
 </div>
-      </li>
+        </li>
 
 
-      <li class="learning-stage" id="stage-dl">
-        <div class="stage-summary"><span class="stage-number">DL</span><h3>深度学习与计算机视觉</h3><p>沿 D2L 的 PyTorch 路线学习训练闭环、CNN、ResNet 和视觉数据任务。</p><p class="stage-time">大约需要 45–62 小时</p><div class="stage-gate"><strong>学到这里，你应该能：</strong>独立复现小型视觉实验，解释训练曲线、指标、失败样本和数据边界。</div></div>
-        <div class="course-grid">
+        <li class="learning-stage" id="stage-dl">
+          <div class="stage-summary">
+            <span class="stage-number">DL</span>
+            <h3>深度学习与计算机视觉</h3>
+            <p>沿 D2L 的 PyTorch 路线学习训练闭环、CNN、ResNet 和视觉数据任务。</p>
+            <p class="stage-time">大约需要 45–62 小时</p>
+            <div class="stage-gate"><strong>学到这里，你应该能：</strong>独立复现小型视觉实验，解释训练曲线、指标、失败样本和数据边界。</div>
+          </div>
+          <div class="course-grid">
 
   <a class="course-card v2-course-card" href="/personal-knowledge-base/learn/deep-learning/training-loop.html" data-course-card="deep-learning-training-loop">
     <div class="course-top">
@@ -371,12 +571,18 @@
   </a>
 
 </div>
-      </li>
+        </li>
 
 
-      <li class="learning-stage" id="stage-e1">
-        <div class="stage-summary"><span class="stage-number">E1</span><h3>ROS 2 与 Autoware 拓展</h3><p>从运行图和消息契约理解规划控制，并完成只读断链分析。</p><p class="stage-time">大约需要 14–18 小时</p><div class="stage-gate"><strong>学到这里，你应该能：</strong>证据能指向具体发布者、消息契约或消费者。</div></div>
-        <div class="course-grid">
+        <li class="learning-stage" id="stage-e1">
+          <div class="stage-summary">
+            <span class="stage-number">E1</span>
+            <h3>ROS 2 与 Autoware 拓展</h3>
+            <p>从运行图和消息契约理解规划控制，并完成只读断链分析。</p>
+            <p class="stage-time">大约需要 14–18 小时</p>
+            <div class="stage-gate"><strong>学到这里，你应该能：</strong>证据能指向具体发布者、消息契约或消费者。</div>
+          </div>
+          <div class="course-grid">
 
   <a class="course-card v2-course-card" href="/personal-knowledge-base/notes/planning-autoware.html" data-course-card="planning-autoware">
     <div class="course-top">
@@ -407,12 +613,18 @@
   </a>
 
 </div>
-      </li>
+        </li>
 
 
-      <li class="learning-stage" id="stage-e2">
-        <div class="stage-summary"><span class="stage-number">E2</span><h3>车辆几何与控制拓展</h3><p>从曲率推导自行车和阿克曼模型，再进入轨迹仿真与离线 CAN。</p><p class="stage-time">大约需要 18–26 小时</p><div class="stage-gate"><strong>学到这里，你应该能：</strong>能说明建模假设、数值误差和模型失效条件。</div></div>
-        <div class="course-grid">
+        <li class="learning-stage" id="stage-e2">
+          <div class="stage-summary">
+            <span class="stage-number">E2</span>
+            <h3>车辆几何与控制拓展</h3>
+            <p>从曲率推导自行车和阿克曼模型，再进入轨迹仿真与离线 CAN。</p>
+            <p class="stage-time">大约需要 18–26 小时</p>
+            <div class="stage-gate"><strong>学到这里，你应该能：</strong>能说明建模假设、数值误差和模型失效条件。</div>
+          </div>
+          <div class="course-grid">
 
   <a class="course-card v2-course-card" href="/personal-knowledge-base/notes/ackermann-bicycle-model.html" data-course-card="ackermann-bicycle-model">
     <div class="course-top">
@@ -458,12 +670,18 @@
   </a>
 
 </div>
-      </li>
+        </li>
 
 
-      <li class="learning-stage" id="stage-p4">
-        <div class="stage-summary"><span class="stage-number">P4</span><h3>工程交付与验证</h3><p>把数据、模型、部署契约、指标和证据组成可复现交付。</p><p class="stage-time">大约需要 10–16 小时</p><div class="stage-gate"><strong>学到这里，你应该能：</strong>另一位工程师可以按说明复现结果，并看到限制与失败样本。</div></div>
-        <div class="course-grid">
+        <li class="learning-stage" id="stage-p4">
+          <div class="stage-summary">
+            <span class="stage-number">P4</span>
+            <h3>工程交付与验证</h3>
+            <p>把数据、模型、部署契约、指标和证据组成可复现交付。</p>
+            <p class="stage-time">大约需要 10–16 小时</p>
+            <div class="stage-gate"><strong>学到这里，你应该能：</strong>另一位工程师可以按说明复现结果，并看到限制与失败样本。</div>
+          </div>
+          <div class="course-grid">
 
   <a class="course-card v2-course-card" href="/personal-knowledge-base/notes/perception-deployment-contracts.html" data-course-card="perception-deployment-contracts">
     <div class="course-top">
@@ -494,14 +712,16 @@
   </a>
 
 </div>
-      </li>
+        </li>
 
-    </ol>
-  </section>
-  <section class="portal-cta" aria-labelledby="start-title">
-    <div><p class="section-kicker">不知道选哪门时</p><h2 id="start-title">先看看你适合从哪里开始</h2><p>不会的题直接写“不知道”。这不是考试，只是帮你找到下一小步。</p></div>
-    <div class="hero-actions"><a class="button" href="/personal-knowledge-base/learn/math/diagnostic.html">带我做第一步</a></div>
-  </section>
+      </ol>
+    </section>
+
+    <section class="portal-cta" aria-labelledby="start-title">
+      <div><p class="section-kicker">不知道选哪门时</p><h2 id="start-title">先看看你适合从哪里开始</h2><p>不会的题直接写“不知道”。这不是考试，只是帮你找到下一小步。</p></div>
+      <div class="hero-actions"><a class="button" href="/personal-knowledge-base/learn/math/diagnostic.html">带我做第一步</a></div>
+    </section>
+  </div>
 </div>
 
   </main>

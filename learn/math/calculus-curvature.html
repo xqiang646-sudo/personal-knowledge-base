@@ -5,10 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="从导数、参数曲线、梯度和积分进入曲率、状态方程与自动微分。">
   <title>微积分：从变化率到曲率｜个人知识库</title>
+
   <link rel="icon" href="/personal-knowledge-base/assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/personal-knowledge-base/assets/knowledge.css">
   <link rel="stylesheet" href="/personal-knowledge-base/assets/v2.css">
   <link rel="stylesheet" href="/personal-knowledge-base/assets/cyrus-theme.css">
+
 
   <script src="/personal-knowledge-base/assets/mathjax-config.js"></script>
   <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
@@ -38,15 +40,22 @@
   <a class="skip-link" href="#main-content">跳到主要内容</a>
   <header class="v2-header" data-pagefind-ignore>
   <div class="portal-wrap v2-header-inner">
-    <a class="site-brand" href="/personal-knowledge-base/">个人知识库</a>
+    <a class="site-brand" href="/personal-knowledge-base/" aria-label="零基础自动驾驶学习系统首页">
+
+      个人知识库
+
+    </a>
     <nav class="v2-nav" aria-label="知识库主导航">
+
       <a href="/personal-knowledge-base/">首页</a>
       <a href="/personal-knowledge-base/guide.html">今天学什么</a>
       <a href="/personal-knowledge-base/#learning-path">全部课程</a>
       <a href="/personal-knowledge-base/update.html">学习卡</a>
       <a href="/personal-knowledge-base/guide.html#stuck">我卡住了</a>
       <a href="/personal-knowledge-base/search.html">搜索</a>
+
     </nav>
+
   </div>
 </header>
 
@@ -498,19 +507,19 @@
 <h2 id="核心章节" tabindex="-1">核心章节</h2>
 <h3 id="1-函数与平均变化率" tabindex="-1">1. 函数与平均变化率</h3>
 <p>设位置是时间的函数 \(x(t)\)。从 \(t\) 到 \(t+\Delta t\) 的平均速度为</p>
-<div class="math-display">\[\bar v=\frac{x(t+\Delta t)-x(t)}{\Delta t}.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\bar v=\frac{x(t+\Delta t)-x(t)}{\Delta t}.\]</div>
 <p>几何上，这是函数图像上两个点之间割线的斜率。\(\Delta t\) 越小，割线越接近该点的切线，但实际数据中步长太小又会放大测量噪声，所以“越小越好”并不总成立。</p>
 <h3 id="2-极限与导数" tabindex="-1">2. 极限与导数</h3>
 <p>瞬时变化率定义为差商在步长趋近于零时的极限：</p>
-<div class="math-display">\[f'(x)=\lim_{h\to0}\frac{f(x+h)-f(x)}{h}.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[f'(x)=\lim_{h\to0}\frac{f(x+h)-f(x)}{h}.\]</div>
 <p>常用求导规则包括：</p>
-<div class="math-display">\[\frac{d}{dx}x^n=nx^{n-1},
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\frac{d}{dx}x^n=nx^{n-1},
 \qquad
 \frac{d}{dx}\sin x=\cos x,
 \qquad
 \frac{d}{dx}\cos x=-\sin x.\]</div>
 <p>复合函数使用链式法则：</p>
-<div class="math-display">\[\frac{d}{dx}f(g(x))=f'(g(x))g'(x).\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\frac{d}{dx}f(g(x))=f'(g(x))g'(x).\]</div>
 <p>链式法则不仅用于手算，也解释了神经网络反向传播为什么可以把复杂计算拆成局部导数相乘。</p>
 <div class="lesson-diagram" role="region" aria-label="课程图示，可横向滚动" tabindex="0"><pre class="mermaid">flowchart TB
     accTitle: 从割线到曲率的概念链
@@ -524,17 +533,17 @@
 </pre></div><p><em>从割线极限到一阶导数，再结合二阶变化观察切线方向，最终得到单位弧长上的曲率。</em></p>
 <h3 id="3-一阶与二阶导数的物理意义" tabindex="-1">3. 一阶与二阶导数的物理意义</h3>
 <p>若 \(x(t)\) 是一维位置，则</p>
-<div class="math-display">\[v(t)=\frac{dx}{dt},
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[v(t)=\frac{dx}{dt},
 \qquad
 a(t)=\frac{d^2x}{dt^2}.\]</div>
 <p>单位会随求导改变。位置单位是米，一阶时间导数单位为 \(\mathrm{m/s}\)，二阶时间导数单位为 \(\mathrm{m/s^2}\)。</p>
 <p>对于二维参数曲线</p>
-<div class="math-display">\[\mathbf r(t)=
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\mathbf r(t)=
 \begin{bmatrix}
 x(t)\\y(t)
 \end{bmatrix},\]</div>
 <p>速度和加速度向量分别为</p>
-<div class="math-display">\[\mathbf r'(t)=
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\mathbf r'(t)=
 \begin{bmatrix}
 x'(t)\\y'(t)
 \end{bmatrix},
@@ -546,62 +555,62 @@ x''(t)\\y''(t)
 <p>轨迹的切线方向由 \(\mathbf r'(t)\) 给出。若速度接近零，切线和曲率估计都会变得不稳定。</p>
 <h3 id="4-积分是变化量的累积" tabindex="-1">4. 积分是变化量的累积</h3>
 <p>如果已知速度，可以通过积分得到位移：</p>
-<div class="math-display">\[x(t_1)-x(t_0)=\int_{t_0}^{t_1}v(t)\,dt.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[x(t_1)-x(t_0)=\int_{t_0}^{t_1}v(t)\,dt.\]</div>
 <p>离散数据中常用求和或梯形法近似：</p>
-<div class="math-display">\[\Delta x
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\Delta x
 \approx
 \sum_{i=0}^{n-1}
 \frac{v_i+v_{i+1}}{2}\Delta t_i.\]</div>
 <p>车辆模型的离散仿真也使用相同思想。例如欧拉法把状态微分方程</p>
-<div class="math-display">\[\dot{\mathbf x}=f(\mathbf x,\mathbf u)\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\dot{\mathbf x}=f(\mathbf x,\mathbf u)\]</div>
 <p>近似为</p>
-<div class="math-display">\[\mathbf x_{k+1}
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\mathbf x_{k+1}
 =\mathbf x_k+\Delta t\,f(\mathbf x_k,\mathbf u_k).\]</div>
 <h3 id="5-多元函数偏导数与梯度" tabindex="-1">5. 多元函数、偏导数与梯度</h3>
 <p>深度学习损失通常依赖很多参数。对</p>
-<div class="math-display">\[L=L(w_1,w_2,\ldots,w_n),\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[L=L(w_1,w_2,\ldots,w_n),\]</div>
 <p>固定其他变量，只改变 \(w_i\)，得到偏导数</p>
-<div class="math-display">\[\frac{\partial L}{\partial w_i}.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\frac{\partial L}{\partial w_i}.\]</div>
 <p>把所有偏导数组合起来得到梯度：</p>
-<div class="math-display">\[\nabla_{\mathbf w}L=
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\nabla_{\mathbf w}L=
 \begin{bmatrix}
 \frac{\partial L}{\partial w_1}\\
 \vdots\\
 \frac{\partial L}{\partial w_n}
 \end{bmatrix}.\]</div>
 <p>梯度指向函数局部增长最快的方向，所以最基本的梯度下降使用</p>
-<div class="math-display">\[\mathbf w_{k+1}
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\mathbf w_{k+1}
 =\mathbf w_k-\eta\nabla_{\mathbf w}L,\]</div>
 <p>其中 \(\eta\) 是学习率。</p>
 <h3 id="6-曲率的几何含义" tabindex="-1">6. 曲率的几何含义</h3>
 <p>曲率描述单位弧长上切线方向变化得有多快。若曲线用弧长 \(s\) 参数化，单位切向量为 \(\mathbf T(s)\)，则</p>
-<div class="math-display">\[\kappa=\left\lVert\frac{d\mathbf T}{ds}\right\rVert.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\kappa=\left\lVert\frac{d\mathbf T}{ds}\right\rVert.\]</div>
 <p>圆的曲率处处相同：</p>
-<div class="math-display">\[\kappa=\frac{1}{R}.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\kappa=\frac{1}{R}.\]</div>
 <p>半径越小，曲率越大，转弯越急。曲率单位为 \(\mathrm{m}^{-1}\)。</p>
 <p>对一般二维参数曲线，带符号曲率可写成</p>
-<div class="math-display">\[\kappa(t)=
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\kappa(t)=
 \frac{x'(t)y''(t)-y'(t)x''(t)}
 {\left(x'(t)^2+y'(t)^2\right)^{3/2}}.\]</div>
 <p>按本文约定，坐标系 \(x\) 轴向前、\(y\) 轴向左且参数沿行驶方向增加时，\(\kappa&gt;0\) 表示左转，\(\kappa&lt;0\) 表示右转。若只需要弯曲强度，可取 \(|\kappa|\)，但不要在需要左右方向的控制任务中提前丢掉符号。</p>
 <p>若曲线写成 \(y=f(x)\)，可得到</p>
-<div class="math-display">\[\kappa(x)=
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\kappa(x)=
 \frac{f''(x)}{\left(1+f'(x)^2\right)^{3/2}}.\]</div>
 <h3 id="7-离散轨迹的三点曲率" tabindex="-1">7. 离散轨迹的三点曲率</h3>
 <p>真实轨迹往往只有采样点。取连续三点 \(A\)、\(B\)、\(C\)，定义边长</p>
-<div class="math-display">\[a=\lVert B-C\rVert,
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[a=\lVert B-C\rVert,
 \qquad
 b=\lVert C-A\rVert,
 \qquad
 c=\lVert A-B\rVert.\]</div>
 <p>二维叉积标量为</p>
-<div class="math-display">\[z=(B-A)_x(C-A)_y-(B-A)_y(C-A)_x.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[z=(B-A)_x(C-A)_y-(B-A)_y(C-A)_x.\]</div>
 <p>三点不共线时，它们确定一个外接圆，带符号曲率为</p>
-<div class="math-display">\[\kappa=\frac{2z}{abc}.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\kappa=\frac{2z}{abc}.\]</div>
 <p>当三点重合或某条边过短时，乘积 \(abc\) 才会接近零；三点几乎共线时，主要问题是面积量 \(z\) 很小，曲率符号容易被坐标噪声翻转。代码应分别设置最小边长阈值和随轨迹尺度变化的面积阈值：前者判定无效点，后者把数值上近似直线的三点稳定地视为零曲率。</p>
 <h3 id="8-数值导数与采样误差" tabindex="-1">8. 数值导数与采样误差</h3>
 <p>内部采样点常用中心差分：</p>
-<div class="math-display">\[x'(t_i)\approx
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[x'(t_i)\approx
 \frac{x(t_{i+1})-x(t_{i-1})}
 {t_{i+1}-t_{i-1}}.\]</div>
 <p>二阶导数对噪声更敏感。工程上要同时检查：</p>
@@ -627,49 +636,49 @@ c=\lVert A-B\rVert.\]</div>
 </pre></div><p><em>重复或过短边返回 <code>NaN</code>，近共线点按阈值视为零曲率，其余点才使用三点公式并保留采样与噪声边界。</em></p>
 <h2 id="逐步例题一圆的曲率为什么是" tabindex="-1">逐步例题一：圆的曲率为什么是 \(1/R\)</h2>
 <p>令半径为 \(R\) 的圆参数化为</p>
-<div class="math-display">\[x(t)=R\cos t,
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[x(t)=R\cos t,
 \qquad
 y(t)=R\sin t.\]</div>
 <p>一阶导数为</p>
-<div class="math-display">\[x'(t)=-R\sin t,
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[x'(t)=-R\sin t,
 \qquad
 y'(t)=R\cos t.\]</div>
 <p>二阶导数为</p>
-<div class="math-display">\[x''(t)=-R\cos t,
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[x''(t)=-R\cos t,
 \qquad
 y''(t)=-R\sin t.\]</div>
 <p>代入曲率分子：</p>
-<div class="math-display">\[x'y''-y'x''
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[x'y''-y'x''
 =R^2\sin^2t+R^2\cos^2t
 =R^2.\]</div>
 <p>代入分母：</p>
-<div class="math-display">\[\left(x'^2+y'^2\right)^{3/2}
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\left(x'^2+y'^2\right)^{3/2}
 =\left(R^2\sin^2t+R^2\cos^2t\right)^{3/2}
 =R^3.\]</div>
 <p>因此</p>
-<div class="math-display">\[\kappa=\frac{R^2}{R^3}=\frac{1}{R}.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\kappa=\frac{R^2}{R^3}=\frac{1}{R}.\]</div>
 <p>结果与参数 \(t\) 无关，符合圆在每一点弯曲程度相同的直觉。</p>
 <h2 id="逐步例题二三个点的离散曲率" tabindex="-1">逐步例题二：三个点的离散曲率</h2>
 <p>取单位圆上的三点</p>
-<div class="math-display">\[A=(1,0),\qquad B=(0,1),\qquad C=(-1,0).\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[A=(1,0),\qquad B=(0,1),\qquad C=(-1,0).\]</div>
 <p>三条边长为</p>
-<div class="math-display">\[a=\sqrt2,\qquad b=2,\qquad c=\sqrt2.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[a=\sqrt2,\qquad b=2,\qquad c=\sqrt2.\]</div>
 <p>叉积标量为</p>
-<div class="math-display">\[z=(-1,1)\times(-2,0)=2.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[z=(-1,1)\times(-2,0)=2.\]</div>
 <p>所以</p>
-<div class="math-display">\[\kappa=\frac{2z}{abc}
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\kappa=\frac{2z}{abc}
 =\frac{4}{\sqrt2\cdot2\cdot\sqrt2}
 =1.\]</div>
 <p>单位圆半径 \(R=1\)，解析结果也是 \(1/R=1\)，三点法在这个例子中与解析结果一致。</p>
 <h2 id="逐步例题三损失函数的一次梯度更新" tabindex="-1">逐步例题三：损失函数的一次梯度更新</h2>
 <p>设只有一个样本 \(x=2\)、\(y=6\)，模型为 \(\hat y=wx\)，损失为</p>
-<div class="math-display">\[L(w)=(wx-y)^2.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[L(w)=(wx-y)^2.\]</div>
 <p>由链式法则</p>
-<div class="math-display">\[\frac{dL}{dw}=2(wx-y)x.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\frac{dL}{dw}=2(wx-y)x.\]</div>
 <p>当 \(w=1\) 时，</p>
-<div class="math-display">\[\frac{dL}{dw}=2(2-6)\cdot2=-16.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\frac{dL}{dw}=2(2-6)\cdot2=-16.\]</div>
 <p>若学习率 \(\eta=0.1\)，则</p>
-<div class="math-display">\[w_{\mathrm{new}}
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[w_{\mathrm{new}}
 =w-\eta\frac{dL}{dw}
 =1-0.1(-16)
 =2.6.\]</div>
@@ -763,7 +772,7 @@ assert np.allclose(kappa_samples[2:-2], 1.0 / radius, atol=2e-4)
 <p>\(|\kappa|\) 保留弯曲强度，却丢失左转与右转信息。是否取绝对值必须由任务决定。</p>
 <h3 id="忽略接近零的速度" tabindex="-1">忽略接近零的速度</h3>
 <p>参数曲率分母包含</p>
-<div class="math-display">\[\left(x'^2+y'^2\right)^{3/2}.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\left(x'^2+y'^2\right)^{3/2}.\]</div>
 <p>当速度接近零时会产生巨大或无效结果，必须设置有效掩码。</p>
 <h3 id="重复点导致三点法除零" tabindex="-1">重复点导致三点法除零</h3>
 <p>三点法分母是三条边长的乘积。任意两个点重合时必须返回无效标记，而不是伪造曲率 \(0\)。</p>

@@ -106,7 +106,7 @@ export function markdownItMath(markdown) {
   markdown.renderer.rules.math_inline = (tokens, index) =>
     `\\(${markdown.utils.escapeHtml(tokens[index].content)}\\)`;
   markdown.renderer.rules.math_block = (tokens, index) =>
-    `<div class="math-display">\\[${markdown.utils.escapeHtml(tokens[index].content)}\\]</div>\n`;
+    `<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\\[${markdown.utils.escapeHtml(tokens[index].content)}\\]</div>\n`;
 }
 
 function normalizedUrl(value) {

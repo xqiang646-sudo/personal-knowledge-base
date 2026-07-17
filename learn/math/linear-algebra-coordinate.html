@@ -5,10 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="掌握向量、矩阵、张量、基、投影、旋转、平移和齐次变换。">
   <title>线性代数：从向量到坐标变换｜个人知识库</title>
+
   <link rel="icon" href="/personal-knowledge-base/assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/personal-knowledge-base/assets/knowledge.css">
   <link rel="stylesheet" href="/personal-knowledge-base/assets/v2.css">
   <link rel="stylesheet" href="/personal-knowledge-base/assets/cyrus-theme.css">
+
 
   <script src="/personal-knowledge-base/assets/mathjax-config.js"></script>
   <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
@@ -38,15 +40,22 @@
   <a class="skip-link" href="#main-content">跳到主要内容</a>
   <header class="v2-header" data-pagefind-ignore>
   <div class="portal-wrap v2-header-inner">
-    <a class="site-brand" href="/personal-knowledge-base/">个人知识库</a>
+    <a class="site-brand" href="/personal-knowledge-base/" aria-label="零基础自动驾驶学习系统首页">
+
+      个人知识库
+
+    </a>
     <nav class="v2-nav" aria-label="知识库主导航">
+
       <a href="/personal-knowledge-base/">首页</a>
       <a href="/personal-knowledge-base/guide.html">今天学什么</a>
       <a href="/personal-knowledge-base/#learning-path">全部课程</a>
       <a href="/personal-knowledge-base/update.html">学习卡</a>
       <a href="/personal-knowledge-base/guide.html#stuck">我卡住了</a>
       <a href="/personal-knowledge-base/search.html">搜索</a>
+
     </nav>
+
   </div>
 </header>
 
@@ -499,25 +508,25 @@
 <h2 id="核心章节" tabindex="-1">核心章节</h2>
 <h3 id="1-标量向量矩阵与张量" tabindex="-1">1. 标量、向量、矩阵与张量</h3>
 <p>标量是单个数，例如速度 \(v=5\,\mathrm{m/s}\)。向量是有序分量，例如二维点</p>
-<div class="math-display">\[\mathbf p=
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\mathbf p=
 \begin{bmatrix}
 x\\y
 \end{bmatrix}.\]</div>
 <p>矩阵可以看成一组按行列排列的数，也可以看成把一个向量映射成另一个向量的函数：</p>
-<div class="math-display">\[\mathbf y=A\mathbf x.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\mathbf y=A\mathbf x.\]</div>
 <p>张量是更高维数组。图像批次常写为</p>
-<div class="math-display">\[\mathbf X\in\mathbb R^{N\times C\times H\times W}.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\mathbf X\in\mathbb R^{N\times C\times H\times W}.\]</div>
 <p>shape 只能告诉我们尺寸，不能自动告诉我们单位、坐标系或语义。工程变量应至少附带四项信息：名称、shape、单位、坐标系。</p>
 <h3 id="2-向量几何" tabindex="-1">2. 向量几何</h3>
 <p>二维向量的欧氏范数为</p>
-<div class="math-display">\[\lVert\mathbf p\rVert_2=\sqrt{x^2+y^2}.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\lVert\mathbf p\rVert_2=\sqrt{x^2+y^2}.\]</div>
 <p>点积为</p>
-<div class="math-display">\[\mathbf a^\mathsf T\mathbf b
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\mathbf a^\mathsf T\mathbf b
 =\sum_{i=1}^{n}a_i b_i
 =\lVert\mathbf a\rVert_2\lVert\mathbf b\rVert_2\cos\theta.\]</div>
 <p>它可以衡量两个方向的相似程度：点积为正表示夹角小于 \(90^\circ\)，为零表示正交，为负表示大致相反。</p>
 <p>单位向量为</p>
-<div class="math-display">\[\hat{\mathbf a}=\frac{\mathbf a}{\lVert\mathbf a\rVert_2},\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\hat{\mathbf a}=\frac{\mathbf a}{\lVert\mathbf a\rVert_2},\]</div>
 <p>但当 \(\lVert\mathbf a\rVert_2\) 接近零时不能直接归一化，代码中必须设置容差并明确处理。</p>
 <div class="lesson-diagram" role="region" aria-label="课程图示，可横向滚动" tabindex="0"><pre class="mermaid">flowchart TB
     accTitle: 几何向量 基与坐标的关系
@@ -531,35 +540,35 @@ x\\y
 </pre></div><p><em>两组基先定义映射 \(T(B\leftarrow A)\)，再由它把 \(p(A)\) 变成 \(p(B)\)，几何向量本身没有改变。</em></p>
 <h3 id="3-矩阵乘法与变换顺序" tabindex="-1">3. 矩阵乘法与变换顺序</h3>
 <p>若</p>
-<div class="math-display">\[A\in\mathbb R^{m\times n},\qquad
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[A\in\mathbb R^{m\times n},\qquad
 B\in\mathbb R^{n\times k},\]</div>
 <p>则</p>
-<div class="math-display">\[AB\in\mathbb R^{m\times k}.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[AB\in\mathbb R^{m\times k}.\]</div>
 <p>中间维度必须相等。矩阵乘法通常不满足交换律：</p>
-<div class="math-display">\[AB\neq BA.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[AB\neq BA.\]</div>
 <p>在坐标链中，右侧变换先作用。若 \(T_{ES}\) 把传感器坐标变到车辆坐标，\(T_{GE}\) 把车辆坐标变到全局坐标，则</p>
-<div class="math-display">\[\tilde{\mathbf p}_G
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\tilde{\mathbf p}_G
 =T_{GE}T_{ES}\tilde{\mathbf p}_S.\]</div>
 <p>不能为了“看起来顺眼”而交换乘法顺序。</p>
 <h3 id="4-旋转平移与刚体变换" tabindex="-1">4. 旋转、平移与刚体变换</h3>
 <p>二维逆时针旋转矩阵为</p>
-<div class="math-display">\[R(\theta)=
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[R(\theta)=
 \begin{bmatrix}
 \cos\theta &amp; -\sin\theta\\
 \sin\theta &amp; \cos\theta
 \end{bmatrix}.\]</div>
 <p>旋转保持长度和夹角，因此满足</p>
-<div class="math-display">\[R^\mathsf T R=I,
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[R^\mathsf T R=I,
 \qquad
 R^{-1}=R^\mathsf T,
 \qquad
 \det(R)=1.\]</div>
 <p>平移不是线性变换，因为原点经过平移后不再映射到原点。把旋转和平移组合起来可写为</p>
-<div class="math-display">\[\mathbf p_B=R_{BA}\mathbf p_A+\mathbf t_{BA}.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\mathbf p_B=R_{BA}\mathbf p_A+\mathbf t_{BA}.\]</div>
 <p>本课统一约定：下标 \(BA\) 表示“把在 \(A\) 坐标系中的坐标，变换成在 \(B\) 坐标系中的坐标”。\(\mathbf t_{BA}\) 是 \(A\) 坐标系原点在 \(B\) 坐标系中的位置表达。</p>
 <h3 id="5-齐次坐标" tabindex="-1">5. 齐次坐标</h3>
 <p>为把旋转和平移统一成一次矩阵乘法，在点坐标末尾补 \(1\)：</p>
-<div class="math-display">\[\tilde{\mathbf p}_A=
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\tilde{\mathbf p}_A=
 \begin{bmatrix}
 \mathbf p_A\\1
 \end{bmatrix},
@@ -570,13 +579,13 @@ R_{BA} &amp; \mathbf t_{BA}\\
 \mathbf 0^\mathsf T &amp; 1
 \end{bmatrix}.\]</div>
 <p>于是</p>
-<div class="math-display">\[\tilde{\mathbf p}_B=T_{BA}\tilde{\mathbf p}_A.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\tilde{\mathbf p}_B=T_{BA}\tilde{\mathbf p}_A.\]</div>
 <p>三维点使用 \(4\times4\) 齐次变换矩阵。方向向量不应受到平移影响，所以把方向写成齐次形式时末尾使用 \(0\)，而不是 \(1\)。</p>
 <h3 id="6-变换复合与求逆" tabindex="-1">6. 变换复合与求逆</h3>
 <p>若 \(A\rightarrow B\rightarrow C\)，则</p>
-<div class="math-display">\[T_{CA}=T_{CB}T_{BA}.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[T_{CA}=T_{CB}T_{BA}.\]</div>
 <p>刚体变换的逆可以直接写成</p>
-<div class="math-display">\[T_{AB}=T_{BA}^{-1}
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[T_{AB}=T_{BA}^{-1}
 =
 \begin{bmatrix}
 R_{BA}^\mathsf T &amp; -R_{BA}^\mathsf T\mathbf t_{BA}\\
@@ -585,13 +594,13 @@ R_{BA}^\mathsf T &amp; -R_{BA}^\mathsf T\mathbf t_{BA}\\
 <p>这说明“反向变换”不是简单地把平移取负；必须先把平移旋转到正确的坐标表达中。</p>
 <h3 id="7-从数学对象到-nuscenes-数据" tabindex="-1">7. 从数学对象到 nuScenes 数据</h3>
 <p>nuScenes 的 <code>sample_data</code> 记录会关联传感器标定和车辆位姿。一个常见几何链是：</p>
-<div class="math-display">\[\text{sensor}
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\text{sensor}
 \rightarrow
 \text{ego at capture time}
 \rightarrow
 \text{global}.\]</div>
 <p>概念上可写为</p>
-<div class="math-display">\[\tilde{\mathbf p}_{G}
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\tilde{\mathbf p}_{G}
 =T_{GE(t)}T_{ES}\tilde{\mathbf p}_{S}.\]</div>
 <p>\(T_{ES}\) 描述传感器相对车辆的标定；\(T_{GE(t)}\) 描述采集时刻车辆在全局坐标中的位姿。它们含义不同，不能因为都是旋转和平移就混用。</p>
 <p>nuScenes 使用四元数存储部分旋转。四元数到旋转矩阵的转换放在后续坐标系专题中；本课先确保你能读懂“从哪到哪”、正确复合矩阵并验证逆变换。</p>
@@ -605,31 +614,31 @@ R_{BA}^\mathsf T &amp; -R_{BA}^\mathsf T\mathbf t_{BA}\\
 </pre></div><p><em>正向链先用安装标定、再用时刻 \(t\) 的车辆位姿，往返检查则严格按相反顺序应用逆变换。</em></p>
 <h3 id="8-张量的轴归约与广播" tabindex="-1">8. 张量的轴、归约与广播</h3>
 <p>深度学习和数据处理常把多个样本堆叠起来。若点云批次为</p>
-<div class="math-display">\[\mathbf P\in\mathbb R^{B\times N\times3},\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\mathbf P\in\mathbb R^{B\times N\times3},\]</div>
 <p>则 \(B\) 是批次，\(N\) 是每帧点数，最后一维是 \((x,y,z)\)。对 <code>axis=1</code> 求均值会为每一帧得到一个三维中心，输出形状为 \((B,3)\)。</p>
 <p>广播允许形状兼容的数组自动扩展。例如从每个点减去同一个三维平移向量。但广播成功不等于语义正确：如果轴顺序错了，程序可能不报错却产生错误结果。</p>
 <h2 id="逐步例题传感器点变到车辆坐标" tabindex="-1">逐步例题：传感器点变到车辆坐标</h2>
 <p>定义 \(T_{ES}\) 把传感器坐标 \(S\) 变到车辆坐标 \(E\)。假设传感器坐标系相对车辆坐标系逆时针旋转 \(90^\circ\)，传感器原点在车辆坐标中位于 \((1,0)\,\mathrm m\)。</p>
 <p>第一步，将角度换成弧度：</p>
-<div class="math-display">\[\theta=90^\circ=\frac{\pi}{2}.\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\theta=90^\circ=\frac{\pi}{2}.\]</div>
 <p>第二步，写旋转矩阵：</p>
-<div class="math-display">\[R_{ES}=
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[R_{ES}=
 \begin{bmatrix}
 0&amp;-1\\
 1&amp;0
 \end{bmatrix}.\]</div>
 <p>第三步，写平移：</p>
-<div class="math-display">\[\mathbf t_{ES}=
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\mathbf t_{ES}=
 \begin{bmatrix}
 1\\0
 \end{bmatrix}\mathrm m.\]</div>
 <p>第四步，传感器测得点</p>
-<div class="math-display">\[\mathbf p_S=
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\mathbf p_S=
 \begin{bmatrix}
 2\\1
 \end{bmatrix}\mathrm m.\]</div>
 <p>先旋转，再平移：</p>
-<div class="math-display">\[\begin{aligned}
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\begin{aligned}
 \mathbf p_E
 &amp;=R_{ES}\mathbf p_S+\mathbf t_{ES}\\
 &amp;=

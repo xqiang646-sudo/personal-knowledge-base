@@ -59,10 +59,11 @@ body[data-theme="cyrus"] {
   --shadow-soft:
     0 16px 42px rgba(17, 22, 31, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.86);
-  --font-ui: Inter, "Noto Sans SC", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-heading: "Noto Serif SC", "Playfair Display", Georgia, serif;
-  --font-reading: var(--font-ui);
-  --font-code: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-xingkai-cn: "Xingkai SC", "STXingkai", "Kaiti SC", "STKaiti", "KaiTi", "KaiTi_GB2312", "Songti SC", "STSong", serif;
+  --font-ui: "Times New Roman", Times, var(--font-xingkai-cn);
+  --font-heading: "Times New Roman", Times, var(--font-xingkai-cn);
+  --font-reading: "Times New Roman", Times, var(--font-xingkai-cn);
+  --font-code: "Times New Roman", Times, var(--font-xingkai-cn);
   margin: 0;
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(232, 236, 244, 0.62) 46%, rgba(255, 255, 255, 0.82)),

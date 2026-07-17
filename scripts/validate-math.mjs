@@ -33,7 +33,7 @@ const evenEscape = renderInline(String.raw`偶数反斜杠 \\$x$`);
 assert.ok(evenEscape.includes("\\(x\\)"), "偶数个反斜杠后仍应识别公式");
 assert.equal(
   markdown.render("$$\nx^2 + y^2\n$$\n"),
-  '<div class="math-display">\\[x^2 + y^2\\]</div>\n'
+  '<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\\[x^2 + y^2\\]</div>\n'
 );
 
 const baseTemplate = await readFile(`${repositoryRoot}src/_includes/layouts/base.njk`, "utf8");

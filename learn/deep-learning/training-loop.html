@@ -5,10 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="从张量、线性模型、损失、梯度和优化器建立 PyTorch 训练闭环。">
   <title>深度学习：第一个完整训练闭环｜个人知识库</title>
+
   <link rel="icon" href="/personal-knowledge-base/assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/personal-knowledge-base/assets/knowledge.css">
   <link rel="stylesheet" href="/personal-knowledge-base/assets/v2.css">
   <link rel="stylesheet" href="/personal-knowledge-base/assets/cyrus-theme.css">
+
 
   <script src="/personal-knowledge-base/assets/mathjax-config.js"></script>
   <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
@@ -38,15 +40,22 @@
   <a class="skip-link" href="#main-content">跳到主要内容</a>
   <header class="v2-header" data-pagefind-ignore>
   <div class="portal-wrap v2-header-inner">
-    <a class="site-brand" href="/personal-knowledge-base/">个人知识库</a>
+    <a class="site-brand" href="/personal-knowledge-base/" aria-label="零基础自动驾驶学习系统首页">
+
+      个人知识库
+
+    </a>
     <nav class="v2-nav" aria-label="知识库主导航">
+
       <a href="/personal-knowledge-base/">首页</a>
       <a href="/personal-knowledge-base/guide.html">今天学什么</a>
       <a href="/personal-knowledge-base/#learning-path">全部课程</a>
       <a href="/personal-knowledge-base/update.html">学习卡</a>
       <a href="/personal-knowledge-base/guide.html#stuck">我卡住了</a>
       <a href="/personal-knowledge-base/search.html">搜索</a>
+
     </nav>
+
   </div>
 </header>
 
@@ -470,7 +479,7 @@
       <h2 id="本课定位" tabindex="-1">本课定位</h2>
 <p>这一课只解决一个问题：<strong>模型到底是怎样从数据中学会参数的？</strong></p>
 <p>你会从一个只有一层的线性模型开始，亲手跑通一次完整的 PyTorch 训练闭环：</p>
-<div class="math-display">\[\text{数据} \rightarrow \text{预测} \rightarrow \text{损失} \rightarrow \text{梯度} \rightarrow \text{更新参数} \rightarrow \text{重新预测}\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\text{数据} \rightarrow \text{预测} \rightarrow \text{损失} \rightarrow \text{梯度} \rightarrow \text{更新参数} \rightarrow \text{重新预测}\]</div>
 <p>这条闭环是后续多层感知机、卷积神经网络、ResNet 和自动驾驶视觉模型共同的骨架。模型会变复杂，但训练的基本机制不会变。</p>
 <ul>
 <li>建议课时：\(8\text{--}10\) 小时</li>
@@ -582,7 +591,7 @@
 </tr>
 </tbody>
 </table></div><p>训练的目标不是让模型“记住一段代码”，而是寻找一组参数 \(\theta\)，使训练数据上的平均损失尽量小，同时在未参与训练的数据上仍能工作：</p>
-<div class="math-display">\[\theta^* = \arg\min_\theta \frac{1}{N}\sum_{i=1}^{N} \ell\left(f_\theta(x_i), y_i\right)\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\theta^* = \arg\min_\theta \frac{1}{N}\sum_{i=1}^{N} \ell\left(f_\theta(x_i), y_i\right)\]</div>
 <p>其中，\(N\) 是样本数，\(\ell\) 是单个样本的损失函数。</p>
 <h2 id="张量与-shape" tabindex="-1">张量与 shape</h2>
 <h3 id="从标量到张量" tabindex="-1">从标量到张量</h3>
@@ -601,16 +610,16 @@ matrix = torch.zeros(5, 3)                 # shape: (5, 3)
 images = torch.zeros(8, 3, 224, 224)       # shape: (8, 3, 224, 224)
 </code></pre>
 <p>最后一个例子通常表示 \(8\) 张图像，每张图像有 \(3\) 个通道，高和宽均为 \(224\)。不要只记数字，要为每一维写出语义：</p>
-<div class="math-display">\[(N,C,H,W)=(8,3,224,224)\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[(N,C,H,W)=(8,3,224,224)\]</div>
 <h3 id="线性模型中的-shape" tabindex="-1">线性模型中的 shape</h3>
 <p>假设一个 batch 有 \(B\) 个样本，每个样本有 \(d\) 个特征，模型输出 \(m\) 个数：</p>
-<div class="math-display">\[X \in \mathbb{R}^{B\times d},\qquad
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[X \in \mathbb{R}^{B\times d},\qquad
 W \in \mathbb{R}^{d\times m},\qquad
 b \in \mathbb{R}^{m}\]</div>
 <p>线性模型为：</p>
-<div class="math-display">\[\hat{Y}=XW+b\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\hat{Y}=XW+b\]</div>
 <p>因此：</p>
-<div class="math-display">\[\hat{Y}\in\mathbb{R}^{B\times m}\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\hat{Y}\in\mathbb{R}^{B\times m}\]</div>
 <div class="lesson-diagram" role="region" aria-label="课程图示，可横向滚动" tabindex="0"><pre class="mermaid">flowchart TB
     accTitle: 张量形状从输入到预测
     accDescr: 一个批次含 B 个样本，每个样本有 d 个特征；输入与权重相乘并加上偏置后，得到 B 乘 m 的预测。
@@ -628,11 +637,11 @@ assert X.shape[1] == model.in_features
 assert y.shape[1] == model.out_features
 </code></pre>
 <p>对于本课的一维回归任务：</p>
-<div class="math-display">\[X:(B,1),\qquad y:(B,1),\qquad \hat{y}:(B,1)\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[X:(B,1),\qquad y:(B,1),\qquad \hat{y}:(B,1)\]</div>
 <p>如果把 \(y\) 写成 \((B,)\)，PyTorch 有时会广播而不立即报错，却可能计算出不是你想要的损失。</p>
 <h2 id="线性模型最简单的可训练模型" tabindex="-1">线性模型：最简单的可训练模型</h2>
 <p>一维线性模型写作：</p>
-<div class="math-display">\[\hat{y}=wx+b\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\hat{y}=wx+b\]</div>
 <ul>
 <li>\(x\) 是输入；</li>
 <li>\(w\) 是斜率，也就是输入变化一个单位时预测大约变化多少；</li>
@@ -640,12 +649,12 @@ assert y.shape[1] == model.out_features
 <li>\(w\) 和 \(b\) 是模型要学习的参数。</li>
 </ul>
 <p>如果真实数据近似满足：</p>
-<div class="math-display">\[y=3x+2+\varepsilon\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[y=3x+2+\varepsilon\]</div>
 <p>其中 \(\varepsilon\) 是噪声，那么训练良好的模型应得到接近 \(w=3\)、\(b=2\) 的参数，但不会完全相等。</p>
 <p>线性模型虽然简单，却已经包含深度学习训练的全部基础部件：参数、前向计算、损失、反向传播和优化。</p>
 <h2 id="损失把预测得不好变成一个数" tabindex="-1">损失：把“预测得不好”变成一个数</h2>
 <p>回归任务常用均方误差：</p>
-<div class="math-display">\[L(w,b)=\frac{1}{B}\sum_{i=1}^{B}\left(\hat{y}_i-y_i\right)^2\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[L(w,b)=\frac{1}{B}\sum_{i=1}^{B}\left(\hat{y}_i-y_i\right)^2\]</div>
 <p>损失越小，表示当前 batch 上的预测通常越接近标签。平方有三个作用：</p>
 <ol>
 <li>正误差和负误差不会互相抵消；</li>
@@ -656,14 +665,14 @@ assert y.shape[1] == model.out_features
 <h2 id="梯度反向传播与参数更新" tabindex="-1">梯度、反向传播与参数更新</h2>
 <h3 id="梯度表示什么" tabindex="-1">梯度表示什么</h3>
 <p>导数表示一个变量发生小变化时，函数大约怎样变化。对多个参数求偏导并排列起来，就得到梯度：</p>
-<div class="math-display">\[\nabla_\theta L=
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\nabla_\theta L=
 \begin{bmatrix}
 \frac{\partial L}{\partial \theta_1}\\
 \frac{\partial L}{\partial \theta_2}\\
 \vdots
 \end{bmatrix}\]</div>
 <p>梯度指向损失增大最快的方向，因此沿负梯度方向更新参数：</p>
-<div class="math-display">\[\theta_{t+1}=\theta_t-\eta\nabla_\theta L(\theta_t)\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\theta_{t+1}=\theta_t-\eta\nabla_\theta L(\theta_t)\]</div>
 <p>\(\eta\) 是学习率：</p>
 <ul>
 <li>太小：训练很慢；</li>
@@ -672,9 +681,9 @@ assert y.shape[1] == model.out_features
 </ul>
 <h3 id="前向传播和反向传播" tabindex="-1">前向传播和反向传播</h3>
 <p>前向传播按计算顺序得到预测和损失：</p>
-<div class="math-display">\[x \rightarrow wx+b \rightarrow \hat{y} \rightarrow L(\hat{y},y)\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[x \rightarrow wx+b \rightarrow \hat{y} \rightarrow L(\hat{y},y)\]</div>
 <p>反向传播利用链式法则，从损失出发反向计算每个参数的梯度：</p>
-<div class="math-display">\[\frac{\partial L}{\partial w}
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[\frac{\partial L}{\partial w}
 =
 \frac{\partial L}{\partial \hat{y}}
 \frac{\partial \hat{y}}{\partial w}\]</div>
@@ -948,11 +957,11 @@ print(model.bias.grad)
 </ol>
 <h3 id="实验-b用有限差分检查自动微分" tabindex="-1">实验 B：用有限差分检查自动微分</h3>
 <p>对一个简单标量函数：</p>
-<div class="math-display">\[f(w)=(w-3)^2\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[f(w)=(w-3)^2\]</div>
 <p>解析导数为：</p>
-<div class="math-display">\[f'(w)=2(w-3)\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[f'(w)=2(w-3)\]</div>
 <p>有限差分近似为：</p>
-<div class="math-display">\[f'(w)\approx\frac{f(w+h)-f(w-h)}{2h}\]</div>
+<div class="math-display" role="region" aria-label="公式，可横向滚动" tabindex="0">\[f'(w)\approx\frac{f(w+h)-f(w-h)}{2h}\]</div>
 <p>请在 \(w=1\)、\(h=10^{-4}\) 时，对比解析导数、有限差分和 PyTorch 自动微分。三者应当接近，但浮点误差使它们不必完全相同。</p>
 <h3 id="实验-c改变学习率" tabindex="-1">实验 C：改变学习率</h3>
 <p>分别使用：</p>
