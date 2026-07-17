@@ -59,11 +59,11 @@ body[data-theme="cyrus"] {
   --shadow-soft:
     0 16px 42px rgba(17, 22, 31, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.86);
-  --font-xingkai-cn: "Xingkai SC", "STXingkai", "Kaiti SC", "STKaiti", "KaiTi", "KaiTi_GB2312", "Songti SC", "STSong", serif;
-  --font-ui: "Times New Roman", Times, var(--font-xingkai-cn);
-  --font-heading: "Times New Roman", Times, var(--font-xingkai-cn);
-  --font-reading: "Times New Roman", Times, var(--font-xingkai-cn);
-  --font-code: "Times New Roman", Times, var(--font-xingkai-cn);
+  --font-zh-normal: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+  --font-ui: "Times New Roman", Times, var(--font-zh-normal);
+  --font-heading: "Times New Roman", Times, var(--font-zh-normal);
+  --font-reading: "Times New Roman", Times, var(--font-zh-normal);
+  --font-code: SFMono-Regular, Menlo, Monaco, Consolas, var(--font-zh-normal);
   margin: 0;
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(232, 236, 244, 0.62) 46%, rgba(255, 255, 255, 0.82)),

@@ -1,5 +1,6 @@
 import markdownIt from "markdown-it";
 import markdownItAnchor from "markdown-it-anchor";
+import { readdirSync } from "node:fs";
 
 const SITE_PREFIX = "/personal-knowledge-base/";
 
@@ -148,7 +149,15 @@ export default function (eleventyConfig) {
   // legacy assets here as Eleventy inputs; V2 assets are sourced from src/assets
   // and copied back to the root after a successful production build.
   eleventyConfig.addPassthroughCopy("assets/knowledge.css");
-  eleventyConfig.addPassthroughCopy("assets/*.png");
+  // Keep legacy root images available, but let src/assets own any filename
+  // that exists in both trees. This prevents a second publish from copying
+  // generated assets such as og-home.png to the same output path twice.
+  const sourceAssetNames = new Set(readdirSync("src/assets"));
+  for (const assetName of readdirSync("assets")) {
+    if (assetName.endsWith(".png") && !sourceAssetNames.has(assetName)) {
+      eleventyConfig.addPassthroughCopy(`assets/${assetName}`);
+    }
+  }
   eleventyConfig.addPassthroughCopy("notes");
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
   eleventyConfig.addWatchTarget("assets");
